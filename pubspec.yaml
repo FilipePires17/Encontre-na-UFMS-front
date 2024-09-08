@@ -24,6 +24,12 @@ dependencies:
   # API
   dio: ^5.7.0
 
+  # DB
+  hive: ^2.2.3
+
+  # Utils
+  intl: ^0.19.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
