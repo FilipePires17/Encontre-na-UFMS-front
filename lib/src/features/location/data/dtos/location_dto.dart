@@ -15,30 +15,18 @@ class LocationDto extends Location {
           multimedia: multimedia,
         );
 
-  factory LocationDto.fromJson(Map<String, dynamic> json) {
+  factory LocationDto.fromMap(Map<String, dynamic> json) {
     return LocationDto(
       id: json['id'],
       name: json['name'],
       address: json['address'],
       multimedia: json['multimedia']
-          ?.map<MultimediaDto>((e) => MultimediaDto.fromJson(e))
+          ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
           .toList(),
       type: EnumLocation.values
           .firstWhere((element) => element.toString() == json['type']),
       isOpen: json['isOpen'],
       isFavorite: json['isFavorite'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'address': address,
-      'multimedia': (multimedia as MultimediaDto?)?.toJson(),
-      'type': type.jsonName,
-      'isOpen': isOpen,
-      'isFavorite': isFavorite,
-    };
   }
 }

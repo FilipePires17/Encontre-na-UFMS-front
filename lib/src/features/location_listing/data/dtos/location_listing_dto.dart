@@ -9,15 +9,8 @@ class LocationListItemDto extends LocationListItem {
   factory LocationListItemDto.fromJson(Map<String, dynamic> json) {
     return LocationListItemDto(
       locationItems: json['locationItems']
-          ?.map<LocationDto>((e) => LocationDto.fromJson(e))
+          ?.map<LocationDto>((e) => LocationDto.fromMap(e))
           .toList(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'locationItems':
-          locationItems.map((e) => (e as LocationDto).toJson()).toList(),
-    };
   }
 }
