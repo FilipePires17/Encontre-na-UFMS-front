@@ -7,7 +7,7 @@ class ToggleFavoriteLocation {
 
   const ToggleFavoriteLocation(this._locationListingRepository);
 
-  Future<Either<Error, bool>> call(int id) async {
-    return _locationListingRepository.toggleFavoriteLocation(id);
+  Future<Either<Error, bool>> call({required int id}) async {
+    return _locationListingRepository.toggleFavoriteLocation(id: id);
   }
 }
