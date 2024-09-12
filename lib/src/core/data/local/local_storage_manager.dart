@@ -1,25 +1,27 @@
+import 'package:fpdart/fpdart.dart';
+
 abstract class ILocalStorageCaller {
-  Future<bool> saveData({
+  Future<Either<Error, bool>> saveData({
     required String table,
     required String key,
     required dynamic value,
   });
 
-  Future<dynamic> restoreData({
+  Future<Either<Error, dynamic>> restoreData({
     required String table,
     required String key,
   });
 
-  Future<bool> deleteKey({
+  Future<Either<Error, bool>> deleteKey({
     required String table,
     required String key,
   });
 
-  Future<List<String>> getAllKeys(String table);
+  Future<Either<Error, List<String>>> getAllKeys(String table);
 
-  Future<List> getAllValues(String table);
+  Future<Either<Error, List>> getAllValues(String table);
 
-  Future<Map> getAllEntries(String table);
+  Future<Either<Error, Map>> getAllEntries(String table);
 
-  Future<bool> clearAll({required String table});
+  Future<Either<Error, bool>> clearAll({required String table});
 }

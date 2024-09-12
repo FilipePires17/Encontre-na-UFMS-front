@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:fpdart/fpdart.dart';
 
 import '../../constants/keys/hive_keys.dart';
 import '../local/hive_manager.dart';
@@ -52,11 +53,11 @@ class HttpManager {
       key: HiveKeys.token,
     );
 
-    if (token != null && hasToken) {
+    if (token is Right && hasToken) {
       dio.interceptors.add(
         InterceptorsWrapper(
           onRequest: (options, handler) async {
-            options.headers['Authorization'] = 'Bearer $token';
+            options.headers['Authorization'] = 'Bearer ${token.getRight()}';
             return handler.next(options);
           },
         ),

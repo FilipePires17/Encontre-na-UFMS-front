@@ -1,10 +1,11 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:hive/hive.dart';
 
 import 'local_storage_manager.dart';
 
 class HiveLocalStorageCaller implements ILocalStorageCaller {
   @override
-  Future<bool> saveData({
+  Future<Either<Error, bool>> saveData({
     required String table,
     required String key,
     required value,
@@ -13,56 +14,65 @@ class HiveLocalStorageCaller implements ILocalStorageCaller {
       await Hive.openBox(table);
       Box box = Hive.box(table);
       box.put(key, value);
-      return box.get(key) != null;
+      return Right(box.get(key) != null);
     } catch (e) {
-      throw Exception(e);
+      return Left(e as Error);
     }
   }
 
   @override
-  Future<dynamic> restoreData(
+  Future<Either<Error, dynamic>> restoreData(
       {required String? table, required String key}) async {
     if (table == null) {
-      return null;
+      return const Right(null);
     }
     await Hive.openBox(table);
     try {
       Box box = Hive.box(table);
-      return box.get(key);
+      return Right(box.get(key));
     } catch (e) {
-      return null;
+      return Left(e as Error);
     }
   }
 
   @override
-  Future<bool> clearAll({required String table}) async {
+  Future<Either<Error, bool>> clearAll({required String table}) async {
     final box = await Hive.openBox(table);
-    return (await box.clear()) > 0;
+    if ((await box.clear()) > 0) {
+      return const Right(true);
+    } else {
+      return Left(Error());
+    }
   }
 
   @override
-  Future<Map> getAllEntries(String table) async {
+  Future<Either<Error, Map>> getAllEntries(String table) async {
     final box = await Hive.openBox(table);
-    return Map.fromIterables(box.keys, box.values);
+    return Right(Map.fromIterables(box.keys, box.values));
   }
 
   @override
-  Future<List<String>> getAllKeys(String table) async {
+  Future<Either<Error, List<String>>> getAllKeys(String table) async {
     final box = await Hive.openBox(table);
-    return box.keys.map((e) => e.toString()).toList();
+    return Right(box.keys.map((e) => e.toString()).toList());
   }
 
   @override
-  Future<List> getAllValues(String table) async {
+  Future<Either<Error, List>> getAllValues(String table) async {
     final box = await Hive.openBox(table);
-    return box.values.toList();
+    return Right(box.values.toList());
   }
 
   @override
-  Future<bool> deleteKey({required String table, required String key}) async {
+  Future<Either<Error, bool>> deleteKey(
+      {required String table, required String key}) async {
     final box = await Hive.openBox(table);
-    await box.delete(key);
+    try {
+      await box.delete(key);
+    } catch (e) {
+      return Left(e as Error);
+    }
 
-    return box.get(key) == null;
+    return Right(box.get(key) == null);
   }
 }
