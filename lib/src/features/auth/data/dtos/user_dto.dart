@@ -15,6 +15,14 @@ class UserDto extends User {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'userName': name,
+      'email': email,
+    };
+  }
+
   UserDto copyWith({
     String? id,
     String? name,

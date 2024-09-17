@@ -27,7 +27,7 @@ class AppColors {
   static const vividGreen = Color(0xFF77CE6C);
 
   // Institutional colors
-  static const primary = Color(0xFF3E6C4D);
+  static const primary = Color(0xFF22aeff);
   static const secondary = Color(0xFF3EAF4B);
 
   // Medium and Dark colors

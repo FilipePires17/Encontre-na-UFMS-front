@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'config/routing/app_router.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -7,11 +9,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Encontre na UFMS',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Placeholder(),
+      theme: ThemeData(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.dark,
+      onGenerateRoute: AppRouter().getRoute,
     );
   }
 }
