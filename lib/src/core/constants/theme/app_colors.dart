@@ -28,7 +28,7 @@ class AppColors {
 
   // Institutional colors
   static const primary = Color(0xFF22aeff);
-  static const secondary = Color(0xFF3EAF4B);
+  static const secondary = Color(0xFFFFA021);
 
   // Medium and Dark colors
   static const green200 = Color(0xFF00603F);
