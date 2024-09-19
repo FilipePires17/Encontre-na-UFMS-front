@@ -9,28 +9,33 @@ class CategoryTile extends StatelessWidget {
     super.key,
     required this.location,
     this.onPressed,
+    this.isPressed = false,
   });
 
   final EnumLocation location;
   final Function()? onPressed;
+  final bool isPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Sizes.p8,
-      ),
-      height: Sizes.p36,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Sizes.p16),
-        color: AppColors.primary,
-      ),
-      child: Center(
-        child: Text(
-          location.title,
-          style: const TextStyle(
-            color: AppColors.white,
-            fontSize: 14,
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Sizes.p8,
+        ),
+        height: Sizes.p36,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Sizes.p16),
+          color: isPressed ? AppColors.secondary : AppColors.primary,
+        ),
+        child: Center(
+          child: Text(
+            location.title,
+            style: const TextStyle(
+              color: AppColors.white,
+              fontSize: 14,
+            ),
           ),
         ),
       ),

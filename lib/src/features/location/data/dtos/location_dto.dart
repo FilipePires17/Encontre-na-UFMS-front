@@ -21,13 +21,13 @@ class LocationDto extends Location {
       id: map['id'],
       name: map['name'],
       address: map['address'],
-      multimedia: map['multimedia']
-          ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
-          .toList(),
+      // multimedia: map['multimedia']
+      //     ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
+      //     .toList(),
       type: EnumLocation.values[map['type']],
       isOpen: map['isOpen'],
-      isFavorite: map['favorite'],
-      rating: map['grade'],
+      isFavorite: map['favorite'] == 1,
+      rating: double.parse(map['grade']),
     );
   }
 }

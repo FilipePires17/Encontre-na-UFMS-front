@@ -5,10 +5,12 @@ import '../../core/constants/keys/route_names.dart';
 import '../../core/services/injection_container.dart';
 import '../../features/location/presentation/screens/location_screen.dart';
 import '../../features/location_listing/presentation/bloc/location_listing_bloc.dart';
+import '../../features/location_listing/presentation/cubit/location_categories_cubit.dart';
 import '../../features/location_listing/presentation/screens/location_listing_screen.dart';
 
 class AppRouter {
   final _locationListingBloc = sl<LocationListingBloc>();
+  final _locationCategoriesCubit = sl<LocationCategoriesCubit>();
 
   void dispose() {
     _locationListingBloc.close();
@@ -18,8 +20,15 @@ class AppRouter {
     switch (settings.name) {
       case RouteNames.home:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: _locationListingBloc,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _locationListingBloc,
+              ),
+              BlocProvider.value(
+                value: _locationCategoriesCubit,
+              ),
+            ],
             child: const LocationListingScreen(),
           ),
         );
@@ -27,8 +36,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LocationScreen());
       default:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: _locationListingBloc,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _locationListingBloc,
+              ),
+              BlocProvider.value(
+                value: _locationCategoriesCubit,
+              ),
+            ],
             child: const LocationListingScreen(),
           ),
         );

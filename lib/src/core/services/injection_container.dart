@@ -6,6 +6,7 @@ import '../../features/location_listing/domain/repos/i_location_listing_repo.dar
 import '../../features/location_listing/domain/usecases/get_location_listing_paginated.dart';
 import '../../features/location_listing/domain/usecases/toggle_favorite_location.dart';
 import '../../features/location_listing/presentation/bloc/location_listing_bloc.dart';
+import '../../features/location_listing/presentation/cubit/location_categories_cubit.dart';
 import '../data/remote/http_manager.dart';
 import '../platforms/data_connection_checker.dart';
 import '../platforms/network_info.dart';
@@ -28,6 +29,8 @@ void init() {
       ));
   sl.registerLazySingleton<IRemoteLocationListingDatasource>(
       () => RemoteLocationListingDatasource(httpClient: sl()));
+
+  sl.registerFactory(() => LocationCategoriesCubit());
 
   // Core
   sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));

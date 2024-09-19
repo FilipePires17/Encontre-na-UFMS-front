@@ -31,7 +31,7 @@ class RemoteLocationListingDatasource
       return left(Error());
     }
 
-    return Right(LocationListItemDto.fromMap(response.data));
+    return Right(LocationListItemDto.fromMap(response.data['data']));
   }
 
   @override

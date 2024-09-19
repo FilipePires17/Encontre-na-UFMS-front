@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../domain/entities/location_list_filter.dart';
 import '../../domain/enums/enum_location.dart';
 import '../bloc/location_listing_bloc.dart';
+import '../cubit/location_categories_cubit.dart';
 import '../widgets/category_tile.dart';
 import '../widgets/location_list_item_tile.dart';
 
@@ -16,12 +18,15 @@ class LocationListingScreen extends StatefulWidget {
 
 class _LocationListingScreenState extends State<LocationListingScreen> {
   late LocationListingBloc locationListingBloc;
+  late LocationCategoriesCubit locationCategoriesCubit;
 
   @override
   void initState() {
     super.initState();
     locationListingBloc = BlocProvider.of<LocationListingBloc>(context);
     locationListingBloc.add(const LoadFilteredEvent());
+    locationCategoriesCubit = BlocProvider.of<LocationCategoriesCubit>(context);
+    locationCategoriesCubit.clearCategories();
   }
 
   @override
@@ -70,35 +75,61 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                 itemCount: EnumLocation.values.length,
                 separatorBuilder: (context, index) => gapW12,
                 itemBuilder: (context, index) {
-                  return CategoryTile(
-                    location: EnumLocation.values[index],
-                    onPressed: () {},
+                  return BlocBuilder<LocationCategoriesCubit,
+                      List<EnumLocation>>(
+                    builder: (context, state) {
+                      return CategoryTile(
+                        isPressed: state.contains(EnumLocation.values[index]),
+                        location: EnumLocation.values[index],
+                        onPressed: () {
+                          locationCategoriesCubit
+                              .updateCategories(EnumLocation.values[index]);
+                          locationListingBloc.add(
+                            LoadFilteredEvent(
+                              paginatedFilters: LocationListFilter(
+                                types: state,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   );
                 },
               ),
             ),
             gapH12,
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  BlocBuilder<LocationListingBloc, LocationListingState>(
-                    builder: (context, state) {
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(Sizes.p8),
-                              child: LocationListItemTile(
-                                location: state.locations.locationItems[index],
-                              ),
-                            );
-                          },
-                          childCount: state.locations.locationItems.length,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  locationListingBloc.add(LoadFilteredEvent(
+                    paginatedFilters: LocationListFilter(
+                      types: locationCategoriesCubit.state,
+                    ),
+                  ));
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    BlocBuilder<LocationListingBloc, LocationListingState>(
+                      builder: (context, state) {
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(Sizes.p8),
+                                child: LocationListItemTile(
+                                  location:
+                                      state.locations.locationItems[index],
+                                ),
+                              );
+                            },
+                            childCount: state.locations.locationItems.length,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
