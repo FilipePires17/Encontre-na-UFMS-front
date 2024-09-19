@@ -5,12 +5,12 @@ import '../entities/location_list_item.dart';
 import '../repos/i_location_listing_repo.dart';
 
 class GetLocationListingPaginated {
-  final ILocationListingRepo _locationListingRepo;
+  final ILocationListingRepo repo;
 
-  const GetLocationListingPaginated(this._locationListingRepo);
+  const GetLocationListingPaginated({required this.repo});
 
-  Future<Either<Error, List<LocationListItem>>> call(
+  Future<Either<Error, LocationList>> call(
       {required LocationListFilter filter}) async {
-    return _locationListingRepo.getLocationListingPaginated(filter: filter);
+    return repo.getLocationListingPaginated(filter: filter);
   }
 }

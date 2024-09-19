@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../../location/domain/entities/location.dart';
 
-class LocationListItem extends Equatable {
-  const LocationListItem({
+class LocationList extends Equatable {
+  const LocationList({
     this.locationItems = const [],
   });
 

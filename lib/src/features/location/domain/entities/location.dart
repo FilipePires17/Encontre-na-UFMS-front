@@ -12,6 +12,7 @@ class Location extends Equatable {
     required this.type,
     this.isOpen,
     this.isFavorite,
+    this.rating,
   });
 
   final int id;
@@ -21,8 +22,17 @@ class Location extends Equatable {
   final EnumLocation type;
   final bool? isOpen;
   final bool? isFavorite;
+  final double? rating;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+        id,
+        name,
+        address,
+        multimedia,
+        type,
+        isOpen,
+        isFavorite,
+        rating,
+      ];
 }

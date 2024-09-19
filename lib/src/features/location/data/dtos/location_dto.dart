@@ -11,22 +11,23 @@ class LocationDto extends Location {
     required super.type,
     super.isOpen,
     super.isFavorite,
+    super.rating,
   }) : super(
           multimedia: multimedia,
         );
 
-  factory LocationDto.fromMap(Map<String, dynamic> json) {
+  factory LocationDto.fromMap(Map<String, dynamic> map) {
     return LocationDto(
-      id: json['id'],
-      name: json['name'],
-      address: json['address'],
-      multimedia: json['multimedia']
+      id: map['id'],
+      name: map['name'],
+      address: map['address'],
+      multimedia: map['multimedia']
           ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
           .toList(),
-      type: EnumLocation.values
-          .firstWhere((element) => element.toString() == json['type']),
-      isOpen: json['isOpen'],
-      isFavorite: json['isFavorite'],
+      type: EnumLocation.values[map['type']],
+      isOpen: map['isOpen'],
+      isFavorite: map['favorite'],
+      rating: map['grade'],
     );
   }
 }

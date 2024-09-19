@@ -3,11 +3,11 @@ import 'package:fpdart/fpdart.dart';
 import '../repos/i_location_listing_repo.dart';
 
 class ToggleFavoriteLocation {
-  final ILocationListingRepo _locationListingRepository;
+  final ILocationListingRepo repo;
 
-  const ToggleFavoriteLocation(this._locationListingRepository);
+  const ToggleFavoriteLocation({required this.repo});
 
   Future<Either<Error, bool>> call({required int id}) async {
-    return _locationListingRepository.toggleFavoriteLocation(id: id);
+    return repo.toggleFavoriteLocation(id: id);
   }
 }

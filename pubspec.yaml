@@ -16,6 +16,7 @@ dependencies:
   # Gerência de estados
   get_it: ^7.7.0
   flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
 
   # Bibliotecas Dart
   equatable: ^2.0.5
@@ -26,9 +27,12 @@ dependencies:
 
   # DB
   hive: ^2.2.3
+  isar_flutter_libs: ^4.0.0-dev.13
+  hive_flutter: ^1.1.0
 
   # Utils
   intl: ^0.19.0
+  path_provider: ^2.1.4
 
 dev_dependencies:
   flutter_test:

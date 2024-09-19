@@ -9,7 +9,7 @@ class Search extends Equatable {
   });
 
   final String? query;
-  final List<LocationListItem> results;
+  final List<LocationList> results;
 
   @override
   List<Object?> get props => [query, results];

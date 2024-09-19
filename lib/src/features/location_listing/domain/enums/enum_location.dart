@@ -17,5 +17,5 @@ enum EnumLocation {
   final String title;
 
   @override
-  String toString() => title;
+  String toString() => jsonName;
 }

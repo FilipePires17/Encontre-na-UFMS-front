@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
+import '../../../location/domain/entities/location.dart';
 
 class LocationListItemTile extends StatelessWidget {
-  const LocationListItemTile({super.key});
+  const LocationListItemTile({super.key, required this.location});
+
+  final Location location;
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +25,23 @@ class LocationListItemTile extends StatelessWidget {
               height: 100,
             ),
             gapW12,
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    'Location Name',
-                    style: TextStyle(
+                    location.name,
+                    style: const TextStyle(
                       fontSize: Sizes.p16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text('Location Address'),
-                  Text('Aberto agora'),
+                  Text(location.address),
+                  if (location.isOpen == true)
+                    const Text('Aberto agora')
+                  else
+                    const Text('Fechado'),
                 ],
               ),
             ),
