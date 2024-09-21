@@ -19,6 +19,7 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(Sizes.p16),
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(

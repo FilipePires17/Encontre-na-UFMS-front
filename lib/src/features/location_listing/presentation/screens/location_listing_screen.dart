@@ -7,6 +7,7 @@ import '../../domain/enums/enum_location.dart';
 import '../bloc/location_listing_bloc.dart';
 import '../cubit/location_categories_cubit.dart';
 import '../widgets/category_tile.dart';
+import '../widgets/custom_drawer.dart';
 import '../widgets/location_list_item_tile.dart';
 
 class LocationListingScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
     final notificationBarHeight = MediaQuery.of(context).padding.top;
     final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: const CustomDrawer(),
       body: Padding(
         padding: EdgeInsets.only(
           top: notificationBarHeight,
@@ -75,22 +76,24 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                 itemCount: EnumLocation.values.length,
                 separatorBuilder: (context, index) => gapW12,
                 itemBuilder: (context, index) {
-                  return BlocBuilder<LocationCategoriesCubit,
+                  return BlocConsumer<LocationCategoriesCubit,
                       List<EnumLocation>>(
+                    listener: (context, state) {
+                      locationListingBloc.add(
+                        LoadFilteredEvent(
+                          paginatedFilters: LocationListFilter(
+                            types: state,
+                          ),
+                        ),
+                      );
+                    },
                     builder: (context, state) {
                       return CategoryTile(
                         isPressed: state.contains(EnumLocation.values[index]),
                         location: EnumLocation.values[index],
-                        onPressed: () {
+                        onPressed: () async {
                           locationCategoriesCubit
                               .updateCategories(EnumLocation.values[index]);
-                          locationListingBloc.add(
-                            LoadFilteredEvent(
-                              paginatedFilters: LocationListFilter(
-                                types: state,
-                              ),
-                            ),
-                          );
                         },
                       );
                     },
@@ -128,32 +131,39 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                         }
                       },
                       builder: (context, state) {
-                        return SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(Sizes.p8),
-                                child: LocationListItemTile(
-                                  location:
-                                      state.locations.locationItems[index],
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pushNamed('/location');
-                                  },
-                                  onFavoritePressed: () {
-                                    locationListingBloc.add(
-                                      ToggleFavoriteEvent(
-                                        id: state
-                                            .locations.locationItems[index].id,
+                        return state.status == LocationListingStatus.loading
+                            ? const SliverFillRemaining(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(Sizes.p8),
+                                      child: LocationListItemTile(
+                                        location: state
+                                            .locations.locationItems[index],
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushNamed('/location');
+                                        },
+                                        onFavoritePressed: () {
+                                          locationListingBloc.add(
+                                            ToggleFavoriteEvent(
+                                              id: state.locations
+                                                  .locationItems[index].id,
+                                            ),
+                                          );
+                                        },
                                       ),
                                     );
                                   },
+                                  childCount:
+                                      state.locations.locationItems.length,
                                 ),
                               );
-                            },
-                            childCount: state.locations.locationItems.length,
-                          ),
-                        );
                       },
                     ),
                   ],
