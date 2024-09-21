@@ -5,16 +5,21 @@ import '../../../../core/constants/theme/app_colors.dart';
 import '../../../location/domain/entities/location.dart';
 
 class LocationListItemTile extends StatelessWidget {
-  const LocationListItemTile({super.key, required this.location});
+  const LocationListItemTile({
+    super.key,
+    required this.location,
+    this.onPressed,
+    this.onFavoritePressed,
+  });
 
   final Location location;
+  final Function()? onPressed;
+  final Function()? onFavoritePressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed('/location');
-      },
+      onTap: onPressed,
       child: SizedBox(
         height: Sizes.p100,
         child: Row(
@@ -46,7 +51,7 @@ class LocationListItemTile extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: onFavoritePressed,
               icon: const Icon(
                 Icons.star_border,
                 size: Sizes.p36,

@@ -34,8 +34,16 @@ class LocationListingRepo implements ILocationListingRepo {
   }
 
   @override
-  Future<Either<Error, bool>> toggleFavoriteLocation({required int id}) {
-    // TODO: implement toggleFavoriteLocation
-    throw UnimplementedError();
+  Future<Either<Error, bool>> toggleFavoriteLocation({required int id}) async {
+    if (await networkInfo.isConnected) {
+      final response = await remoteDataSource.toggleFavoriteLocation(id: id);
+
+      return response.match(
+        (error) => Left(error),
+        (res) => Right(res),
+      );
+    } else {
+      return Left(Error());
+    }
   }
 }

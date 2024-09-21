@@ -110,7 +110,23 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                 },
                 child: CustomScrollView(
                   slivers: [
-                    BlocBuilder<LocationListingBloc, LocationListingState>(
+                    BlocConsumer<LocationListingBloc, LocationListingState>(
+                      listener: (context, state) {
+                        if (state.status == LocationListingStatus.error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.errorMessage ?? ''),
+                            ),
+                          );
+                        } else if (state.status ==
+                            LocationListingStatus.unauthorized) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('tela de login'),
+                            ),
+                          );
+                        }
+                      },
                       builder: (context, state) {
                         return SliverList(
                           delegate: SliverChildBuilderDelegate(
@@ -120,6 +136,18 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                                 child: LocationListItemTile(
                                   location:
                                       state.locations.locationItems[index],
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pushNamed('/location');
+                                  },
+                                  onFavoritePressed: () {
+                                    locationListingBloc.add(
+                                      ToggleFavoriteEvent(
+                                        id: state
+                                            .locations.locationItems[index].id,
+                                      ),
+                                    );
+                                  },
                                 ),
                               );
                             },

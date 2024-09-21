@@ -35,8 +35,16 @@ class RemoteLocationListingDatasource
   }
 
   @override
-  Future<Either<Error, bool>> toggleFavoriteLocation({required int id}) {
-    // TODO: implement toggleFavoriteLocation
-    throw UnimplementedError();
+  Future<Either<Error, bool>> toggleFavoriteLocation({required int id}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.toggleFavorite}/$id',
+      method: HttpMethods.post,
+    );
+
+    if (response.statusCode != 200) {
+      return left(Error());
+    }
+
+    return const Right(true);
   }
 }

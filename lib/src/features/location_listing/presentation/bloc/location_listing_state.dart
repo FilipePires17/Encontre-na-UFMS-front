@@ -1,6 +1,6 @@
 part of 'location_listing_bloc.dart';
 
-enum LocationListingStatus { initial, loading, loaded, error }
+enum LocationListingStatus { initial, loading, loaded, error, unauthorized }
 
 class LocationListingState extends Equatable {
   const LocationListingState({
