@@ -21,7 +21,7 @@ class HttpManager {
     required String method,
     bool hasToken = true,
     Map? headers,
-    Map? body,
+    Map body = const {},
     Map<String, dynamic>? parameters,
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {}
@@ -57,7 +57,8 @@ class HttpManager {
       dio.interceptors.add(
         InterceptorsWrapper(
           onRequest: (options, handler) async {
-            options.headers['Authorization'] = 'Bearer ${token.getRight()}';
+            options.headers['Authorization'] =
+                'Bearer ${token.getRight().fold(() => '', (token) => token)}';
             return handler.next(options);
           },
         ),

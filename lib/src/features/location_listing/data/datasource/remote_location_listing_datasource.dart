@@ -22,7 +22,7 @@ class RemoteLocationListingDatasource
   Future<Either<Error, LocationListItemDto>> getLocationListingPaginated(
       {required LocationListFilterDto filter}) async {
     final response = await httpClient.restRequest(
-      url: '${ApiUrls.locations}/${filter.types.join(',')}',
+      url: '${ApiUrls.baseLocations}/${filter.types.join(',')}',
       method: HttpMethods.get,
       parameters: filter.toMap(),
     );
@@ -41,10 +41,16 @@ class RemoteLocationListingDatasource
       method: HttpMethods.post,
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 &&
+        response.statusCode != 201 &&
+        response.statusCode != 401) {
       return left(Error());
     }
 
-    return const Right(true);
+    if (response.statusCode == 401) {
+      return const Right(false);
+    } else {
+      return const Right(true);
+    }
   }
 }

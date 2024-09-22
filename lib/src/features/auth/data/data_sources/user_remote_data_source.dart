@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/constants/api_urls.dart';
 import '../../../../core/data/remote/http_manager.dart';
+import '../dtos/user_dto.dart';
 
 abstract class IUserRemoteDataSource {
-  Future<Either<Error, String>> signInUser(String email, String password);
+  Future<Either<String, UserDto>> signInUser(String email, String password);
   Future<Either<Error, bool>> validateToken();
   Future<Either<String, Response>> getCurrentUser();
   Future<Either<Error, Response>> getCurrentUserInfo(String id);
@@ -17,27 +19,25 @@ abstract class IUserRemoteDataSource {
 class UserRemoteDataSource implements IUserRemoteDataSource {
   final HttpManager httpClient;
 
-  UserRemoteDataSource(this.httpClient);
+  UserRemoteDataSource({required this.httpClient});
 
   @override
-  Future<Either<Error, String>> signInUser(
+  Future<Either<String, UserDto>> signInUser(
       String email, String password) async {
-    // final response = await httpClient.restRequest(
-    //   url: ApiUrls.loginUrl,
-    //   method: HttpMethods.post,
-    //   body: {
-    //     'email': email,
-    //     'password': password,
-    //   },
-    //   hasToken: false,
-    // );
-    // if (response.statusCode == 200) {
-    //   return Right(response.data['message']);
-    // }
-    // return Left(response.data['message']);
+    final response = await httpClient.restRequest(
+      url: ApiUrls.signIn,
+      method: HttpMethods.post,
+      body: {
+        'email': email,
+        'password': password,
+      },
+      hasToken: false,
+    );
 
-    // TODO: implement signInUser
-    throw UnimplementedError();
+    if (response.statusCode == 200) {
+      return Right(UserDto.fromMap(response.data['user']));
+    }
+    return Left(response.data['error']);
   }
 
   @override

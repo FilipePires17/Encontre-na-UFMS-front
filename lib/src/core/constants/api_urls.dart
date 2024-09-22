@@ -2,7 +2,10 @@ import '../../config/environment/environment.dart';
 
 abstract class ApiUrls {
   // Locations
-  static const String locations = '$baseUrlDev/locales';
+  static const String baseLocations = '$baseUrlDev/locales';
+  static const String toggleFavorite = '$baseLocations/favorites';
 
-  static const String toggleFavorite = '$baseUrlDev/favorites';
+  // Auth
+  static const String baseAuth = '$baseUrlDev/auth';
+  static const String signIn = '$baseAuth/login';
 }

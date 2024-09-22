@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/common_widgets/custom_app_bar.dart';
 import '../../../core/constants/sizes/app_sizes.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -8,18 +9,9 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: const Text(
-          'SOBRE',
-          style: TextStyle(fontSize: Sizes.p32),
-        ),
-        centerTitle: true,
+      appBar: CustomAppBar(
+        text: 'SOBRE',
+        context: context,
       ),
       body: const Padding(
         padding:

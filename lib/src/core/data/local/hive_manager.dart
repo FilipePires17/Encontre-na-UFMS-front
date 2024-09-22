@@ -29,7 +29,12 @@ class HiveLocalStorageCaller implements ILocalStorageCaller {
     await Hive.openBox(table);
     try {
       Box box = Hive.box(table);
-      return Right(box.get(key));
+      final keyRes = box.get(key);
+      if (keyRes != null) {
+        return Right(keyRes);
+      } else {
+        return Left(Error());
+      }
     } catch (e) {
       return Left(e as Error);
     }

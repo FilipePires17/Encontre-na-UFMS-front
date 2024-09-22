@@ -10,11 +10,13 @@ class LocationListItemTile extends StatelessWidget {
     required this.location,
     this.onPressed,
     this.onFavoritePressed,
+    this.isFavorite = false,
   });
 
   final Location location;
   final Function()? onPressed;
   final Function()? onFavoritePressed;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +54,9 @@ class LocationListItemTile extends StatelessWidget {
             ),
             IconButton(
               onPressed: onFavoritePressed,
-              icon: const Icon(
-                Icons.star_border,
+              icon: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                color: AppColors.secondary,
                 size: Sizes.p36,
               ),
             ),

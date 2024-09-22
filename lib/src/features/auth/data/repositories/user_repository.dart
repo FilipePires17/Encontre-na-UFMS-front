@@ -5,7 +5,7 @@ import '../../domain/entities/user.dart';
 import '../../domain/repositories/i_user_repository.dart';
 import '../data_sources/user_local_data_source.dart';
 import '../data_sources/user_remote_data_source.dart';
-import '../dtos/user_dto.dart';
+// import '../dtos/user_dto.dart';
 
 const tokenT = '{"userId": 56,"token": "asdfhadfb812364y87123t42"}';
 
@@ -20,46 +20,47 @@ class UserRepository implements IUserRepository {
     required this.networkInfo,
   });
 
-  @override
-  Future<Either<String, User>> getCurrentUser() async {
-    if (await networkInfo.isConnected) {
-      final response = await remoteDataSource.getCurrentUser();
+  // @override
+  // Future<Either<String, User>> getCurrentUser() async {
+  //   if (await networkInfo.isConnected) {
+  //     final response = await remoteDataSource.getCurrentUser();
 
-      return response.match(
-        (error) => Left(error),
-        (res) => Right(UserDto.fromMap(res.data['entity'])),
-      );
-    } else {
-      return const Left('Sem conexão');
-    }
-  }
+  //     return response.match(
+  //       (error) => Left(error),
+  //       (res) => Right(UserDto.fromMap(res.data['entity'])),
+  //     );
+  //   } else {
+  //     return const Left('Sem conexão');
+  //   }
+  // }
+
+  // @override
+  // Future<Either<Error, bool>> validateToken() async {
+  //   if (await networkInfo.isConnected) {
+  //     final isValidated = await remoteDataSource.validateToken();
+  //     return isValidated;
+  //   } else {
+  //     return Left(Error());
+  //   }
+  // }
 
   @override
-  Future<Either<Error, bool>> validateToken() async {
-    if (await networkInfo.isConnected) {
-      final isValidated = await remoteDataSource.validateToken();
-      return isValidated;
-    } else {
-      return Left(Error());
-    }
-  }
-
-  @override
-  Future<Either<Error, String>> signInUser({
+  Future<Either<String, User>> signInUser({
     required String email,
     required String password,
   }) async {
     if (await networkInfo.isConnected) {
-      final token = await remoteDataSource.signInUser(email, password);
+      final user = await remoteDataSource.signInUser(email, password);
 
-      token.match(
-        (_) => null,
-        (res) => localDataSource.cacheToken(res),
+      return user.match(
+        (errorMessage) => Left(errorMessage),
+        (res) {
+          localDataSource.cacheToken(res.token);
+          return Right(res.toEntity());
+        },
       );
-
-      return token;
     } else {
-      return Left(Error());
+      return const Left('Sem conexão');
     }
   }
 
@@ -109,5 +110,11 @@ class UserRepository implements IUserRepository {
     } else {
       return const Left('Sem conexão');
     }
+  }
+
+  @override
+  Future<Either<dynamic, bool>> refreshToken() {
+    // TODO: implement refreshToken
+    throw UnimplementedError();
   }
 }

@@ -123,11 +123,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                           );
                         } else if (state.status ==
                             LocationListingStatus.unauthorized) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('tela de login'),
-                            ),
-                          );
+                          Navigator.of(context).pushNamed('/login');
                         }
                       },
                       builder: (context, state) {
@@ -157,6 +153,11 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                                             ),
                                           );
                                         },
+                                        isFavorite: state
+                                                .locations
+                                                .locationItems[index]
+                                                .isFavorite ??
+                                            false,
                                       ),
                                     );
                                   },

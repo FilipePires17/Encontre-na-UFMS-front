@@ -13,7 +13,7 @@ abstract class IUserLocalDataSource {
 class UserLocalDataSource implements IUserLocalDataSource {
   final ILocalStorageCaller localStorageCaller;
 
-  UserLocalDataSource(this.localStorageCaller);
+  UserLocalDataSource({required this.localStorageCaller});
 
   @override
   Future<Either<Error, void>> cacheToken(String token) {

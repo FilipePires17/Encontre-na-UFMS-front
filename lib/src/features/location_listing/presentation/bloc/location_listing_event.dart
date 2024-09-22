@@ -13,6 +13,9 @@ class LoadFullEvent extends LocationListingEvent {
   const LoadFullEvent({
     this.paginatedFilters = const LocationListFilter(),
   });
+
+  @override
+  List<Object> get props => [paginatedFilters];
 }
 
 class LoadFilteredEvent extends LocationListingEvent {
@@ -21,6 +24,9 @@ class LoadFilteredEvent extends LocationListingEvent {
   const LoadFilteredEvent({
     this.paginatedFilters = const LocationListFilter(),
   });
+
+  @override
+  List<Object> get props => [paginatedFilters];
 }
 
 class ToggleFavoriteEvent extends LocationListingEvent {
@@ -29,4 +35,7 @@ class ToggleFavoriteEvent extends LocationListingEvent {
   const ToggleFavoriteEvent({
     required this.id,
   });
+
+  @override
+  List<Object> get props => [id];
 }

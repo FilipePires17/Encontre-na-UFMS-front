@@ -5,13 +5,20 @@ class UserDto extends User {
     required super.id,
     required super.name,
     required super.email,
+    required this.token,
+    required this.refreshToken,
   });
+
+  final String token;
+  final String refreshToken;
 
   factory UserDto.fromMap(Map map) {
     return UserDto(
-      id: map['id'],
-      name: map['userName'],
+      id: map['id'].toString(),
+      name: map['name'],
       email: map['email'],
+      token: map['token'],
+      refreshToken: map['refreshToken'],
     );
   }
 
@@ -27,11 +34,23 @@ class UserDto extends User {
     String? id,
     String? name,
     String? email,
+    String? token,
+    String? refreshToken,
   }) {
     return UserDto(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
+      token: token ?? this.token,
+      refreshToken: refreshToken ?? this.refreshToken,
+    );
+  }
+
+  User toEntity() {
+    return User(
+      id: id,
+      name: name,
+      email: email,
     );
   }
 }
