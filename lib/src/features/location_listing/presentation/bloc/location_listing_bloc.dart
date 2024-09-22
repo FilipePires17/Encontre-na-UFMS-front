@@ -76,7 +76,8 @@ class LocationListingBloc
               address: updatedLocations[locationIndex].address,
               type: updatedLocations[locationIndex].type,
               isOpen: updatedLocations[locationIndex].isOpen,
-              isFavorite: isFavorited,
+              isFavorite:
+                  !(updatedLocations[locationIndex].isFavorite ?? false),
               rating: updatedLocations[locationIndex].rating,
             );
 
