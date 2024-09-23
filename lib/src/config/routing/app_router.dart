@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants/keys/route_names.dart';
+import '../../core/presentation/splash_screen.dart';
 import '../../core/services/injection_container.dart';
 import '../../features/about/presentation/about_screen.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -54,13 +55,10 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(
-                value: _locationListingBloc,
-              ),
-              BlocProvider.value(
-                value: _locationCategoriesCubit,
+                value: _authBloc,
               ),
             ],
-            child: const LocationListingScreen(),
+            child: const SplashScreen(),
           ),
         );
     }

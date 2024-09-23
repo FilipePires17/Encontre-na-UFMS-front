@@ -34,15 +34,15 @@ class UserRepository implements IUserRepository {
   //   }
   // }
 
-  // @override
-  // Future<Either<Error, bool>> validateToken() async {
-  //   if (await networkInfo.isConnected) {
-  //     final isValidated = await remoteDataSource.validateToken();
-  //     return isValidated;
-  //   } else {
-  //     return Left(Error());
-  //   }
-  // }
+  @override
+  Future<Either<Error, bool>> validateToken() async {
+    if (await networkInfo.isConnected) {
+      final isValidated = await remoteDataSource.validateToken();
+      return isValidated;
+    } else {
+      return Left(Error());
+    }
+  }
 
   @override
   Future<Either<String, User>> signInUser({
@@ -55,7 +55,10 @@ class UserRepository implements IUserRepository {
       return user.match(
         (errorMessage) => Left(errorMessage),
         (res) {
-          localDataSource.cacheToken(res.token);
+          localDataSource.cacheToken(
+            token: res.token,
+            refreshToken: res.refreshToken,
+          );
           return Right(res.toEntity());
         },
       );
@@ -103,7 +106,7 @@ class UserRepository implements IUserRepository {
 
       response.match(
         (_) => null,
-        (res) => localDataSource.cacheToken(res.data['message']),
+        (res) => localDataSource.cacheToken(token: res.data['message']),
       );
 
       return response;
@@ -112,9 +115,9 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  @override
-  Future<Either<dynamic, bool>> refreshToken() {
-    // TODO: implement refreshToken
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<Either<dynamic, bool>> refreshToken() {
+  //   // TODO: implement refreshToken
+  //   throw UnimplementedError();
+  // }
 }

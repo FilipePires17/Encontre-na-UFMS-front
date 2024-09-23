@@ -14,6 +14,7 @@ abstract class IUserRemoteDataSource {
   Future<Either<Error, Response>> sendVerificationEmail(String email);
   Future<Either<Error, Response>> verifyRedefinitionCode(
       String email, String code);
+  // Future<Either<dynamic, String>> refreshToken();
 }
 
 class UserRemoteDataSource implements IUserRemoteDataSource {
@@ -53,7 +54,7 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
     // }
 
     // TODO: implement validateToken
-    throw UnimplementedError();
+    return Right(true);
   }
 
   @override
@@ -144,4 +145,20 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
     // TODO: implement verifyRedefinitionCode
     throw UnimplementedError();
   }
+
+  // @override
+  // Future<Either<dynamic, String>> refreshToken() async {
+  //   final response = await httpClient.restRequest(
+  //     url: ApiUrls.refreshToken,
+  //     method: HttpMethods.get,
+  //     hasToken: false,
+  //     isRefreshToken: true,
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     return Right(response.data['token']);
+  //   } else {
+  //     return Left(response.data['message']);
+  //   }
+  // }
 }

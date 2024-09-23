@@ -7,7 +7,7 @@ import '../../domain/usecases/change_password.dart';
 import '../../domain/usecases/send_verification_email.dart';
 import '../../domain/usecases/sign_in_user.dart';
 import '../../domain/usecases/sign_out_user.dart';
-// import '../../domain/usecases/validate_token.dart';
+import '../../domain/usecases/validate_token.dart';
 import '../../domain/usecases/verify_redefinition_code.dart';
 
 part 'auth_event.dart';
@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SendVerificationEmail sendVerificationEmail;
   final SignInUser signInUser;
   final SignOutUser signOutUser;
-  // final ValidateToken validateToken;
+  final ValidateToken validateToken;
   final VerifyRedefinitionCode verifyRedefinitionCode;
 
   AuthBloc({
@@ -28,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.sendVerificationEmail,
     required this.signInUser,
     required this.signOutUser,
-    // required this.validateToken,
+    required this.validateToken,
     required this.verifyRedefinitionCode,
   }) : super(const AuthState()) {
     on<LoginEvent>(
@@ -38,20 +38,44 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await signInUser(
           email: event.email,
           password: event.password,
-        ).then((value) => value.fold(
-              (errorMessage) {
-                emit(state.copyWith(
-                  status: AuthStateStatus.error,
-                  errorMessage: errorMessage,
-                ));
-              },
-              (user) {
-                emit(state.copyWith(
-                  status: AuthStateStatus.loggedIn,
-                  user: user,
-                ));
-              },
-            ));
+        ).then(
+          (value) => value.fold(
+            (errorMessage) {
+              emit(state.copyWith(
+                status: AuthStateStatus.error,
+                errorMessage: errorMessage,
+              ));
+            },
+            (user) {
+              emit(state.copyWith(
+                status: AuthStateStatus.loggedIn,
+                user: user,
+              ));
+            },
+          ),
+        );
+      },
+    );
+
+    on<TokenValidationEvent>(
+      (event, emit) async {
+        emit(state.copyWith(status: AuthStateStatus.loading));
+
+        await validateToken().then(
+          (value) => value.fold(
+            (error) {
+              emit(state.copyWith(
+                status: AuthStateStatus.loggedOff,
+                errorMessage: error.toString(),
+              ));
+            },
+            (isValid) {
+              emit(state.copyWith(
+                status: AuthStateStatus.loggedIn,
+              ));
+            },
+          ),
+        );
       },
     );
   }

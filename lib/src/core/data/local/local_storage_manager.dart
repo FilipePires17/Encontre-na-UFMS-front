@@ -7,7 +7,7 @@ abstract class ILocalStorageCaller {
     required dynamic value,
   });
 
-  Future<Either<Error, dynamic>> restoreData({
+  Future<Either<dynamic, dynamic>> restoreData({
     required String table,
     required String key,
   });

@@ -21,7 +21,7 @@ class HiveLocalStorageCaller implements ILocalStorageCaller {
   }
 
   @override
-  Future<Either<Error, dynamic>> restoreData(
+  Future<Either<dynamic, dynamic>> restoreData(
       {required String? table, required String key}) async {
     if (table == null) {
       return const Right(null);
@@ -33,10 +33,10 @@ class HiveLocalStorageCaller implements ILocalStorageCaller {
       if (keyRes != null) {
         return Right(keyRes);
       } else {
-        return Left(Error());
+        return const Left(null);
       }
     } catch (e) {
-      return Left(e as Error);
+      return Left(e);
     }
   }
 

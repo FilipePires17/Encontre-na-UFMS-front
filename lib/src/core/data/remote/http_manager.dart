@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:fpdart/fpdart.dart';
 
+import '../../constants/api_urls.dart';
 import '../../constants/keys/hive_keys.dart';
 import '../local/hive_manager.dart';
 
@@ -58,7 +59,7 @@ class HttpManager {
         InterceptorsWrapper(
           onRequest: (options, handler) async {
             options.headers['Authorization'] =
-                'Bearer ${token.getRight().fold(() => '', (token) => token)}';
+                'Bearer ${token.fold((_) => null, (token) => token)}';
             return handler.next(options);
           },
         ),
@@ -85,10 +86,60 @@ class HttpManager {
           statusMessage: error.message,
         );
       } else if (error.response != null) {
+        if (error.response!.statusCode == 401) {
+          final res = await _refreshToken();
+          if (res.statusCode == 200) {
+            return await restRequest(
+              url: url,
+              method: method,
+              body: body,
+              parameters: parameters,
+            );
+          } else {
+            return res;
+          }
+        }
         return error.response!;
       } else {
         rethrow;
       }
+    }
+  }
+
+  Future<Response> _refreshToken() async {
+    final localStorage = HiveLocalStorageCaller();
+    final refreshToken = await localStorage.restoreData(
+      table: HiveBoxNames.users,
+      key: HiveKeys.refreshToken,
+    );
+
+    if (refreshToken is Right) {
+      final dio = Dio();
+      final response = await dio.get(
+        ApiUrls.refreshToken,
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer ${refreshToken.fold((_) => null, (token) => token)}',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final newToken = response.data['token'];
+        await localStorage.saveData(
+          table: HiveBoxNames.users,
+          key: HiveKeys.token,
+          value: newToken,
+        );
+      }
+      return response;
+    } else {
+      return Response(
+        requestOptions: RequestOptions(),
+        statusCode: 401,
+        statusMessage: 'Token inválido',
+      );
     }
   }
 }

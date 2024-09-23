@@ -1,5 +1,6 @@
 abstract class HiveKeys {
   static const token = 'token';
+  static const refreshToken = 'refresh';
 }
 
 abstract class HiveBoxNames {
