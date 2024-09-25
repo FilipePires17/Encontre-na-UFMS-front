@@ -19,6 +19,8 @@ class AppRouter {
 
   void dispose() {
     _locationListingBloc.close();
+    _locationCategoriesCubit.close();
+    _authBloc.close();
   }
 
   Route<dynamic> getRoute(RouteSettings settings) {
@@ -46,10 +48,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const AboutScreen());
       case RouteNames.login:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider.value(
-                  value: _authBloc,
-                  child: const LoginScreen(),
-                ));
+          builder: (_) => BlocProvider.value(
+            value: _authBloc,
+            child: const LoginScreen(),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(

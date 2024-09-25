@@ -8,7 +8,7 @@ abstract class IUserLocalDataSource {
       {required String token, String? refreshToken});
 
   Future<Either<Error, String>> getCurrentUserToken();
-  Future<Either<Error, void>> deleteToken();
+  Future<Either<String, void>> deleteToken();
 }
 
 class UserLocalDataSource implements IUserLocalDataSource {
@@ -47,12 +47,31 @@ class UserLocalDataSource implements IUserLocalDataSource {
   }
 
   @override
-  Future<Either<Error, void>> deleteToken() async {
-    final response = await localStorageCaller.deleteKey(
+  Future<Either<String, void>> deleteToken() async {
+    Either<String, bool> tokenResponse = await localStorageCaller.deleteKey(
       table: HiveBoxNames.users,
       key: HiveKeys.token,
     );
 
-    return response as Either<Error, void>;
+    if (tokenResponse is Right) {
+      Either<String, void> refreshTokenResponse =
+          tokenResponse.match((error) => Left(error), (didDelete) {
+        if (didDelete) {
+          return const Right(null);
+        } else {
+          return const Left('Não foi possível sair.');
+        }
+      });
+
+      return refreshTokenResponse.match(
+        (error) => Left(error),
+        (_) => localStorageCaller.deleteKey(
+          table: HiveBoxNames.users,
+          key: HiveKeys.refreshToken,
+        ),
+      );
+    }
+
+    return tokenResponse;
   }
 }

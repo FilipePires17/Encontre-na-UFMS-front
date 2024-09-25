@@ -10,34 +10,19 @@ import '../widgets/category_tile.dart';
 import '../widgets/custom_drawer.dart';
 import '../widgets/location_list_item_tile.dart';
 
-class LocationListingScreen extends StatefulWidget {
+class LocationListingScreen extends StatelessWidget {
   const LocationListingScreen({super.key});
 
   @override
-  State<LocationListingScreen> createState() => _LocationListingScreenState();
-}
-
-class _LocationListingScreenState extends State<LocationListingScreen> {
-  late LocationListingBloc locationListingBloc;
-  late LocationCategoriesCubit locationCategoriesCubit;
-
-  @override
-  void initState() {
-    super.initState();
-    locationListingBloc = BlocProvider.of<LocationListingBloc>(context);
-    locationListingBloc.add(const LoadFilteredEvent());
-    locationCategoriesCubit = BlocProvider.of<LocationCategoriesCubit>(context);
-    locationCategoriesCubit.clearCategories();
-  }
-
-  @override
-  void dispose() {
-    locationListingBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final LocationListingBloc locationListingBloc =
+        BlocProvider.of<LocationListingBloc>(context);
+    final LocationCategoriesCubit locationCategoriesCubit =
+        BlocProvider.of<LocationCategoriesCubit>(context);
+
+    locationListingBloc.add(const LoadFilteredEvent());
+    locationCategoriesCubit.clearCategories();
+
     final notificationBarHeight = MediaQuery.of(context).padding.top;
     final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     return Scaffold(

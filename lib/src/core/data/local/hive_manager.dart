@@ -69,13 +69,13 @@ class HiveLocalStorageCaller implements ILocalStorageCaller {
   }
 
   @override
-  Future<Either<Error, bool>> deleteKey(
+  Future<Either<String, bool>> deleteKey(
       {required String table, required String key}) async {
     final box = await Hive.openBox(table);
     try {
       await box.delete(key);
     } catch (e) {
-      return Left(e as Error);
+      return const Left('Erro ao acessar o banco de dados');
     }
 
     return Right(box.get(key) == null);

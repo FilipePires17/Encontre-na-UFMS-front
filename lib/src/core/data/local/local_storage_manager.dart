@@ -12,7 +12,7 @@ abstract class ILocalStorageCaller {
     required String key,
   });
 
-  Future<Either<Error, bool>> deleteKey({
+  Future<Either<String, bool>> deleteKey({
     required String table,
     required String key,
   });

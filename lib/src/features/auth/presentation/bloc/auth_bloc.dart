@@ -64,16 +64,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await validateToken().then(
           (value) => value.fold(
             (error) {
-              emit(state.copyWith(
-                status: AuthStateStatus.loggedOff,
-                errorMessage: error.toString(),
-              ));
+              add(LogoutEvent());
             },
             (isValid) {
+              isValid
+                  ? emit(state.copyWith(
+                      status: AuthStateStatus.loggedIn,
+                    ))
+                  : add(LogoutEvent());
+            },
+          ),
+        );
+      },
+    );
+
+    on<LogoutEvent>(
+      (event, emit) async {
+        emit(state.copyWith(status: AuthStateStatus.loading));
+
+        await signOutUser().then(
+          (value) => value.fold(
+            (errorMessage) {
               emit(state.copyWith(
-                status: isValid
-                    ? AuthStateStatus.loggedIn
-                    : AuthStateStatus.loggedOff,
+                status: AuthStateStatus.error,
+                errorMessage: errorMessage,
+              ));
+              emit(state.copyWith(
+                status: AuthStateStatus.loggedIn,
+                errorMessage: errorMessage,
+              ));
+            },
+            (_) {
+              emit(state.copyWith(
+                status: AuthStateStatus.loggedOff,
               ));
             },
           ),

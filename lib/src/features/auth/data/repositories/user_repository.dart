@@ -80,7 +80,7 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<Either<Error, void>> signOutUser() async {
+  Future<Either<String, void>> signOutUser() async {
     final response = await localDataSource.deleteToken();
 
     return response;

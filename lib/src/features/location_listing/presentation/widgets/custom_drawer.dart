@@ -6,6 +6,7 @@ import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../bloc/location_listing_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -52,18 +53,30 @@ class CustomDrawer extends StatelessWidget {
           gapH32,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p32),
-            child: BlocBuilder<AuthBloc, AuthState>(
+            child: BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                final LocationListingBloc locationListingBloc =
+                    BlocProvider.of<LocationListingBloc>(context);
+
+                if (state.status == AuthStateStatus.loggedOff) {
+                  Navigator.of(context).pop();
+                  locationListingBloc.add(const LoadFilteredEvent());
+                }
+              },
               builder: (context, state) {
-                bool isLoggedIn = state.status == AuthStateStatus.loggedIn;
+                final isLoggedIn = state.status == AuthStateStatus.loggedIn;
+                final isLoading = state.status == AuthStateStatus.loading;
                 return CustomSubmitButton(
                   title: isLoggedIn ? 'Sair' : 'Entrar',
-                  onPressed: () {
-                    if (isLoggedIn) {
-                      authBloc.add(LogoutEvent());
-                    } else {
-                      Navigator.of(context).pushNamed(RouteNames.login);
-                    }
-                  },
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          if (isLoggedIn) {
+                            authBloc.add(LogoutEvent());
+                          } else {
+                            Navigator.of(context).pushNamed(RouteNames.login);
+                          }
+                        },
                   customColor: AppColors.secondary,
                 );
               },

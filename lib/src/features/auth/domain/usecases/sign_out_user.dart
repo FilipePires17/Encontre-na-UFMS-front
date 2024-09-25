@@ -6,7 +6,7 @@ class SignOutUser {
   final IUserRepository repository;
   const SignOutUser({required this.repository});
 
-  Future<Either<Error, void>> call() async {
+  Future<Either<String, void>> call() async {
     return await repository.signOutUser();
   }
 }
