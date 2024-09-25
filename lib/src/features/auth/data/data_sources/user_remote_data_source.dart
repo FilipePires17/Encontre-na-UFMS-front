@@ -43,18 +43,16 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
 
   @override
   Future<Either<Error, bool>> validateToken() async {
-    // final isValidated = await httpClient.restRequest(
-    //   url: ApiUrls.validateUrl,
-    //   method: HttpMethods.get,
-    // );
-    // if (isValidated.statusCode == 200) {
-    //   return const Right(true);
-    // } else {
-    //   return const Left(false);
-    // }
-
-    // TODO: implement validateToken
-    return Right(true);
+    final isValidated = await httpClient.restRequest(
+      url: ApiUrls.validateUrl,
+      method: HttpMethods.get,
+    );
+    if (isValidated.statusCode == 200) {
+      return const Right(true);
+    } else if (isValidated.statusCode == 401) {
+      return const Right(false);
+    }
+    return Left(Error());
   }
 
   @override
