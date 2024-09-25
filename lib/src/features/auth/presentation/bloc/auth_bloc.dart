@@ -96,6 +96,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
             (_) {
               emit(state.copyWith(
+                status: AuthStateStatus.onLoggedOff,
+              ));
+              emit(state.copyWith(
                 status: AuthStateStatus.loggedOff,
               ));
             },

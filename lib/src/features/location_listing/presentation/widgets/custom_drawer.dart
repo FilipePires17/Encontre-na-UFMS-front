@@ -6,10 +6,11 @@ import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../bloc/location_listing_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  const CustomDrawer({super.key, required this.onLogout});
+
+  final Function onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +34,19 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.p32),
-            child: CustomSubmitButton(
-              title: 'Perfil',
-              onPressed: () {},
-            ),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return state.status == AuthStateStatus.loggedIn
+                  ? Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Sizes.p32),
+                      child: CustomSubmitButton(
+                        title: 'Perfil',
+                        onPressed: () {},
+                      ),
+                    )
+                  : const SizedBox();
+            },
           ),
           gapH16,
           Padding(
@@ -55,12 +63,9 @@ class CustomDrawer extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p32),
             child: BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
-                final LocationListingBloc locationListingBloc =
-                    BlocProvider.of<LocationListingBloc>(context);
-
-                if (state.status == AuthStateStatus.loggedOff) {
+                if (state.status == AuthStateStatus.onLoggedOff) {
                   Navigator.of(context).pop();
-                  locationListingBloc.add(const LoadFilteredEvent());
+                  onLogout();
                 }
               },
               builder: (context, state) {

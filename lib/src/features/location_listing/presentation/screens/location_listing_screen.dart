@@ -26,7 +26,10 @@ class LocationListingScreen extends StatelessWidget {
     final notificationBarHeight = MediaQuery.of(context).padding.top;
     final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     return Scaffold(
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(onLogout: () {
+        locationListingBloc.add(const LoadFilteredEvent());
+        locationCategoriesCubit.clearCategories();
+      }),
       body: Padding(
         padding: EdgeInsets.only(
           top: notificationBarHeight,
