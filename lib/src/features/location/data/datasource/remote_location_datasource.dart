@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/data/remote/http_manager.dart';
 import '../dtos/location_dto.dart';
 
 abstract class IRemoteLocationDatasource {
@@ -10,6 +11,10 @@ abstract class IRemoteLocationDatasource {
 }
 
 class RemoteLocationDatasource implements IRemoteLocationDatasource {
+  const RemoteLocationDatasource({required this.httpClient});
+
+  final HttpManager httpClient;
+
   @override
   Future<Either<Error, LocationDto>> getLocation({required int id}) {
     // TODO: implement getLocation

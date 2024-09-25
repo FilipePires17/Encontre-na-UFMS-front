@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'src/core/data/local/hive_initializer.dart';
-import 'src/core/services/injection_container.dart' as getit;
+import 'src/config/services/injection_container.dart' as getit;
 import 'src/app.dart';
 
 void main() async {
