@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth_bloc.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -39,19 +40,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: 'Nome',
                 ),
                 controller: _nameController,
+                validator: AppValidators.checkField,
               ),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
                 controller: _emailController,
+                validator: AppValidators.emailValidator,
               ),
               gapH12,
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Senha',
                 ),
                 controller: _passwordController,
+                validator: AppValidators.passwordValidator,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Confirmar Senha',
+                ),
+                validator: (passwordConfirmation) {
+                  return AppValidators.confirmPasswordValidator(
+                    _passwordController.text,
+                    passwordConfirmation,
+                  );
+                },
               ),
               gapH16,
               const Spacer(),
