@@ -130,8 +130,11 @@ class LocationListingScreen extends StatelessWidget {
                                         location: state
                                             .locations.locationItems[index],
                                         onPressed: () {
-                                          Navigator.of(context)
-                                              .pushNamed('/location');
+                                          Navigator.of(context).pushNamed(
+                                            '/location',
+                                            arguments: state.locations
+                                                .locationItems[index].id,
+                                          );
                                         },
                                         onFavoritePressed: () {
                                           locationListingBloc.add(
