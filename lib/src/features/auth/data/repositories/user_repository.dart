@@ -7,8 +7,6 @@ import '../data_sources/user_local_data_source.dart';
 import '../data_sources/user_remote_data_source.dart';
 // import '../dtos/user_dto.dart';
 
-const tokenT = '{"userId": 56,"token": "asdfhadfb812364y87123t42"}';
-
 class UserRepository implements IUserRepository {
   final IUserRemoteDataSource remoteDataSource;
   final IUserLocalDataSource localDataSource;
@@ -35,10 +33,22 @@ class UserRepository implements IUserRepository {
   // }
 
   @override
-  Future<Either<Error, bool>> validateToken() async {
+  Future<Either<Error, String?>> validateToken() async {
     if (await networkInfo.isConnected) {
-      final isValidated = await remoteDataSource.validateToken();
-      return isValidated;
+      final isValid = await remoteDataSource.validateToken();
+
+      return isValid.match((_) => Left(Error()), (res) async {
+        if (res) {
+          final token = await localDataSource.getCurrentUserToken();
+
+          return token.match(
+            (error) => Left(Error()),
+            (token) => Right(token),
+          );
+        } else {
+          return const Right(null);
+        }
+      });
     } else {
       return Left(Error());
     }
@@ -110,6 +120,33 @@ class UserRepository implements IUserRepository {
       );
 
       return response;
+    } else {
+      return const Left('Sem conexão');
+    }
+  }
+
+  @override
+  Future<Either<String, User>> registerUser(
+      {required String name,
+      required String email,
+      required String password}) async {
+    if (await networkInfo.isConnected) {
+      final user = await remoteDataSource.registerUser(
+        name: name,
+        email: email,
+        password: password,
+      );
+
+      return user.match(
+        (errorMessage) => Left(errorMessage),
+        (res) {
+          localDataSource.cacheToken(
+            token: res.token,
+            refreshToken: res.refreshToken,
+          );
+          return Right(res.toEntity());
+        },
+      );
     } else {
       return const Left('Sem conexão');
     }

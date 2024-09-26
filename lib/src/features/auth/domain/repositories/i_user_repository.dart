@@ -4,9 +4,14 @@ import '../entities/user.dart';
 
 abstract class IUserRepository {
   // Future<Either<String, User>> getCurrentUser();
-  Future<Either<Error, bool>> validateToken();
+  Future<Either<Error, String?>> validateToken();
   Future<Either<String, User>> signInUser(
       {required String email, required String password});
+  Future<Either<String, User>> registerUser({
+    required String name,
+    required String email,
+    required String password,
+  });
   // Future<Either<dynamic, bool>> refreshToken();
   Future<Either<dynamic, void>> changePassword({required String newPassword});
   Future<Either<String, void>> signOutUser();

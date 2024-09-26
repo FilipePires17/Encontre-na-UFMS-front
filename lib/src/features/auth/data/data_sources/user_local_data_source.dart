@@ -43,7 +43,10 @@ class UserLocalDataSource implements IUserLocalDataSource {
       key: HiveKeys.token,
     );
 
-    return token as Either<Error, String>;
+    return token.match(
+      (error) => Left(error),
+      (token) => Right(token as String),
+    );
   }
 
   @override

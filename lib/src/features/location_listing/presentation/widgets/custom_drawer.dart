@@ -5,6 +5,7 @@ import '../../../../core/common_widgets/custom_submit_button.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
+import '../../../../core/utils/string_extension.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -32,6 +33,23 @@ class CustomDrawer extends StatelessWidget {
                 fontSize: Sizes.p24,
               ),
             ),
+          ),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return state.status == AuthStateStatus.loggedIn
+                  ? Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Sizes.p32),
+                      child: Text(
+                        'Olá, ${state.user!.name.capitalizeAll()}',
+                        style: const TextStyle(
+                          color: AppColors.white,
+                          fontSize: Sizes.p16,
+                        ),
+                      ),
+                    )
+                  : const SizedBox();
+            },
           ),
           const Spacer(),
           BlocBuilder<AuthBloc, AuthState>(

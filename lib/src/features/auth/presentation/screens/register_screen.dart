@@ -6,31 +6,25 @@ import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../bloc/auth_bloc.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'LOGIN',
+        text: 'Criar Nova Conta',
         context: context,
       ),
       body: Padding(
@@ -40,6 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: <Widget>[
               const Spacer(),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Nome',
+                ),
+                controller: _nameController,
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Email',
@@ -53,26 +53,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 controller: _passwordController,
               ),
-              gapH8,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  const Text('Não tem uma conta?'),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RouteNames.register);
-                    },
-                    child: const Text('Crie uma conta'),
-                  ),
-                ],
-              ),
+              gapH16,
               const Spacer(),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state.status == AuthStateStatus.error) {
+                  if (state.status == AuthStateStatus.loginError) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.errorMessage!),
+                        backgroundColor: Colors.red,
                       ),
                     );
                   } else if (state.status == AuthStateStatus.loggedIn) {
@@ -89,7 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         : () {
                             if (_formKey.currentState!.validate()) {
                               context.read<AuthBloc>().add(
-                                    LoginEvent(
+                                    RegisterEvent(
+                                      name: _nameController.text,
                                       email: _emailController.text,
                                       password: _passwordController.text,
                                     ),
@@ -97,8 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           },
                     child: state.status == AuthStateStatus.loading
-                        ? const CircularProgressIndicator()
-                        : const Text('Login'),
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text('Criar Conta'),
                   );
                 },
               ),

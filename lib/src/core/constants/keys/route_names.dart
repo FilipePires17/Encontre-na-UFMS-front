@@ -1,5 +1,6 @@
 class RouteNames {
   static const login = '/login';
+  static const register = '/register';
   static const emailSubmit = '/email-submit';
   static const insertCode = '/insert-code';
   static const passwordRedefinition = '/password-redefinition';

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants/keys/route_names.dart';
 import '../../core/presentation/splash_screen.dart';
+import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/location/presentation/bloc/location_bloc.dart';
 import '../services/injection_container.dart';
 import '../../features/about/presentation/about_screen.dart';
@@ -28,6 +29,7 @@ class AppRouter {
 
   Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
+      // Locations
       case RouteNames.home:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -54,8 +56,8 @@ class AppRouter {
             ),
           ),
         );
-      case RouteNames.about:
-        return MaterialPageRoute(builder: (_) => const AboutScreen());
+
+      // Auth
       case RouteNames.login:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
@@ -63,6 +65,17 @@ class AppRouter {
             child: const LoginScreen(),
           ),
         );
+      case RouteNames.register:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: _authBloc,
+            child: const RegisterScreen(),
+          ),
+        );
+
+      // Misc
+      case RouteNames.about:
+        return MaterialPageRoute(builder: (_) => const AboutScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(

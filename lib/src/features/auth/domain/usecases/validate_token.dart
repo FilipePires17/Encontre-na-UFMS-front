@@ -7,7 +7,7 @@ class ValidateToken {
 
   ValidateToken({required this.repository});
 
-  Future<Either<Error, bool>> call() async {
+  Future<Either<Error, String?>> call() async {
     return await repository.validateToken();
   }
 }

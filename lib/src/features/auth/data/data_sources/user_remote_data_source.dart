@@ -7,6 +7,11 @@ import '../dtos/user_dto.dart';
 
 abstract class IUserRemoteDataSource {
   Future<Either<String, UserDto>> signInUser(String email, String password);
+  Future<Either<String, UserDto>> registerUser({
+    required String name,
+    required String email,
+    required String password,
+  });
   Future<Either<Error, bool>> validateToken();
   Future<Either<String, Response>> getCurrentUser();
   Future<Either<Error, Response>> getCurrentUserInfo(String id);
@@ -142,6 +147,28 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
 
     // TODO: implement verifyRedefinitionCode
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<String, UserDto>> registerUser(
+      {required String name,
+      required String email,
+      required String password}) async {
+    final response = await httpClient.restRequest(
+      url: ApiUrls.register,
+      method: HttpMethods.post,
+      body: {
+        'name': name,
+        'email': email,
+        'password': password,
+      },
+      hasToken: false,
+    );
+
+    if (response.statusCode == 201) {
+      return Right(UserDto.fromMap(response.data['user']));
+    }
+    return Left(response.data['error']);
   }
 
   // @override

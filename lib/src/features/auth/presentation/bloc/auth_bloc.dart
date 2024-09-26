@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../domain/entities/user.dart';
 import '../../domain/usecases/change_password.dart';
 // import '../../domain/usecases/get_current_user.dart';
+import '../../domain/usecases/register_user.dart';
 import '../../domain/usecases/send_verification_email.dart';
 import '../../domain/usecases/sign_in_user.dart';
 import '../../domain/usecases/sign_out_user.dart';
@@ -21,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignOutUser signOutUser;
   final ValidateToken validateToken;
   final VerifyRedefinitionCode verifyRedefinitionCode;
+  final RegisterUser registerUser;
 
   AuthBloc({
     required this.changePassword,
@@ -30,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.signOutUser,
     required this.validateToken,
     required this.verifyRedefinitionCode,
+    required this.registerUser,
   }) : super(const AuthState()) {
     on<LoginEvent>(
       (event, emit) async {
@@ -47,6 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               ));
             },
             (user) {
+              debugPrint('User: $user');
               emit(state.copyWith(
                 status: AuthStateStatus.loggedIn,
                 user: user,
@@ -66,12 +72,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             (error) {
               add(LogoutEvent());
             },
-            (isValid) {
-              isValid
-                  ? emit(state.copyWith(
-                      status: AuthStateStatus.loggedIn,
-                    ))
-                  : add(LogoutEvent());
+            (token) {
+              if (token != null) {
+                final userInfo = JwtDecoder.decode(token);
+                final user = User(
+                  id: userInfo['id'].toString(),
+                  name: userInfo['name'],
+                  email: userInfo['email'],
+                );
+                emit(state.copyWith(
+                  status: AuthStateStatus.loggedIn,
+                  user: user,
+                ));
+              } else {
+                add(LogoutEvent());
+              }
             },
           ),
         );
@@ -100,6 +115,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               ));
               emit(state.copyWith(
                 status: AuthStateStatus.loggedOff,
+              ));
+            },
+          ),
+        );
+      },
+    );
+
+    on<RegisterEvent>(
+      (event, emit) async {
+        emit(state.copyWith(status: AuthStateStatus.loading));
+
+        await registerUser(
+          email: event.email,
+          password: event.password,
+          name: event.name,
+        ).then(
+          (value) => value.fold(
+            (errorMessage) {
+              emit(state.copyWith(
+                status: AuthStateStatus.error,
+                errorMessage: errorMessage,
+              ));
+            },
+            (user) {
+              emit(state.copyWith(
+                status: AuthStateStatus.loggedIn,
+                user: user,
               ));
             },
           ),

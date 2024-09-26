@@ -5,6 +5,7 @@ import '../../features/auth/data/data_sources/user_remote_data_source.dart';
 import '../../features/auth/data/repositories/user_repository.dart';
 import '../../features/auth/domain/repositories/i_user_repository.dart';
 import '../../features/auth/domain/usecases/change_password.dart';
+import '../../features/auth/domain/usecases/register_user.dart';
 import '../../features/auth/domain/usecases/send_verification_email.dart';
 import '../../features/auth/domain/usecases/sign_in_user.dart';
 import '../../features/auth/domain/usecases/sign_out_user.dart';
@@ -73,6 +74,7 @@ void init() {
         signOutUser: sl(),
         verifyRedefinitionCode: sl(),
         validateToken: sl(),
+        registerUser: sl(),
       ));
   sl.registerLazySingleton(() => ChangePassword(repository: sl()));
   sl.registerLazySingleton(() => SendVerificationEmail(repository: sl()));
@@ -80,6 +82,7 @@ void init() {
   sl.registerLazySingleton(() => SignOutUser(repository: sl()));
   sl.registerLazySingleton(() => VerifyRedefinitionCode(repository: sl()));
   sl.registerLazySingleton(() => ValidateToken(repository: sl()));
+  sl.registerLazySingleton(() => RegisterUser(repository: sl()));
   sl.registerLazySingleton<IUserRepository>(() => UserRepository(
         remoteDataSource: sl(),
         localDataSource: sl(),
