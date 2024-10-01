@@ -5,6 +5,8 @@ import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../bloc/location_bloc.dart';
+import '../widgets/information_tab.dart';
+import '../widgets/location_tab.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, required this.id});
@@ -18,32 +20,16 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen>
     with TickerProviderStateMixin {
   late final TabController tabController;
-  late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 2, vsync: this);
-    pageController = PageController();
-
-    tabController.addListener(() {
-      if (tabController.indexIsChanging) {
-        debugPrint('Aba mudou para: ${tabController.index}');
-        // Chame sua função personalizada aqui
-      } else if (tabController.index != tabController.previousIndex) {
-        debugPrint('Aba scrolou para: ${tabController.index}');
-      }
-    });
-
-    tabController.animation!.addListener(() {
-      debugPrint('Aba animou para: ${tabController.animation!.value}');
-    });
+    tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
     tabController.dispose();
-    pageController.dispose();
     super.dispose();
   }
 
@@ -58,58 +44,61 @@ class _LocationScreenState extends State<LocationScreen>
             text: state.location?.name ?? 'Facom',
             context: context,
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  height: MediaQuery.sizeOf(context).width,
-                  width: double.infinity,
-                  color: AppColors.primary,
+          body: Column(
+            children: [
+              Container(
+                height: 200, //MediaQuery.sizeOf(context).width,
+                width: double.infinity,
+                color: AppColors.primary,
+              ),
+              Container(
+                color: AppColors.charcoalGrey,
+                height: 80,
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Facom',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    gapW12,
+                    const Text('3,5'),
+                    const Icon(
+                      Icons.star,
+                      color: AppColors.yellow,
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.star_border,
+                        color: AppColors.secondary,
+                        size: Sizes.p36,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
-                Container(
+              ),
+              const Divider(
+                color: AppColors.black,
+                height: 1,
+              ),
+              Expanded(
+                child: Container(
                   color: AppColors.charcoalGrey,
-                  height: 80,
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Facom',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      gapW12,
-                      const Text('3,5'),
-                      const Icon(
-                        Icons.star,
-                        color: AppColors.yellow,
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.star_border,
-                          color: AppColors.secondary,
-                          size: Sizes.p36,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(
-                  color: AppColors.black,
-                  height: 1,
-                ),
-                Container(
-                  color: AppColors.charcoalGrey,
-                  height: 300,
                   child: Column(
                     children: [
                       TabBar(
                         controller: tabController,
                         tabs: const [
                           Tab(
-                            text: 'Info',
+                            text: 'Localização',
                           ),
                           Tab(
-                            text: 'Reviews',
+                            text: 'Informações',
+                          ),
+                          Tab(
+                            text: 'Horário',
                           ),
                         ],
                       ),
@@ -120,17 +109,19 @@ class _LocationScreenState extends State<LocationScreen>
                       Expanded(
                         child: TabBarView(
                           controller: tabController,
+                          physics: const NeverScrollableScrollPhysics(),
                           children: const [
-                            Text('Info'),
-                            Text('Reviews'),
+                            LocationTab(),
+                            InformationTab(),
+                            Text('Horário'),
                           ],
                         ),
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         );
       },
