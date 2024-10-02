@@ -1,16 +1,18 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../location/domain/entities/location.dart';
+import '../enums/enum_location.dart';
 
-class LocationList extends Equatable {
-  const LocationList({
-    this.locationItems = const [],
+class LocationListItem extends Location {
+  const LocationListItem({
+    required super.id,
+    required super.name,
+    required super.address,
+    super.multimedia = const [],
+    super.isOpen,
+    super.isFavorite,
+    super.rating,
+    super.hasAccessibility,
+    required this.type,
   });
 
-  final List<Location> locationItems;
-
-  @override
-  List<Object?> get props => [
-        locationItems,
-      ];
+  final EnumLocation type;
 }

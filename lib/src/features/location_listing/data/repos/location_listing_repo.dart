@@ -5,7 +5,7 @@ import '../../domain/entities/location_list_filter.dart';
 import '../../domain/repos/i_location_listing_repo.dart';
 import '../datasource/remote_location_listing_datasource.dart';
 import '../dtos/location_list_filter_dto.dart';
-import '../dtos/location_listing_dto.dart';
+import '../dtos/location_list_dto.dart';
 
 class LocationListingRepo implements ILocationListingRepo {
   const LocationListingRepo({
@@ -17,7 +17,7 @@ class LocationListingRepo implements ILocationListingRepo {
   final INetworkInfo networkInfo;
 
   @override
-  Future<Either<Error, LocationListItemDto>> getLocationListingPaginated(
+  Future<Either<Error, LocationListDto>> getLocationListingPaginated(
       {required LocationListFilter filter}) async {
     if (await networkInfo.isConnected) {
       final response = await remoteDataSource.getLocationListingPaginated(

@@ -3,10 +3,10 @@ import 'package:fpdart/fpdart.dart';
 import '../../../../core/constants/api_urls.dart';
 import '../../../../core/data/remote/http_manager.dart';
 import '../dtos/location_list_filter_dto.dart';
-import '../dtos/location_listing_dto.dart';
+import '../dtos/location_list_dto.dart';
 
 abstract class IRemoteLocationListingDatasource {
-  Future<Either<Error, LocationListItemDto>> getLocationListingPaginated(
+  Future<Either<Error, LocationListDto>> getLocationListingPaginated(
       {required LocationListFilterDto filter});
 
   Future<Either<Error, bool>> toggleFavoriteLocation({required int id});
@@ -19,7 +19,7 @@ class RemoteLocationListingDatasource
   final HttpManager httpClient;
 
   @override
-  Future<Either<Error, LocationListItemDto>> getLocationListingPaginated(
+  Future<Either<Error, LocationListDto>> getLocationListingPaginated(
       {required LocationListFilterDto filter}) async {
     final response = await httpClient.restRequest(
       url: '${ApiUrls.baseLocations}/${filter.types.join(',')}',
@@ -31,7 +31,7 @@ class RemoteLocationListingDatasource
       return left(Error());
     }
 
-    return Right(LocationListItemDto.fromMap(response.data['data']));
+    return Right(LocationListDto.fromMap(response.data['data']));
   }
 
   @override

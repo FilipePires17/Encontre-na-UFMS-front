@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../entities/location_list_filter.dart';
-import '../entities/location_list_item.dart';
+import '../entities/location_list.dart';
 
 abstract class ILocationListingRepo {
   Future<Either<Error, LocationList>> getLocationListingPaginated(

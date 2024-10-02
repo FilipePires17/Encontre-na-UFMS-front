@@ -1,4 +1,3 @@
-import '../../../location_listing/domain/enums/enum_location.dart';
 import '../../../multimedia/data/dtos/multimedia_dto.dart';
 import '../../domain/entities/location.dart';
 
@@ -8,7 +7,6 @@ class LocationDto extends Location {
     required super.name,
     required super.address,
     List<MultimediaDto> multimedia = const [],
-    required super.type,
     super.isOpen,
     super.isFavorite,
     super.rating,
@@ -24,7 +22,7 @@ class LocationDto extends Location {
       // multimedia: map['multimedia']
       //     ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
       //     .toList(),
-      type: EnumLocation.values[map['type']],
+
       isOpen: map['isOpen'],
       isFavorite: map['favorite'] == 1,
       rating: double.parse(map['grade']),

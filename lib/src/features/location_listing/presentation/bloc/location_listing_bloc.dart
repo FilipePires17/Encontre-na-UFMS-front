@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../location/domain/entities/location.dart';
 import '../../domain/entities/location_list_filter.dart';
+import '../../domain/entities/location_list.dart';
 import '../../domain/entities/location_list_item.dart';
 import '../../domain/usecases/get_location_listing_paginated.dart';
 import '../../domain/usecases/toggle_favorite_location.dart';
@@ -65,12 +65,12 @@ class LocationListingBloc
             }
 
             final updatedLocations =
-                List<Location>.from(state.locations.locationItems);
+                List<LocationListItem>.from(state.locations.locationItems);
             final locationIndex = updatedLocations.indexWhere(
               (location) => location.id == event.id,
             );
 
-            updatedLocations[locationIndex] = Location(
+            updatedLocations[locationIndex] = LocationListItem(
               id: updatedLocations[locationIndex].id,
               name: updatedLocations[locationIndex].name,
               address: updatedLocations[locationIndex].address,
