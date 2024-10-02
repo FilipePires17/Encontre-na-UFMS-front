@@ -1,16 +1,3 @@
-# encontre_na_ufms
+# Encontre na UFMS
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Aplicativo desenvolvido como projeto de TCC que tem como finalidade reunir informações sobre todos os locais da Universidade Federal de Mato Grosso do Sul para auxiliar tanto estudantes e professores como também a população, visto que a UFMS é um local público e muito grande, possuindo muitos prédios e serviços que algumas vezes podem ser difíceis de serem encontrados.
