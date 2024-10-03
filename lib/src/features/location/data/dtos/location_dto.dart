@@ -22,7 +22,6 @@ class LocationDto extends Location {
       // multimedia: map['multimedia']
       //     ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
       //     .toList(),
-
       isOpen: map['isOpen'],
       isFavorite: map['favorite'] == 1,
       rating: double.parse(map['grade']),

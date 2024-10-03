@@ -3,6 +3,8 @@ import 'package:fpdart/fpdart.dart';
 import '../../../../core/platforms/network_info.dart';
 import '../../domain/entities/location.dart';
 
+import '../../domain/entities/sections.dart';
+import '../../domain/enums/enum_sections.dart';
 import '../../domain/repos/i_location_repo.dart';
 import '../datasource/remote_location_datasource.dart';
 
@@ -31,6 +33,13 @@ class LocationRepo implements ILocationRepo {
   @override
   Future<Either<Error, bool>> toggleFavorite({required int id}) {
     // TODO: implement toggleFavorite
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<String, Section>> getSection(
+      {required int id, required EnumSections section}) {
+    // TODO: implement getSection
     throw UnimplementedError();
   }
 }

@@ -5,7 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 
 class LocationTab extends StatefulWidget {
-  const LocationTab({super.key});
+  const LocationTab({super.key, required this.id});
+
+  final int id;
 
   @override
   State<LocationTab> createState() => _LocationTabState();

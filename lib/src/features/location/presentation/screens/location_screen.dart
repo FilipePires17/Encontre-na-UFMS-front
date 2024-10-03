@@ -39,91 +39,100 @@ class _LocationScreenState extends State<LocationScreen>
     locationBloc.add(GetLocationEvent(widget.id));
     return BlocBuilder<LocationBloc, LocationState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: CustomAppBar(
-            text: state.location?.name ?? 'Facom',
-            context: context,
-          ),
-          body: Column(
-            children: [
-              Container(
-                height: 200, //MediaQuery.sizeOf(context).width,
-                width: double.infinity,
-                color: AppColors.primary,
-              ),
-              Container(
-                color: AppColors.charcoalGrey,
-                height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
-                child: Row(
-                  children: [
-                    const Text(
-                      'Facom',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    gapW12,
-                    const Text('3,5'),
-                    const Icon(
-                      Icons.star,
-                      color: AppColors.yellow,
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.star_border,
-                        color: AppColors.secondary,
-                        size: Sizes.p36,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ],
+        return state.location == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Scaffold(
+                appBar: CustomAppBar(
+                  text: state.location!.name,
+                  context: context,
                 ),
-              ),
-              const Divider(
-                color: AppColors.black,
-                height: 1,
-              ),
-              Expanded(
-                child: Container(
-                  color: AppColors.charcoalGrey,
-                  child: Column(
-                    children: [
-                      TabBar(
-                        controller: tabController,
-                        tabs: const [
-                          Tab(
-                            text: 'Localização',
+                body: Column(
+                  children: [
+                    Container(
+                      height: 200, //MediaQuery.sizeOf(context).width,
+                      width: double.infinity,
+                      color: AppColors.primary,
+                    ),
+                    Container(
+                      color: AppColors.charcoalGrey,
+                      height: 80,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Sizes.p16),
+                      child: Row(
+                        children: [
+                          Text(
+                            state.location!.name,
+                            style: const TextStyle(fontSize: 20),
                           ),
-                          Tab(
-                            text: 'Informações',
+                          gapW12,
+                          Text((state.location!.rating).toString()),
+                          const Icon(
+                            Icons.star,
+                            color: AppColors.yellow,
                           ),
-                          Tab(
-                            text: 'Horário',
+                          const Spacer(),
+                          IconButton(
+                            icon: Icon(
+                              state.location!.isFavorite ?? false
+                                  ? Icons.star
+                                  : Icons.star_border,
+                              color: AppColors.secondary,
+                              size: Sizes.p36,
+                            ),
+                            onPressed: () {},
                           ),
                         ],
                       ),
-                      const Divider(
-                        color: AppColors.black,
-                        height: 1,
-                      ),
-                      Expanded(
-                        child: TabBarView(
-                          controller: tabController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: const [
-                            LocationTab(),
-                            InformationTab(),
-                            Text('Horário'),
+                    ),
+                    const Divider(
+                      color: AppColors.black,
+                      height: 1,
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: AppColors.charcoalGrey,
+                        child: Column(
+                          children: [
+                            TabBar(
+                              controller: tabController,
+                              tabs: const [
+                                Tab(
+                                  text: 'Localização',
+                                ),
+                                Tab(
+                                  text: 'Informações',
+                                ),
+                                Tab(
+                                  text: 'Horário',
+                                ),
+                              ],
+                            ),
+                            const Divider(
+                              color: AppColors.black,
+                              height: 1,
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                controller: tabController,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: [
+                                  LocationTab(
+                                    id: state.location!.id,
+                                  ),
+                                  const InformationTab(),
+                                  const Text('Horário'),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        );
+              );
       },
     );
   }
