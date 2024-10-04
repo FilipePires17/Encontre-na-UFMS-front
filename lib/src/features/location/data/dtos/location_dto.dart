@@ -5,7 +5,6 @@ class LocationDto extends Location {
   const LocationDto({
     required super.id,
     required super.name,
-    required super.address,
     List<MultimediaDto> multimedia = const [],
     super.isOpen,
     super.isFavorite,
@@ -18,7 +17,6 @@ class LocationDto extends Location {
     return LocationDto(
       id: map['id'],
       name: map['name'],
-      address: map['address'],
       // multimedia: map['multimedia']
       //     ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
       //     .toList(),

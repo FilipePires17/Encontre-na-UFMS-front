@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
-import '../../../location/domain/entities/location.dart';
+import '../../domain/entities/location_list_item.dart';
 
 class LocationListItemTile extends StatelessWidget {
   const LocationListItemTile({
@@ -13,7 +13,7 @@ class LocationListItemTile extends StatelessWidget {
     this.isFavorite = false,
   });
 
-  final Location location;
+  final LocationListItem location;
   final Function()? onPressed;
   final Function()? onFavoritePressed;
   final bool isFavorite;

@@ -6,7 +6,6 @@ class Location extends Equatable {
   const Location({
     required this.id,
     required this.name,
-    required this.address,
     this.multimedia = const [],
     this.isOpen,
     this.isFavorite,
@@ -16,7 +15,6 @@ class Location extends Equatable {
 
   final int id;
   final String name;
-  final String address;
   final List<Multimedia> multimedia;
   final bool? isOpen;
   final bool? isFavorite;
@@ -27,7 +25,6 @@ class Location extends Equatable {
   List<Object?> get props => [
         id,
         name,
-        address,
         multimedia,
         isOpen,
         isFavorite,

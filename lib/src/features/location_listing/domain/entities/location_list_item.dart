@@ -5,7 +5,7 @@ class LocationListItem extends Location {
   const LocationListItem({
     required super.id,
     required super.name,
-    required super.address,
+    required this.address,
     super.multimedia = const [],
     super.isOpen,
     super.isFavorite,
@@ -15,4 +15,5 @@ class LocationListItem extends Location {
   });
 
   final EnumLocation type;
+  final String address;
 }
