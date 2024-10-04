@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/location.dart';
-import '../../domain/usecases/get_location.dart';
-import '../../domain/usecases/set_rating.dart';
+import '../../../domain/entities/location.dart';
+import '../../../domain/usecases/get_location.dart';
+import '../../../domain/usecases/set_rating.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';

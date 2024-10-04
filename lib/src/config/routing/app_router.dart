@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/constants/keys/route_names.dart';
 import '../../core/presentation/splash_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
-import '../../features/location/presentation/bloc/location_bloc.dart';
+import '../../features/location/presentation/bloc/location/location_bloc.dart';
+import '../../features/location/presentation/bloc/section/section_bloc.dart';
 import '../services/injection_container.dart';
 import '../../features/about/presentation/about_screen.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -19,12 +20,14 @@ class AppRouter {
   final _locationCategoriesCubit = sl<LocationCategoriesCubit>();
   final _locationBloc = sl<LocationBloc>();
   final _authBloc = sl<AuthBloc>();
+  final _sectionBloc = sl<SectionBloc>();
 
   void dispose() {
     _locationListingBloc.close();
     _locationCategoriesCubit.close();
     _locationBloc.close();
     _authBloc.close();
+    _sectionBloc.close();
   }
 
   Route<dynamic> getRoute(RouteSettings settings) {
@@ -49,8 +52,15 @@ class AppRouter {
         );
       case RouteNames.location:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: _locationBloc,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _locationBloc,
+              ),
+              BlocProvider.value(
+                value: _sectionBloc,
+              ),
+            ],
             child: LocationScreen(
               id: settings.arguments as int,
             ),

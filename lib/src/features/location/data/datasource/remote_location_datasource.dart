@@ -4,6 +4,7 @@ import '../../../../core/constants/api_urls.dart';
 import '../../../../core/data/remote/http_manager.dart';
 import '../../domain/entities/sections.dart';
 import '../../domain/enums/enum_sections.dart';
+import '../dtos/localization_section_dto.dart';
 import '../dtos/location_dto.dart';
 
 abstract class IRemoteLocationDatasource {
@@ -52,8 +53,19 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
 
   @override
   Future<Either<String, Section>> getSection(
-      {required int id, required EnumSections section}) {
-    // TODO: implement getSection
-    throw UnimplementedError();
+      {required int id, required EnumSections section}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.locationSection}/$id',
+      method: HttpMethods.get,
+      parameters: {
+        'sectionId': section.index,
+      },
+    );
+
+    if (response.statusCode != 200) {
+      return left('Erro ao buscar seção');
+    }
+
+    return right(LocalizationSectionDto.fromMap(response.data['data']));
   }
 }

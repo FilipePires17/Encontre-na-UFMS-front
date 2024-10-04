@@ -1,22 +1,41 @@
 import 'package:equatable/equatable.dart';
 
-sealed class Section extends Equatable {
+class Section extends Equatable {
   const Section();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class LocalizationSection extends Section {
-  final String googleLink;
-  final double latitude;
-  final double longitude;
-
   const LocalizationSection({
     required this.googleLink,
     required this.latitude,
     required this.longitude,
-  }) : super();
+    required this.address,
+  });
+
+  final String googleLink;
+  final double latitude;
+  final double longitude;
+  final String address;
+
+  LocalizationSection copyWith({
+    String? googleLink,
+    double? latitude,
+    double? longitude,
+    String? address,
+  }) {
+    return LocalizationSection(
+      googleLink: googleLink ?? this.googleLink,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      address: address ?? this.address,
+    );
+  }
 
   @override
-  List<Object?> get props => [googleLink, latitude, longitude];
+  List<Object?> get props => [googleLink, latitude, longitude, address];
 }
 
 class HoursSection extends Section {
@@ -37,6 +56,26 @@ class HoursSection extends Section {
     required this.fridayHours,
     required this.saturdayHours,
   }) : super();
+
+  HoursSection copyWith({
+    String? sundayHours,
+    String? mondayHours,
+    String? tuesdayHours,
+    String? wednesdayHours,
+    String? thursdayHours,
+    String? fridayHours,
+    String? saturdayHours,
+  }) {
+    return HoursSection(
+      sundayHours: sundayHours ?? this.sundayHours,
+      mondayHours: mondayHours ?? this.mondayHours,
+      tuesdayHours: tuesdayHours ?? this.tuesdayHours,
+      wednesdayHours: wednesdayHours ?? this.wednesdayHours,
+      thursdayHours: thursdayHours ?? this.thursdayHours,
+      fridayHours: fridayHours ?? this.fridayHours,
+      saturdayHours: saturdayHours ?? this.saturdayHours,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -60,6 +99,18 @@ class MoreInfoSection extends Section {
     required this.phone,
     required this.observations,
   }) : super();
+
+  MoreInfoSection copyWith({
+    String? about,
+    String? phone,
+    String? observations,
+  }) {
+    return MoreInfoSection(
+      about: about ?? this.about,
+      phone: phone ?? this.phone,
+      observations: observations ?? this.observations,
+    );
+  }
 
   @override
   List<Object?> get props => [about, phone, observations];

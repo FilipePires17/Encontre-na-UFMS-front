@@ -10,7 +10,7 @@ class GetSection {
   const GetSection({required this.repo});
 
   Future<Either<String, Section>> call(
-      {required int idLocation, required EnumSections section}) async {
-    return await repo.getSection(id: idLocation, section: section);
+      {required int id, required EnumSections section}) async {
+    return await repo.getSection(id: id, section: section);
   }
 }

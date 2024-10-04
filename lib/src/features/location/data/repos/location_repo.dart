@@ -45,8 +45,16 @@ class LocationRepo implements ILocationRepo {
 
   @override
   Future<Either<String, Section>> getSection(
-      {required int id, required EnumSections section}) {
-    // TODO: implement getSection
-    throw UnimplementedError();
+      {required int id, required EnumSections section}) async {
+    if (await networkInfo.isConnected) {
+      final result =
+          await remoteDataSource.getSection(id: id, section: section);
+      return result.fold(
+        (error) => left(error),
+        (section) => right(section),
+      );
+    } else {
+      return left('Sem conexão com a internet');
+    }
   }
 }

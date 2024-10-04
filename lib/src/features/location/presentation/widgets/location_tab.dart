@@ -3,11 +3,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../domain/entities/sections.dart';
 
 class LocationTab extends StatefulWidget {
-  const LocationTab({super.key, required this.id});
+  const LocationTab({super.key, required this.localizationSection});
 
-  final int id;
+  final LocalizationSection localizationSection;
 
   @override
   State<LocationTab> createState() => _LocationTabState();
@@ -17,7 +18,7 @@ class _LocationTabState extends State<LocationTab> {
   GoogleMapController? mapController;
 
   final LatLng initialPosition =
-      const LatLng(-20.50246862307781, -54.61346732030084); // São Paulo, Brasil
+      const LatLng(-20.50246862307781, -54.61346732030084); // facom
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -31,14 +32,10 @@ class _LocationTabState extends State<LocationTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           gapH4,
-          const Text(
-            'Rua da Facom, 645 - Cidade Universitária, Campo Grande - MS',
+          Text(
+            widget.localizationSection.address,
           ),
-          gapH4,
-          const Text(
-            '(67) 3345-3500',
-          ),
-          gapH4,
+          const Spacer(),
           Align(
             alignment: Alignment.topCenter,
             child: Container(
@@ -79,6 +76,7 @@ class _LocationTabState extends State<LocationTab> {
               ),
             ),
           ),
+          gapH12,
         ],
       ),
     );

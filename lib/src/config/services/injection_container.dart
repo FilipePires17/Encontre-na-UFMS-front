@@ -16,8 +16,10 @@ import '../../features/location/data/datasource/remote_location_datasource.dart'
 import '../../features/location/data/repos/location_repo.dart';
 import '../../features/location/domain/repos/i_location_repo.dart';
 import '../../features/location/domain/usecases/get_location.dart';
+import '../../features/location/domain/usecases/get_section.dart';
 import '../../features/location/domain/usecases/set_rating.dart';
-import '../../features/location/presentation/bloc/location_bloc.dart';
+import '../../features/location/presentation/bloc/location/location_bloc.dart';
+import '../../features/location/presentation/bloc/section/section_bloc.dart';
 import '../../features/location_listing/data/datasource/remote_location_listing_datasource.dart';
 import '../../features/location_listing/data/repos/location_listing_repo.dart';
 import '../../features/location_listing/domain/repos/i_location_listing_repo.dart';
@@ -65,6 +67,9 @@ void init() {
       ));
   sl.registerLazySingleton<IRemoteLocationDatasource>(
       () => RemoteLocationDatasource(httpClient: sl()));
+
+  sl.registerFactory(() => SectionBloc(getSection: sl()));
+  sl.registerLazySingleton(() => GetSection(repo: sl()));
 
   // Auth
   sl.registerFactory(() => AuthBloc(

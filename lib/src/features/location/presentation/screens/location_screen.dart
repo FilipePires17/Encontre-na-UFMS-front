@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
-import '../bloc/location_bloc.dart';
+import '../../domain/entities/sections.dart';
+import '../../domain/enums/enum_sections.dart';
+import '../bloc/location/location_bloc.dart';
+import '../bloc/section/section_bloc.dart';
 import '../widgets/information_tab.dart';
 import '../widgets/location_tab.dart';
 
@@ -20,11 +23,17 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen>
     with TickerProviderStateMixin {
   late final TabController tabController;
+  late SectionBloc sectionBloc;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    sectionBloc = BlocProvider.of<SectionBloc>(context);
+    sectionBloc.add(GetSectionEvent(
+      id: widget.id,
+      section: EnumSections.localization,
+    ));
   }
 
   @override
@@ -113,18 +122,29 @@ class _LocationScreenState extends State<LocationScreen>
                               color: AppColors.black,
                               height: 1,
                             ),
-                            Expanded(
-                              child: TabBarView(
-                                controller: tabController,
-                                physics: const NeverScrollableScrollPhysics(),
-                                children: [
-                                  LocationTab(
-                                    id: state.location!.id,
+                            BlocBuilder<SectionBloc, SectionState>(
+                              builder: (context, state) {
+                                return Expanded(
+                                  child: TabBarView(
+                                    controller: tabController,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    children: [
+                                      state.status == SectionStateStatus.loading
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : LocationTab(
+                                              localizationSection: state.section
+                                                  as LocalizationSection,
+                                            ),
+                                      const InformationTab(),
+                                      const Text('Horário'),
+                                    ],
                                   ),
-                                  const InformationTab(),
-                                  const Text('Horário'),
-                                ],
-                              ),
+                                );
+                              },
                             ),
                           ],
                         ),
