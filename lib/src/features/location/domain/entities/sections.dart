@@ -90,14 +90,14 @@ class HoursSection extends Section {
 }
 
 class MoreInfoSection extends Section {
-  final String about;
+  final String? about;
+  final String? observations;
   final String phone;
-  final String observations;
 
   const MoreInfoSection({
-    required this.about,
+    this.about,
+    this.observations,
     required this.phone,
-    required this.observations,
   }) : super();
 
   MoreInfoSection copyWith({

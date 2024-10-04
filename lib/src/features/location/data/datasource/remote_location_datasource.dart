@@ -4,8 +4,10 @@ import '../../../../core/constants/api_urls.dart';
 import '../../../../core/data/remote/http_manager.dart';
 import '../../domain/entities/sections.dart';
 import '../../domain/enums/enum_sections.dart';
+import '../dtos/hours_section_dto.dart';
 import '../dtos/localization_section_dto.dart';
 import '../dtos/location_dto.dart';
+import '../dtos/more_info_section_dto.dart';
 
 abstract class IRemoteLocationDatasource {
   Future<Either<String, LocationDto>> getLocation({required int id});
@@ -58,7 +60,7 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
       url: '${ApiUrls.locationSection}/$id',
       method: HttpMethods.get,
       parameters: {
-        'sectionId': section.index,
+        'sectionId': section.name,
       },
     );
 
@@ -66,6 +68,13 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
       return left('Erro ao buscar seção');
     }
 
-    return right(LocalizationSectionDto.fromMap(response.data['data']));
+    switch (section) {
+      case EnumSections.hours:
+        return right(HoursSectionDto.fromMap(response.data['data']));
+      case EnumSections.moreInfo:
+        return right(MoreInfoSectionDto.fromMap(response.data['data']));
+      default:
+        return right(LocalizationSectionDto.fromMap(response.data['data']));
+    }
   }
 }

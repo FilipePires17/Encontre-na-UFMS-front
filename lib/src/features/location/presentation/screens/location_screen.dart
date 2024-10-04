@@ -8,6 +8,7 @@ import '../../domain/entities/sections.dart';
 import '../../domain/enums/enum_sections.dart';
 import '../bloc/location/location_bloc.dart';
 import '../bloc/section/section_bloc.dart';
+import '../widgets/hours_tab.dart';
 import '../widgets/information_tab.dart';
 import '../widgets/location_tab.dart';
 
@@ -105,6 +106,18 @@ class _LocationScreenState extends State<LocationScreen>
                         child: Column(
                           children: [
                             TabBar(
+                              onTap: (value) {
+                                int section = value;
+                                if (section == 1) {
+                                  section = 2;
+                                } else if (section == 2) {
+                                  section = 1;
+                                }
+                                sectionBloc.add(GetSectionEvent(
+                                  id: widget.id,
+                                  section: EnumSections.values[section],
+                                ));
+                              },
                               controller: tabController,
                               tabs: const [
                                 Tab(
@@ -135,12 +148,35 @@ class _LocationScreenState extends State<LocationScreen>
                                               child:
                                                   CircularProgressIndicator(),
                                             )
-                                          : LocationTab(
-                                              localizationSection: state.section
-                                                  as LocalizationSection,
-                                            ),
-                                      const InformationTab(),
-                                      const Text('Horário'),
+                                          : state.section is LocalizationSection
+                                              ? LocationTab(
+                                                  localizationSection: state
+                                                          .section
+                                                      as LocalizationSection,
+                                                )
+                                              : const SizedBox(),
+                                      state.status == SectionStateStatus.loading
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : state.section is MoreInfoSection
+                                              ? InformationTab(
+                                                  moreInfoSection: state.section
+                                                      as MoreInfoSection,
+                                                )
+                                              : const SizedBox(),
+                                      state.status == SectionStateStatus.loading
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : state.section is HoursSection
+                                              ? HoursTab(
+                                                  hoursSection: state.section
+                                                      as HoursSection,
+                                                )
+                                              : const SizedBox(),
                                     ],
                                   ),
                                 );
