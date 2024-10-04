@@ -5,7 +5,7 @@ import '../entities/sections.dart';
 import '../enums/enum_sections.dart';
 
 abstract class ILocationRepo {
-  Future<Either<Error, Location>> getLocation({required int id});
+  Future<Either<String, Location>> getLocation({required int id});
 
   Future<Either<String, Section>> getSection(
       {required int id, required EnumSections section});

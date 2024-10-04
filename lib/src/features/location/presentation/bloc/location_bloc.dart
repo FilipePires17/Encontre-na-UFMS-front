@@ -19,21 +19,22 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<GetLocationEvent>((event, emit) async {
       emit(const LocationState(status: LocationStateStatus.loading));
       // TODO: Implement GetLocationEvent
-      // final result = await getLocation(event.id);
-      // result.fold(
-      //   (error) {
-      //     emit(LocationState(
-      //       status: LocationStateStatus.error,
-      //       error: error,
-      //     ));
-      //   },
-      //   (location) {
-      //     emit(LocationState(
-      //       status: LocationStateStatus.loaded,
-      //       location: location,
-      //     ));
-      //   },
-      // );
+      await getLocation(id: event.id).then(
+        (result) => result.fold(
+          (error) {
+            emit(LocationState(
+              status: LocationStateStatus.error,
+              error: error,
+            ));
+          },
+          (location) {
+            emit(LocationState(
+              status: LocationStateStatus.loaded,
+              location: location,
+            ));
+          },
+        ),
+      );
     });
   }
 }

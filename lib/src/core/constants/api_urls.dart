@@ -4,6 +4,7 @@ abstract class ApiUrls {
   // Locations
   static const String baseLocations = '$baseUrlDev/locales';
   static const String toggleFavorite = '$baseLocations/favorites';
+  static const String locationSection = '$baseLocations/section';
 
   // Auth
   static const String baseAuth = '$baseUrlDev/auth';

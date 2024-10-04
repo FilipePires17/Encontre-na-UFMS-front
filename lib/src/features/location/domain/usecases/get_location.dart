@@ -8,7 +8,7 @@ class GetLocation {
 
   const GetLocation({required this.repo});
 
-  Future<Either<Error, Location>> call({required int id}) async {
+  Future<Either<String, Location>> call({required int id}) async {
     return await repo.getLocation(id: id);
   }
 }

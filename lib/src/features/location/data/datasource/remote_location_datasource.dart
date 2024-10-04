@@ -1,12 +1,13 @@
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/constants/api_urls.dart';
 import '../../../../core/data/remote/http_manager.dart';
 import '../../domain/entities/sections.dart';
 import '../../domain/enums/enum_sections.dart';
 import '../dtos/location_dto.dart';
 
 abstract class IRemoteLocationDatasource {
-  Future<Either<Error, LocationDto>> getLocation({required int id});
+  Future<Either<String, LocationDto>> getLocation({required int id});
   Future<Either<String, Section>> getSection(
       {required int id, required EnumSections section});
   Future<Either<Error, bool>> toggleFavorite({required int id});
@@ -20,9 +21,20 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
   final HttpManager httpClient;
 
   @override
-  Future<Either<Error, LocationDto>> getLocation({required int id}) {
-    // TODO: implement getLocation
-    throw UnimplementedError();
+  Future<Either<String, LocationDto>> getLocation({required int id}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.locationSection}/$id',
+      method: HttpMethods.get,
+      parameters: {
+        'sectionId': 0,
+      },
+    );
+
+    if (response.statusCode != 200) {
+      return left('Erro ao buscar local');
+    }
+
+    return right(LocationDto.fromMap(response.data['data']));
   }
 
   @override

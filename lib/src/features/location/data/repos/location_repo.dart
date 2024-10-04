@@ -18,9 +18,16 @@ class LocationRepo implements ILocationRepo {
   final INetworkInfo networkInfo;
 
   @override
-  Future<Either<Error, Location>> getLocation({required int id}) {
-    // TODO: implement getLocation
-    throw UnimplementedError();
+  Future<Either<String, Location>> getLocation({required int id}) async {
+    if (await networkInfo.isConnected) {
+      final result = await remoteDataSource.getLocation(id: id);
+      return result.fold(
+        (error) => left(error),
+        (location) => right(location),
+      );
+    } else {
+      return left('Sem conexão com a internet');
+    }
   }
 
   @override
