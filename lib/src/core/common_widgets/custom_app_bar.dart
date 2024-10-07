@@ -7,7 +7,7 @@ class CustomAppBar extends AppBar {
     super.key,
     required String text,
     required BuildContext context,
-    bool? hasActions,
+    super.actions,
   }) : super(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),

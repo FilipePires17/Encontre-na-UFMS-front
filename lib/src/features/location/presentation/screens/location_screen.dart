@@ -57,6 +57,18 @@ class _LocationScreenState extends State<LocationScreen>
                 appBar: CustomAppBar(
                   text: state.location!.name,
                   context: context,
+                  actions: [
+                    IconButton(
+                      icon: Icon(
+                        state.location!.isFavorite ?? false
+                            ? Icons.star
+                            : Icons.star_border,
+                        color: AppColors.secondary,
+                        size: Sizes.p36,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
                 body: Column(
                   children: [
@@ -83,16 +95,6 @@ class _LocationScreenState extends State<LocationScreen>
                             color: AppColors.yellow,
                           ),
                           const Spacer(),
-                          IconButton(
-                            icon: Icon(
-                              state.location!.isFavorite ?? false
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: AppColors.secondary,
-                              size: Sizes.p36,
-                            ),
-                            onPressed: () {},
-                          ),
                         ],
                       ),
                     ),
