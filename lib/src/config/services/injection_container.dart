@@ -18,6 +18,7 @@ import '../../features/location/domain/repos/i_location_repo.dart';
 import '../../features/location/domain/usecases/get_location.dart';
 import '../../features/location/domain/usecases/get_section.dart';
 import '../../features/location/domain/usecases/set_rating.dart';
+import '../../features/location/domain/usecases/toggle_favorite.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
 import '../../features/location/presentation/bloc/section/section_bloc.dart';
 import '../../features/location_listing/data/datasource/remote_location_listing_datasource.dart';
@@ -58,9 +59,11 @@ void init() {
   sl.registerFactory(() => LocationBloc(
         getLocation: sl(),
         setRating: sl(),
+        toggleFavorite: sl(),
       ));
   sl.registerLazySingleton(() => GetLocation(repo: sl()));
   sl.registerLazySingleton(() => SetRating(repo: sl()));
+  sl.registerLazySingleton(() => ToggleFavorite(repo: sl()));
   sl.registerLazySingleton<ILocationRepo>(() => LocationRepo(
         remoteDataSource: sl(),
         networkInfo: sl(),

@@ -47,7 +47,18 @@ class _LocationScreenState extends State<LocationScreen>
   Widget build(BuildContext context) {
     final locationBloc = BlocProvider.of<LocationBloc>(context);
     locationBloc.add(GetLocationEvent(widget.id));
-    return BlocBuilder<LocationBloc, LocationState>(
+    return BlocConsumer<LocationBloc, LocationState>(
+      listener: (context, state) {
+        if (state.status == LocationStateStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error ?? ''),
+            ),
+          );
+        } else if (state.status == LocationStateStatus.unauthorized) {
+          Navigator.of(context).pushNamed('/login');
+        }
+      },
       builder: (context, state) {
         return state.location == null
             ? const Center(
@@ -66,7 +77,9 @@ class _LocationScreenState extends State<LocationScreen>
                         color: AppColors.secondary,
                         size: Sizes.p36,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        locationBloc.add(ToggleFavoriteEvent(widget.id));
+                      },
                     ),
                   ],
                 ),
@@ -122,15 +135,9 @@ class _LocationScreenState extends State<LocationScreen>
                               },
                               controller: tabController,
                               tabs: const [
-                                Tab(
-                                  text: 'Localização',
-                                ),
-                                Tab(
-                                  text: 'Informações',
-                                ),
-                                Tab(
-                                  text: 'Horário',
-                                ),
+                                Tab(text: 'Localização'),
+                                Tab(text: 'Informações'),
+                                Tab(text: 'Horário'),
                               ],
                             ),
                             const Divider(

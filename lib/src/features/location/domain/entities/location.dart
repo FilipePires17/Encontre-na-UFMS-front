@@ -21,6 +21,26 @@ class Location extends Equatable {
   final double? rating;
   final bool? hasAccessibility;
 
+  Location copyWith({
+    int? id,
+    String? name,
+    List<Multimedia>? multimedia,
+    bool? isOpen,
+    bool? isFavorite,
+    double? rating,
+    bool? hasAccessibility,
+  }) {
+    return Location(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      multimedia: multimedia ?? this.multimedia,
+      isOpen: isOpen ?? this.isOpen,
+      isFavorite: isFavorite ?? this.isFavorite,
+      rating: rating ?? this.rating,
+      hasAccessibility: hasAccessibility ?? this.hasAccessibility,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

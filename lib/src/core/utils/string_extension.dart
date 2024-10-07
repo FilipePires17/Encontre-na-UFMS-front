@@ -6,4 +6,14 @@ extension StringExtension on String {
   String capitalizeAll() {
     return split(' ').map((e) => e.capitalize()).join(' ');
   }
+
+  String phoneFormat() {
+    return replaceAllMapped(RegExp(r'^(\d{2})(\d{5})(\d{4})$'), (match) {
+      return '(${match[1]}) ${match[2]}-${match[3]}';
+    });
+  }
+
+  String removeNonDigits() {
+    return replaceAll(RegExp(r'\D'), '');
+  }
 }

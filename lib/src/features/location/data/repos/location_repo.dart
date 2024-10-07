@@ -22,11 +22,11 @@ class LocationRepo implements ILocationRepo {
     if (await networkInfo.isConnected) {
       final result = await remoteDataSource.getLocation(id: id);
       return result.fold(
-        (error) => left(error),
-        (location) => right(location),
+        (error) => Left(error),
+        (location) => Right(location),
       );
     } else {
-      return left('Sem conexão com a internet');
+      return const Left('Sem conexão com a internet');
     }
   }
 
@@ -38,9 +38,16 @@ class LocationRepo implements ILocationRepo {
   }
 
   @override
-  Future<Either<Error, bool>> toggleFavorite({required int id}) {
-    // TODO: implement toggleFavorite
-    throw UnimplementedError();
+  Future<Either<String, bool>> toggleFavorite({required int id}) async {
+    if (await networkInfo.isConnected) {
+      final result = await remoteDataSource.toggleFavorite(id: id);
+      return result.fold(
+        (error) => Left(error),
+        (success) => Right(success),
+      );
+    } else {
+      return const Left('Sem conexão com a internet');
+    }
   }
 
   @override
@@ -50,11 +57,11 @@ class LocationRepo implements ILocationRepo {
       final result =
           await remoteDataSource.getSection(id: id, section: section);
       return result.fold(
-        (error) => left(error),
-        (section) => right(section),
+        (error) => Left(error),
+        (section) => Right(section),
       );
     } else {
-      return left('Sem conexão com a internet');
+      return const Left('Sem conexão com a internet');
     }
   }
 }

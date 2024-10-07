@@ -13,7 +13,7 @@ abstract class IRemoteLocationDatasource {
   Future<Either<String, LocationDto>> getLocation({required int id});
   Future<Either<String, Section>> getSection(
       {required int id, required EnumSections section});
-  Future<Either<Error, bool>> toggleFavorite({required int id});
+  Future<Either<String, bool>> toggleFavorite({required int id});
   Future<Either<Error, bool>> setRating(
       {required int id, required double rating});
 }
@@ -48,9 +48,23 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
   }
 
   @override
-  Future<Either<Error, bool>> toggleFavorite({required int id}) {
-    // TODO: implement toggleFavorite
-    throw UnimplementedError();
+  Future<Either<String, bool>> toggleFavorite({required int id}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.toggleFavorite}/$id',
+      method: HttpMethods.post,
+    );
+
+    if (response.statusCode != 200 &&
+        response.statusCode != 201 &&
+        response.statusCode != 401) {
+      return Left(response.data['message']);
+    }
+
+    if (response.statusCode == 401) {
+      return const Right(false);
+    } else {
+      return const Right(true);
+    }
   }
 
   @override

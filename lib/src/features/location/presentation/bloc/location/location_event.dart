@@ -25,3 +25,12 @@ class SetRatingEvent extends LocationEvent {
   @override
   List<Object> get props => [id, rating];
 }
+
+class ToggleFavoriteEvent extends LocationEvent {
+  final int id;
+
+  const ToggleFavoriteEvent(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

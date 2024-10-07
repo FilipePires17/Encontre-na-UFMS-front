@@ -31,9 +31,13 @@ class _LocationTabState extends State<LocationTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          gapH4,
+          const Spacer(),
           Text(
             widget.localizationSection.address,
+            style: const TextStyle(
+              fontSize: Sizes.p20,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const Spacer(),
           Align(

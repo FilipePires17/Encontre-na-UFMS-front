@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../domain/entities/user.dart';
@@ -52,7 +51,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               ));
             },
             (user) {
-              debugPrint('User: $user');
               emit(state.copyWith(
                 status: AuthStateStatus.loggedIn,
                 user: user,

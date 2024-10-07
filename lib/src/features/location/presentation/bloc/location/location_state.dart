@@ -1,6 +1,6 @@
 part of 'location_bloc.dart';
 
-enum LocationStateStatus { initial, loading, loaded, error }
+enum LocationStateStatus { initial, loading, loaded, error, unauthorized }
 
 class LocationState extends Equatable {
   const LocationState({
@@ -12,6 +12,18 @@ class LocationState extends Equatable {
   final LocationStateStatus status;
   final Location? location;
   final String? error;
+
+  LocationState copyWith({
+    LocationStateStatus? status,
+    Location? location,
+    String? error,
+  }) {
+    return LocationState(
+      status: status ?? this.status,
+      location: location ?? this.location,
+      error: error ?? this.error,
+    );
+  }
 
   @override
   List<Object?> get props => [status, location, error];
