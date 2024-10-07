@@ -8,12 +8,13 @@ extension StringExtension on String {
   }
 
   String phoneFormat() {
-    return replaceAllMapped(RegExp(r'^(\d{2})(\d{5})(\d{4})$'), (match) {
+    return removeNonDigits()
+        .replaceAllMapped(RegExp(r'^(\d{2})(\d{5})(\d{4})$'), (match) {
       return '(${match[1]}) ${match[2]}-${match[3]}';
     });
   }
 
   String removeNonDigits() {
-    return replaceAll(RegExp(r'\D'), '');
+    return replaceAll(RegExp(r'[^0-9]'), '');
   }
 }

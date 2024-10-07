@@ -34,10 +34,10 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
     );
 
     if (response.statusCode != 200) {
-      return left('Erro ao buscar local');
+      return const Left('Erro ao buscar local');
     }
 
-    return right(LocationDto.fromMap(response.data['data']));
+    return Right(LocationDto.fromMap(response.data['data']));
   }
 
   @override
@@ -79,16 +79,16 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
     );
 
     if (response.statusCode != 200) {
-      return left('Erro ao buscar seção');
+      return const Left('Erro ao buscar seção');
     }
 
     switch (section) {
       case EnumSections.hours:
-        return right(HoursSectionDto.fromMap(response.data['data']));
+        return Right(HoursSectionDto.fromMap(response.data['data']));
       case EnumSections.moreInfo:
-        return right(MoreInfoSectionDto.fromMap(response.data['data']));
+        return Right(MoreInfoSectionDto.fromMap(response.data['data']));
       default:
-        return right(LocalizationSectionDto.fromMap(response.data['data']));
+        return Right(LocalizationSectionDto.fromMap(response.data['data']));
     }
   }
 }

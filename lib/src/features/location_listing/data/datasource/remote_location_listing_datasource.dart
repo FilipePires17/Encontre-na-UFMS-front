@@ -28,7 +28,7 @@ class RemoteLocationListingDatasource
     );
 
     if (response.statusCode != 200) {
-      return left(Error());
+      return Left(Error());
     }
 
     return Right(LocationListDto.fromMap(response.data['data']));
@@ -44,7 +44,7 @@ class RemoteLocationListingDatasource
     if (response.statusCode != 200 &&
         response.statusCode != 201 &&
         response.statusCode != 401) {
-      return left(Error());
+      return Left(Error());
     }
 
     if (response.statusCode == 401) {
