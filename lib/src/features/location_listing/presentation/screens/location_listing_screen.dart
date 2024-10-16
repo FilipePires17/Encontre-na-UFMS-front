@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
-import '../../domain/entities/location_list_filter.dart';
 import '../../domain/enums/enum_location.dart';
 import '../bloc/location_listing_bloc.dart';
 import '../cubit/location_categories_cubit.dart';
@@ -10,26 +9,50 @@ import '../widgets/category_tile.dart';
 import '../widgets/custom_drawer.dart';
 import '../widgets/location_list_item_tile.dart';
 
-class LocationListingScreen extends StatelessWidget {
+class LocationListingScreen extends StatefulWidget {
   const LocationListingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final LocationListingBloc locationListingBloc =
-        BlocProvider.of<LocationListingBloc>(context);
-    final LocationCategoriesCubit locationCategoriesCubit =
-        BlocProvider.of<LocationCategoriesCubit>(context);
+  State<LocationListingScreen> createState() => _LocationListingScreenState();
+}
 
-    locationListingBloc.add(const LoadFilteredEvent());
+class _LocationListingScreenState extends State<LocationListingScreen> {
+  late LocationListingBloc locationListingBloc;
+  late LocationCategoriesCubit locationCategoriesCubit;
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    locationListingBloc = BlocProvider.of<LocationListingBloc>(context);
+    locationCategoriesCubit = BlocProvider.of<LocationCategoriesCubit>(context);
+    locationListingBloc.add(const LoadEvent());
     locationCategoriesCubit.clearCategories();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+              scrollController.offset &&
+          scrollController.offset != 0) {
+        locationListingBloc.add(
+          LoadEvent(
+            isFirstPage: false,
+            locationsToFilter: locationCategoriesCubit.state,
+          ),
+        );
+      }
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final notificationBarHeight = MediaQuery.of(context).padding.top;
     final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     return Scaffold(
-      drawer: CustomDrawer(onLogout: () {
-        locationListingBloc.add(const LoadFilteredEvent());
-        locationCategoriesCubit.clearCategories();
-      }),
+      drawer: CustomDrawer(
+        onLogout: () {
+          locationListingBloc.add(const LoadEvent());
+          locationCategoriesCubit.clearCategories();
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.only(
           top: notificationBarHeight,
@@ -68,10 +91,8 @@ class LocationListingScreen extends StatelessWidget {
                       List<EnumLocation>>(
                     listener: (context, state) {
                       locationListingBloc.add(
-                        LoadFilteredEvent(
-                          paginatedFilters: LocationListFilter(
-                            types: state,
-                          ),
+                        LoadEvent(
+                          locationsToFilter: state,
                         ),
                       );
                     },
@@ -93,10 +114,8 @@ class LocationListingScreen extends StatelessWidget {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  locationListingBloc.add(LoadFilteredEvent(
-                    paginatedFilters: LocationListFilter(
-                      types: locationCategoriesCubit.state,
-                    ),
+                  locationListingBloc.add(LoadEvent(
+                    locationsToFilter: locationCategoriesCubit.state,
                   ));
                 },
                 child: CustomScrollView(
@@ -115,47 +134,60 @@ class LocationListingScreen extends StatelessWidget {
                         }
                       },
                       builder: (context, state) {
-                        return state.status == LocationListingStatus.loading
-                            ? const SliverFillRemaining(
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(Sizes.p8),
-                                      child: LocationListItemTile(
-                                        location: state
-                                            .locations.locationItems[index],
-                                        onPressed: () {
-                                          Navigator.of(context).pushNamed(
-                                            '/location',
-                                            arguments: state.locations
-                                                .locationItems[index].id,
-                                          );
-                                        },
-                                        onFavoritePressed: () {
-                                          locationListingBloc.add(
-                                            ToggleFavoriteEvent(
-                                              id: state.locations
-                                                  .locationItems[index].id,
-                                            ),
-                                          );
-                                        },
-                                        isFavorite: state
-                                                .locations
-                                                .locationItems[index]
-                                                .isFavorite ??
-                                            false,
-                                      ),
-                                    );
-                                  },
-                                  childCount:
-                                      state.locations.locationItems.length,
-                                ),
-                              );
+                        switch (state.status) {
+                          case LocationListingStatus.loaded:
+                            return SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  return index <
+                                          state.locations.locationItems.length
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.all(Sizes.p8),
+                                          child: LocationListItemTile(
+                                            location: state
+                                                .locations.locationItems[index],
+                                            onPressed: () {
+                                              Navigator.of(context).pushNamed(
+                                                '/location',
+                                                arguments: state.locations
+                                                    .locationItems[index].id,
+                                              );
+                                            },
+                                            onFavoritePressed: () {
+                                              locationListingBloc.add(
+                                                ToggleFavoriteEvent(
+                                                  id: state.locations
+                                                      .locationItems[index].id,
+                                                ),
+                                              );
+                                            },
+                                            isFavorite: state
+                                                    .locations
+                                                    .locationItems[index]
+                                                    .isFavorite ??
+                                                false,
+                                          ),
+                                        )
+                                      : const SizedBox(
+                                          height: Sizes.p48,
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                },
+                                childCount: state.hasReachedMax
+                                    ? state.locations.locationItems.length
+                                    : state.locations.locationItems.length + 1,
+                              ),
+                            );
+                          default:
+                            return const SliverFillRemaining(
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                        }
                       },
                     ),
                   ],

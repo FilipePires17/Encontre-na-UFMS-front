@@ -13,6 +13,18 @@ class LocationListFilter extends Equatable {
   final int pageIndex;
   final int pageSize;
 
+  LocationListFilter copyWith({
+    List<EnumLocation>? types,
+    int? pageIndex,
+    int? pageSize,
+  }) {
+    return LocationListFilter(
+      types: types ?? this.types,
+      pageIndex: pageIndex ?? this.pageIndex,
+      pageSize: pageSize ?? this.pageSize,
+    );
+  }
+
   @override
   List<Object?> get props => [
         types,

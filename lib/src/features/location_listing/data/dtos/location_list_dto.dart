@@ -4,6 +4,7 @@ import 'location_list_item_dto.dart';
 class LocationListDto extends LocationList {
   const LocationListDto({
     required super.locationItems,
+    required super.totalItems,
   });
 
   factory LocationListDto.fromMap(Map<String, dynamic> map) {
@@ -11,6 +12,7 @@ class LocationListDto extends LocationList {
       locationItems: map['locales']
           .map<LocationListItemDto>((e) => LocationListItemDto.fromMap(e))
           .toList(),
+      totalItems: map['totalItems'],
     );
   }
 }
