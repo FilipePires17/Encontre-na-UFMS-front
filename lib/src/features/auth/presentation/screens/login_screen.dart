@@ -62,7 +62,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text('Não tem uma conta?'),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, RouteNames.register);
+                      Navigator.pushNamed(
+                        context,
+                        RouteNames.register,
+                        arguments: true,
+                      );
                     },
                     child: const Text('Crie uma conta'),
                   ),
@@ -78,10 +82,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
                   } else if (state.status == AuthStateStatus.loggedIn) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      RouteNames.home,
-                      (route) => false,
-                    );
+                    if (widget.fromLocation == true) {
+                      Navigator.of(context).popUntil(
+                        (route) => route.settings.name == RouteNames.location,
+                      );
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouteNames.home,
+                        (route) => false,
+                      );
+                    }
                   }
                 },
                 builder: (context, state) {
