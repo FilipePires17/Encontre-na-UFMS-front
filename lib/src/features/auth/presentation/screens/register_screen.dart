@@ -8,7 +8,9 @@ import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth_bloc.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({super.key, this.fromLocation});
+
+  final bool? fromLocation;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -80,10 +82,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     );
                   } else if (state.status == AuthStateStatus.loggedIn) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      RouteNames.home,
-                      (route) => false,
-                    );
+                    if (widget.fromLocation == true) {
+                      Navigator.of(context).popUntil(
+                        (route) => route.settings.name == RouteNames.location,
+                      );
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouteNames.home,
+                        (route) => false,
+                      );
+                    }
                   }
                 },
                 builder: (context, state) {

@@ -7,26 +7,17 @@ sealed class LocationListingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadFullEvent extends LocationListingEvent {
-  final LocationListFilter paginatedFilters;
+class LoadEvent extends LocationListingEvent {
+  final List<EnumLocation> locationsToFilter;
+  final bool isFirstPage;
 
-  const LoadFullEvent({
-    this.paginatedFilters = const LocationListFilter(),
+  const LoadEvent({
+    this.locationsToFilter = const [],
+    this.isFirstPage = true,
   });
 
   @override
-  List<Object> get props => [paginatedFilters];
-}
-
-class LoadFilteredEvent extends LocationListingEvent {
-  final LocationListFilter paginatedFilters;
-
-  const LoadFilteredEvent({
-    this.paginatedFilters = const LocationListFilter(),
-  });
-
-  @override
-  List<Object> get props => [paginatedFilters];
+  List<Object> get props => [locationsToFilter, isFirstPage];
 }
 
 class ToggleFavoriteEvent extends LocationListingEvent {
@@ -38,4 +29,8 @@ class ToggleFavoriteEvent extends LocationListingEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class ResetLocationListingEvent extends LocationListingEvent {
+  const ResetLocationListingEvent();
 }

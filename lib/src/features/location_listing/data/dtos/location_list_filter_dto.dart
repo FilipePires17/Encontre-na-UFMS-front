@@ -12,7 +12,6 @@ class LocationListFilterDto extends LocationListFilter {
     return {
       'pageNumber': pageIndex,
       'limit': pageSize,
-      'userId': 0,
     };
   }
 

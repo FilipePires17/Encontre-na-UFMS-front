@@ -65,6 +65,7 @@ class AppRouter {
               id: settings.arguments as int,
             ),
           ),
+          settings: const RouteSettings(name: RouteNames.location),
         );
 
       // Auth
@@ -72,14 +73,18 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: _authBloc,
-            child: const LoginScreen(),
+            child: LoginScreen(
+              fromLocation: settings.arguments as bool?,
+            ),
           ),
         );
       case RouteNames.register:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: _authBloc,
-            child: const RegisterScreen(),
+            child: RegisterScreen(
+              fromLocation: settings.arguments as bool?,
+            ),
           ),
         );
 

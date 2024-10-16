@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/location_list_filter.dart';
 import '../../domain/entities/location_list.dart';
 import '../../domain/entities/location_list_item.dart';
+import '../../domain/enums/enum_location.dart';
 import '../../domain/usecases/get_location_listing_paginated.dart';
 import '../../domain/usecases/toggle_favorite_location.dart';
 
@@ -19,30 +20,12 @@ class LocationListingBloc
     required this.getLocationListingPaginated,
     required this.toggleFavoriteLocation,
   }) : super(const LocationListingState()) {
-    on<LoadFilteredEvent>((event, emit) async {
-      emit(state.copyWith(
-        status: LocationListingStatus.loading,
-        locations: null,
-      ));
-
-      await getLocationListingPaginated(
-        filter: event.paginatedFilters,
-      ).then((result) {
-        result.fold(
-          (error) {
-            emit(state.copyWith(
-              status: LocationListingStatus.error,
-              errorMessage: 'Error loading locations',
-            ));
-          },
-          (locations) {
-            emit(state.copyWith(
-              status: LocationListingStatus.loaded,
-              locations: locations,
-            ));
-          },
-        );
-      });
+    on<LoadEvent>((event, emit) async {
+      await loadEvent(
+        isFirstPage: event.isFirstPage,
+        filters: event.locationsToFilter,
+        emit: emit,
+      );
     });
 
     on<ToggleFavoriteEvent>((event, emit) async {
@@ -88,6 +71,59 @@ class LocationListingBloc
           },
         );
       });
+    });
+
+    on<ResetLocationListingEvent>((event, emit) {
+      emit(const LocationListingState());
+    });
+  }
+
+  Future<void> loadEvent({
+    bool isFirstPage = true,
+    required List<EnumLocation> filters,
+    required Emitter emit,
+  }) async {
+    if (isFirstPage) {
+      emit(const LocationListingState(status: LocationListingStatus.loading));
+    }
+
+    if (state.hasReachedMax) return;
+
+    emit(state.copyWith(
+      pageIndex: isFirstPage ? 1 : state.pageIndex + 1,
+    ));
+
+    await getLocationListingPaginated(
+      filter: LocationListFilter(
+        pageIndex: state.pageIndex,
+        types: filters,
+      ),
+    ).then((result) {
+      result.fold(
+        (error) {
+          emit(state.copyWith(
+            status: LocationListingStatus.error,
+            errorMessage: 'Erro ao carregar locais',
+          ));
+        },
+        (locations) {
+          if (isFirstPage) {
+            emit(state.copyWith(
+              status: LocationListingStatus.loaded,
+              locations: locations,
+              hasReachedMax: locations.hasReachedMax,
+            ));
+          } else {
+            final updatedLocations =
+                state.locations.getUpdatedList(locations.locationItems);
+
+            emit(state.copyWith(
+              locations: LocationList(locationItems: updatedLocations),
+              hasReachedMax: locations.hasReachedMax,
+            ));
+          }
+        },
+      );
     });
   }
 }
