@@ -72,7 +72,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: _authBloc,
-            child: const LoginScreen(),
+            child: LoginScreen(
+              fromLocation: settings.arguments as bool?,
+            ),
           ),
         );
       case RouteNames.register:

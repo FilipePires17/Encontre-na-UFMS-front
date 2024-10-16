@@ -7,7 +7,9 @@ import '../../../../core/constants/sizes/app_sizes.dart';
 import '../bloc/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.fromLocation = false});
+
+  final bool? fromLocation;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

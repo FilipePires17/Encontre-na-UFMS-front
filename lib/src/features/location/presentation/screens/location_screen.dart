@@ -56,7 +56,10 @@ class _LocationScreenState extends State<LocationScreen>
             ),
           );
         } else if (state.status == LocationStateStatus.unauthorized) {
-          Navigator.of(context).pushNamed('/login');
+          Navigator.of(context).pushNamed(
+            '/login',
+            arguments: true,
+          );
         }
       },
       builder: (context, state) {
