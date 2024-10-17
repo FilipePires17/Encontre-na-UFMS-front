@@ -152,9 +152,23 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  // @override
-  // Future<Either<dynamic, bool>> refreshToken() {
-  //   // TODO: implement refreshToken
-  //   throw UnimplementedError();
-  // }
+  @override
+  Future<Either<dynamic, User>> editProfile(
+      {String? name, String? password}) async {
+    if (await networkInfo.isConnected) {
+      final user = await remoteDataSource.editProfile(
+        name: name,
+        password: password,
+      );
+
+      return user.match(
+        (errorMessage) => Left(errorMessage),
+        (res) {
+          return Right(res);
+        },
+      );
+    } else {
+      return const Left('Sem conexão');
+    }
+  }
 }

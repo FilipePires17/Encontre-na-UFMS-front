@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/utils/app_validators.dart';
-import '../bloc/auth_bloc.dart';
+import '../bloc/auth/auth_bloc.dart';
+import '../bloc/profile/profile_bloc.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -24,7 +25,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   void initState() {
     super.initState();
     authBloc = BlocProvider.of<AuthBloc>(context);
-    _nameController.text = authBloc.state.user!.name;
   }
 
   @override
@@ -43,6 +43,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               const Spacer(),
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
+                  _nameController.text = state.user!.name;
                   return TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Nome',
@@ -79,20 +80,33 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               ),
               gapH16,
               const Spacer(),
-              BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: state.status == AuthStateStatus.loading
-                        ? null
-                        : () {
-                            if (_formKey.currentState!.validate()) {}
-                          },
-                    child: state.status == AuthStateStatus.loading
-                        ? const CircularProgressIndicator()
-                        : const Text('Login'),
-                  );
-                },
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Voltar'),
+                  ),
+                  gapH12,
+                  BlocConsumer<ProfileBloc, ProfileState>(
+                    listener: (context, state) {
+                      if (state.status == ProfileStateStatus.loaded) {
+                        authBloc.add(UpdateUserEvent(user: state.user!));
+                      }
+                    },
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: state.status == ProfileStateStatus.loading
+                            ? null
+                            : () {
+                                if (_formKey.currentState!.validate()) {}
+                              },
+                        child: state.status == ProfileStateStatus.loading
+                            ? const CircularProgressIndicator()
+                            : const Text('Login'),
+                      );
+                    },
+                  ),
+                ],
               ),
               gapH16,
             ],

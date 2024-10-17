@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants/keys/route_names.dart';
 import '../../core/presentation/splash_screen.dart';
+import '../../features/auth/presentation/bloc/profile/profile_bloc.dart';
+import '../../features/auth/presentation/screens/profile_edit_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
 import '../../features/location/presentation/bloc/section/section_bloc.dart';
 import '../services/injection_container.dart';
 import '../../features/about/presentation/about_screen.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/location/presentation/screens/location_screen.dart';
 import '../../features/location_listing/presentation/bloc/location_listing_bloc.dart';
@@ -21,6 +23,7 @@ class AppRouter {
   final _locationBloc = sl<LocationBloc>();
   final _authBloc = sl<AuthBloc>();
   final _sectionBloc = sl<SectionBloc>();
+  final _profileBloc = sl<ProfileBloc>();
 
   void dispose() {
     _locationListingBloc.close();
@@ -37,15 +40,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider.value(
-                value: _locationListingBloc,
-              ),
-              BlocProvider.value(
-                value: _locationCategoriesCubit,
-              ),
-              BlocProvider.value(
-                value: _authBloc,
-              ),
+              BlocProvider.value(value: _locationListingBloc),
+              BlocProvider.value(value: _locationCategoriesCubit),
+              BlocProvider.value(value: _authBloc),
             ],
             child: const LocationListingScreen(),
           ),
@@ -54,12 +51,8 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider.value(
-                value: _locationBloc,
-              ),
-              BlocProvider.value(
-                value: _sectionBloc,
-              ),
+              BlocProvider.value(value: _locationBloc),
+              BlocProvider.value(value: _sectionBloc),
             ],
             child: LocationScreen(
               id: settings.arguments as int,
@@ -85,6 +78,16 @@ class AppRouter {
             child: RegisterScreen(
               fromLocation: settings.arguments as bool?,
             ),
+          ),
+        );
+      case RouteNames.profile:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _profileBloc),
+              BlocProvider.value(value: _authBloc),
+            ],
+            child: const ProfileEditScreen(),
           ),
         );
 

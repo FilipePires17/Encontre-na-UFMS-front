@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth/auth_bloc.dart';
 import '../constants/keys/route_names.dart';
 
 class SplashScreen extends StatelessWidget {

@@ -12,4 +12,8 @@ abstract class ApiUrls {
   static const String refreshToken = '$baseAuth/refresh';
   static const String validateUrl = '$baseAuth/verify';
   static const String register = '$baseAuth/register';
+
+  // User
+  static const String baseUser = '$baseUrlDev/users';
+  static const String editProfileUrl = '$baseUser/edit';
 }
