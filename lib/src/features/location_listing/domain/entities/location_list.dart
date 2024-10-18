@@ -12,9 +12,7 @@ class LocationList extends Equatable {
   final int totalItems;
 
   @override
-  List<Object?> get props => [
-        locationItems,
-      ];
+  List<Object?> get props => [locationItems, totalItems];
 }
 
 extension LocationListExtension on LocationList {

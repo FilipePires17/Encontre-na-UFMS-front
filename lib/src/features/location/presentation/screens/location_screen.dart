@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/common_widgets/custom_app_bar.dart';
+import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../domain/entities/sections.dart';
@@ -57,7 +58,7 @@ class _LocationScreenState extends State<LocationScreen>
           );
         } else if (state.status == LocationStateStatus.unauthorized) {
           Navigator.of(context).pushNamed(
-            '/login',
+            RouteNames.login,
             arguments: true,
           );
         }

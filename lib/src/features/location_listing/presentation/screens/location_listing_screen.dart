@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../domain/enums/enum_location.dart';
 import '../bloc/location_listing_bloc.dart';
@@ -119,6 +120,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                   ));
                 },
                 child: CustomScrollView(
+                  controller: scrollController,
                   slivers: [
                     BlocConsumer<LocationListingBloc, LocationListingState>(
                       listener: (context, state) {
@@ -130,7 +132,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                           );
                         } else if (state.status ==
                             LocationListingStatus.unauthorized) {
-                          Navigator.of(context).pushNamed('/login');
+                          Navigator.of(context).pushNamed(RouteNames.login);
                         }
                       },
                       builder: (context, state) {
@@ -149,7 +151,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                                                 .locations.locationItems[index],
                                             onPressed: () {
                                               Navigator.of(context).pushNamed(
-                                                '/location',
+                                                RouteNames.location,
                                                 arguments: state.locations
                                                     .locationItems[index].id,
                                               );
