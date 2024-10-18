@@ -5,11 +5,16 @@ sealed class ProfileEvent extends Equatable {
 }
 
 final class EditProfileEvent extends ProfileEvent {
-  final String? name;
+  final String name;
+  final String email;
   final String? password;
 
-  const EditProfileEvent({this.name, this.password});
+  const EditProfileEvent({
+    required this.name,
+    required this.email,
+    this.password,
+  });
 
   @override
-  List<Object?> get props => [name, password];
+  List<Object?> get props => [name, email, password];
 }

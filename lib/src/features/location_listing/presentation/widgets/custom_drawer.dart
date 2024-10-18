@@ -60,7 +60,9 @@ class CustomDrawer extends StatelessWidget {
                           const EdgeInsets.symmetric(horizontal: Sizes.p32),
                       child: CustomSubmitButton(
                         title: 'Perfil',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(RouteNames.profile);
+                        },
                       ),
                     )
                   : const SizedBox();

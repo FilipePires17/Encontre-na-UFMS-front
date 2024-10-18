@@ -8,7 +8,12 @@ class EditProfile {
 
   const EditProfile({required this.repository});
 
-  Future<Either<dynamic, User>> call({String? name, String? password}) async {
-    return await repository.editProfile(name: name, password: password);
+  Future<Either<dynamic, User>> call(
+      {required String name, required String email, String? password}) async {
+    return await repository.editProfile(
+      name: name,
+      email: email,
+      password: password,
+    );
   }
 }

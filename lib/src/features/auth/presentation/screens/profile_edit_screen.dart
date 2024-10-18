@@ -18,13 +18,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   late AuthBloc authBloc;
+  late ProfileBloc profileBloc;
 
   @override
   void initState() {
     super.initState();
     authBloc = BlocProvider.of<AuthBloc>(context);
+    profileBloc = BlocProvider.of<ProfileBloc>(context);
   }
 
   @override
@@ -56,9 +59,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               gapH12,
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Senha (opcional)',
+                  labelText: 'Email',
+                ),
+                initialValue: authBloc.state.user!.email,
+                enabled: false,
+              ),
+              gapH12,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Nova Senha (opcional)',
                 ),
                 controller: _passwordController,
+                onChanged: (_) => setState(() {}),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return null;
@@ -70,6 +82,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Confirmar Senha',
                 ),
+                controller: _confirmPasswordController,
                 enabled: _passwordController.text.isNotEmpty,
                 validator: (passwordConfirmation) {
                   return AppValidators.confirmPasswordValidator(
@@ -80,33 +93,50 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               ),
               gapH16,
               const Spacer(),
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Voltar'),
-                  ),
-                  gapH12,
-                  BlocConsumer<ProfileBloc, ProfileState>(
-                    listener: (context, state) {
-                      if (state.status == ProfileStateStatus.loaded) {
-                        authBloc.add(UpdateUserEvent(user: state.user!));
-                      }
-                    },
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        onPressed: state.status == ProfileStateStatus.loading
-                            ? null
-                            : () {
-                                if (_formKey.currentState!.validate()) {}
-                              },
-                        child: state.status == ProfileStateStatus.loading
-                            ? const CircularProgressIndicator()
-                            : const Text('Login'),
+              BlocConsumer<ProfileBloc, ProfileState>(
+                listener: (context, state) {
+                  switch (state.status) {
+                    case ProfileStateStatus.error:
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.errorMessage!),
+                        ),
                       );
-                    },
-                  ),
-                ],
+                      break;
+                    case ProfileStateStatus.loaded:
+                      authBloc.add(UpdateUserEvent(user: state.user!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Alterações feitas com sucesso!'),
+                        ),
+                      );
+                      _passwordController.clear();
+                      _confirmPasswordController.clear();
+                      break;
+                    default:
+                      break;
+                  }
+                },
+                builder: (context, state) => ElevatedButton(
+                  onPressed: state.status == ProfileStateStatus.loading
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            profileBloc.add(
+                              EditProfileEvent(
+                                name: _nameController.text,
+                                email: authBloc.state.user!.email,
+                                password: _passwordController.text.isEmpty
+                                    ? null
+                                    : _passwordController.text,
+                              ),
+                            );
+                          }
+                        },
+                  child: state.status == ProfileStateStatus.loading
+                      ? const CircularProgressIndicator()
+                      : const Text('Atualizar'),
+                ),
               ),
               gapH16,
             ],

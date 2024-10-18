@@ -14,12 +14,4 @@ class MoreInfoSectionDto extends MoreInfoSection {
       phone: map['phoneNumber'],
     );
   }
-
-  MoreInfoSection toEntity() {
-    return MoreInfoSection(
-      about: about,
-      observations: observations,
-      phone: phone,
-    );
-  }
 }

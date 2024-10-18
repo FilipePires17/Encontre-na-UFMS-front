@@ -65,7 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(
                         context,
                         RouteNames.register,
-                        arguments: true,
                       );
                     },
                     child: const Text('Crie uma conta'),

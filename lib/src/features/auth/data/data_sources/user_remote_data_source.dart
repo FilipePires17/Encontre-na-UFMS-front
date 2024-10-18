@@ -13,7 +13,6 @@ abstract class IUserRemoteDataSource {
     required String password,
   });
   Future<Either<Error, bool>> validateToken();
-  Future<Either<String, Response>> getCurrentUser();
   Future<Either<Error, Response>> getCurrentUserInfo(String id);
   Future<Either<Error, Response>> changePassword(String password);
   Future<Either<Error, Response>> sendVerificationEmail(String email);
@@ -21,7 +20,8 @@ abstract class IUserRemoteDataSource {
       String email, String code);
 
   Future<Either<dynamic, UserDto>> editProfile({
-    String? name,
+    required String name,
+    required String email,
     String? password,
   });
 }
@@ -47,7 +47,7 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
     if (response.statusCode == 200) {
       return Right(UserDto.fromMap(response.data['user']));
     }
-    return Left(response.data['error']);
+    return Left(response.statusMessage ?? 'Erro ao fazer login');
   }
 
   @override
@@ -65,21 +65,6 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<Either<String, Response>> getCurrentUser() async {
-    // final response = await httpClient.restRequest(
-    //   url: ApiUrls.getLoggedUserUrl,
-    //   method: HttpMethods.get,
-    // );
-    // if (response.statusCode == 200) {
-    //   return Right(response);
-    // }
-    // return Left(response.statusMessage ?? 'Token inválido');
-
-    // TODO: implement getCurrentUser
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<Error, Response>> getCurrentUserInfo(id) async {
     final response = await httpClient.restRequest(
       url: '${ApiUrls.baseUser}/$id',
@@ -88,6 +73,47 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
 
     if (response.statusCode == 200) {
       return Right(response);
+    }
+    return Left(response.data['message']);
+  }
+
+  @override
+  Future<Either<String, UserDto>> registerUser(
+      {required String name,
+      required String email,
+      required String password}) async {
+    final response = await httpClient.restRequest(
+      url: ApiUrls.register,
+      method: HttpMethods.post,
+      body: {
+        'name': name,
+        'email': email,
+        'password': password,
+      },
+      hasToken: false,
+    );
+
+    if (response.statusCode == 201) {
+      return Right(UserDto.fromMap(response.data['user']));
+    }
+    return Left(response.statusMessage ?? 'Erro ao fazer cadastro');
+  }
+
+  @override
+  Future<Either<dynamic, UserDto>> editProfile(
+      {required String name, required String email, String? password}) async {
+    final response = await httpClient.restRequest(
+      url: ApiUrls.editProfileUrl,
+      method: HttpMethods.post,
+      body: {
+        'name': name,
+        'email': email,
+        if (password != null) 'password': password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return Right(UserDto.fromMap(response.data['user']));
     }
     return Left(response.data['message']);
   }
@@ -148,45 +174,5 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
 
     // TODO: implement verifyRedefinitionCode
     throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<String, UserDto>> registerUser(
-      {required String name,
-      required String email,
-      required String password}) async {
-    final response = await httpClient.restRequest(
-      url: ApiUrls.register,
-      method: HttpMethods.post,
-      body: {
-        'name': name,
-        'email': email,
-        'password': password,
-      },
-      hasToken: false,
-    );
-
-    if (response.statusCode == 201) {
-      return Right(UserDto.fromMap(response.data['user']));
-    }
-    return Left(response.data['error']);
-  }
-
-  @override
-  Future<Either<dynamic, UserDto>> editProfile(
-      {String? name, String? password}) async {
-    final response = await httpClient.restRequest(
-      url: ApiUrls.editProfileUrl,
-      method: HttpMethods.post,
-      body: {
-        'name': name,
-        'password': password,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      return Right(UserDto.fromMap(response.data['user']));
-    }
-    return Left(response.data['error']);
   }
 }
