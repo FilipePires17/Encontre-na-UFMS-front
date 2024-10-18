@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
-import '../bloc/auth_bloc.dart';
+import '../bloc/auth/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, this.fromLocation = false});
@@ -65,7 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(
                         context,
                         RouteNames.register,
-                        arguments: true,
                       );
                     },
                     child: const Text('Crie uma conta'),

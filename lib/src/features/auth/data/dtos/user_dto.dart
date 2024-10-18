@@ -45,12 +45,4 @@ class UserDto extends User {
       refreshToken: refreshToken ?? this.refreshToken,
     );
   }
-
-  User toEntity() {
-    return User(
-      id: id,
-      name: name,
-      email: email,
-    );
-  }
 }

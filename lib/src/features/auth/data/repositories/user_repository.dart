@@ -5,7 +5,6 @@ import '../../domain/entities/user.dart';
 import '../../domain/repositories/i_user_repository.dart';
 import '../data_sources/user_local_data_source.dart';
 import '../data_sources/user_remote_data_source.dart';
-// import '../dtos/user_dto.dart';
 
 class UserRepository implements IUserRepository {
   final IUserRemoteDataSource remoteDataSource;
@@ -17,20 +16,6 @@ class UserRepository implements IUserRepository {
     required this.localDataSource,
     required this.networkInfo,
   });
-
-  // @override
-  // Future<Either<String, User>> getCurrentUser() async {
-  //   if (await networkInfo.isConnected) {
-  //     final response = await remoteDataSource.getCurrentUser();
-
-  //     return response.match(
-  //       (error) => Left(error),
-  //       (res) => Right(UserDto.fromMap(res.data['entity'])),
-  //     );
-  //   } else {
-  //     return const Left('Sem conexão');
-  //   }
-  // }
 
   @override
   Future<Either<Error, String?>> validateToken() async {
@@ -69,7 +54,7 @@ class UserRepository implements IUserRepository {
             token: res.token,
             refreshToken: res.refreshToken,
           );
-          return Right(res.toEntity());
+          return Right(res);
         },
       );
     } else {
@@ -144,7 +129,7 @@ class UserRepository implements IUserRepository {
             token: res.token,
             refreshToken: res.refreshToken,
           );
-          return Right(res.toEntity());
+          return Right(res);
         },
       );
     } else {
@@ -152,9 +137,24 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  // @override
-  // Future<Either<dynamic, bool>> refreshToken() {
-  //   // TODO: implement refreshToken
-  //   throw UnimplementedError();
-  // }
+  @override
+  Future<Either<dynamic, User>> editProfile(
+      {required String name, required String email, String? password}) async {
+    if (await networkInfo.isConnected) {
+      final user = await remoteDataSource.editProfile(
+        name: name,
+        email: email,
+        password: password,
+      );
+
+      return user.match(
+        (errorMessage) => Left(errorMessage),
+        (res) {
+          return Right(res);
+        },
+      );
+    } else {
+      return const Left('Sem conexão');
+    }
+  }
 }

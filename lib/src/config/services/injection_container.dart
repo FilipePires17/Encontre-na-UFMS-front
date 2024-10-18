@@ -5,13 +5,15 @@ import '../../features/auth/data/data_sources/user_remote_data_source.dart';
 import '../../features/auth/data/repositories/user_repository.dart';
 import '../../features/auth/domain/repositories/i_user_repository.dart';
 import '../../features/auth/domain/usecases/change_password.dart';
+import '../../features/auth/domain/usecases/edit_profile.dart';
 import '../../features/auth/domain/usecases/register_user.dart';
 import '../../features/auth/domain/usecases/send_verification_email.dart';
 import '../../features/auth/domain/usecases/sign_in_user.dart';
 import '../../features/auth/domain/usecases/sign_out_user.dart';
 import '../../features/auth/domain/usecases/validate_token.dart';
 import '../../features/auth/domain/usecases/verify_redefinition_code.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/profile/profile_bloc.dart';
 import '../../features/location/data/datasource/remote_location_datasource.dart';
 import '../../features/location/data/repos/location_repo.dart';
 import '../../features/location/domain/repos/i_location_repo.dart';
@@ -101,6 +103,9 @@ void init() {
   sl.registerLazySingleton<IUserLocalDataSource>(() => UserLocalDataSource(
         localStorageCaller: sl(),
       ));
+
+  sl.registerFactory(() => ProfileBloc(editProfile: sl()));
+  sl.registerLazySingleton(() => EditProfile(repository: sl()));
 
   // Core
   sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));

@@ -22,16 +22,4 @@ class HoursSectionDto extends HoursSection {
       saturdayHours: map['saturdayHours'],
     );
   }
-
-  HoursSection toEntity() {
-    return HoursSection(
-      sundayHours: sundayHours,
-      mondayHours: mondayHours,
-      tuesdayHours: tuesdayHours,
-      wednesdayHours: wednesdayHours,
-      thursdayHours: thursdayHours,
-      fridayHours: fridayHours,
-      saturdayHours: saturdayHours,
-    );
-  }
 }

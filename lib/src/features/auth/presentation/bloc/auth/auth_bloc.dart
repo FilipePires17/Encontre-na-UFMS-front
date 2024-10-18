@@ -2,15 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-import '../../domain/entities/user.dart';
-import '../../domain/usecases/change_password.dart';
+import '../../../domain/entities/user.dart';
+import '../../../domain/usecases/change_password.dart';
 // import '../../domain/usecases/get_current_user.dart';
-import '../../domain/usecases/register_user.dart';
-import '../../domain/usecases/send_verification_email.dart';
-import '../../domain/usecases/sign_in_user.dart';
-import '../../domain/usecases/sign_out_user.dart';
-import '../../domain/usecases/validate_token.dart';
-import '../../domain/usecases/verify_redefinition_code.dart';
+import '../../../domain/usecases/register_user.dart';
+import '../../../domain/usecases/send_verification_email.dart';
+import '../../../domain/usecases/sign_in_user.dart';
+import '../../../domain/usecases/sign_out_user.dart';
+import '../../../domain/usecases/validate_token.dart';
+import '../../../domain/usecases/verify_redefinition_code.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -144,6 +144,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
           ),
         );
+      },
+    );
+
+    on<UpdateUserEvent>(
+      (event, emit) {
+        emit(state.copyWith(user: event.user));
       },
     );
   }

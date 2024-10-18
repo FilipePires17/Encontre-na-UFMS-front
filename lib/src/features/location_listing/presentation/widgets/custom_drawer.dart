@@ -6,7 +6,7 @@ import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/string_extension.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key, required this.onLogout});
@@ -60,7 +60,9 @@ class CustomDrawer extends StatelessWidget {
                           const EdgeInsets.symmetric(horizontal: Sizes.p32),
                       child: CustomSubmitButton(
                         title: 'Perfil',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(RouteNames.profile);
+                        },
                       ),
                     )
                   : const SizedBox();

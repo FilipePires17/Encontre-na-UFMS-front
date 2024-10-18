@@ -16,13 +16,4 @@ class LocalizationSectionDto extends LocalizationSection {
       address: map['address'],
     );
   }
-
-  LocalizationSection toEntity() {
-    return LocalizationSection(
-      googleLink: googleLink,
-      latitude: latitude,
-      longitude: longitude,
-      address: address,
-    );
-  }
 }

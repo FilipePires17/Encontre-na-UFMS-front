@@ -66,7 +66,10 @@ class LocationListingBloc
 
             emit(state.copyWith(
               status: LocationListingStatus.loaded,
-              locations: LocationList(locationItems: updatedLocations),
+              locations: LocationList(
+                locationItems: updatedLocations,
+                totalItems: state.locations.totalItems,
+              ),
             ));
           },
         );
@@ -114,12 +117,15 @@ class LocationListingBloc
               hasReachedMax: locations.hasReachedMax,
             ));
           } else {
-            final updatedLocations =
-                state.locations.getUpdatedList(locations.locationItems);
+            final updatedLocations = LocationList(
+              locationItems:
+                  state.locations.getUpdatedList(locations.locationItems),
+              totalItems: locations.totalItems,
+            );
 
             emit(state.copyWith(
-              locations: LocationList(locationItems: updatedLocations),
-              hasReachedMax: locations.hasReachedMax,
+              locations: updatedLocations,
+              hasReachedMax: updatedLocations.hasReachedMax,
             ));
           }
         },

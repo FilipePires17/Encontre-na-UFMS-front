@@ -68,3 +68,12 @@ class VerifyCodeEvent extends AuthEvent {
 }
 
 class ResetAuthEvent extends AuthEvent {}
+
+class UpdateUserEvent extends AuthEvent {
+  final User user;
+
+  const UpdateUserEvent({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
