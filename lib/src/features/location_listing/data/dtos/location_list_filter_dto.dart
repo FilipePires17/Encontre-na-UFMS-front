@@ -1,17 +1,18 @@
 import '../../domain/entities/location_list_filter.dart';
-import '../../domain/enums/enum_location.dart';
 
 class LocationListFilterDto extends LocationListFilter {
   const LocationListFilterDto({
-    super.types = const [EnumLocation.academicBlocks],
+    super.types = const [],
     super.pageIndex = 1,
     super.pageSize = 10,
+    super.query,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'pageNumber': pageIndex,
       'limit': pageSize,
+      if (query != null) 'searchParam': query,
     };
   }
 
@@ -20,6 +21,7 @@ class LocationListFilterDto extends LocationListFilter {
       types: filter.types,
       pageIndex: filter.pageIndex,
       pageSize: filter.pageSize,
+      query: filter.query,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +24,9 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
   late LocationCategoriesCubit locationCategoriesCubit;
   final scrollController = ScrollController();
 
+  final searchController = TextEditingController();
+  Timer? _debounce;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +34,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
     locationCategoriesCubit = BlocProvider.of<LocationCategoriesCubit>(context);
     locationListingBloc.add(const LoadEvent());
     locationCategoriesCubit.clearCategories();
+
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
               scrollController.offset &&
@@ -39,6 +45,25 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
             locationsToFilter: locationCategoriesCubit.state,
           ),
         );
+      }
+    });
+
+    searchController.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+    _debounce = Timer(const Duration(seconds: 1), () {
+      if (searchController.text.isNotEmpty) {
+        locationListingBloc.add(LoadEvent(
+          query: searchController.text,
+          locationsToFilter: locationCategoriesCubit.state,
+        ));
+      } else {
+        locationListingBloc.add(LoadEvent(
+          locationsToFilter: locationCategoriesCubit.state,
+        ));
       }
     });
   }
@@ -71,9 +96,10 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                     },
                   );
                 }),
-                const Expanded(
+                Expanded(
                   child: TextField(
-                    decoration: InputDecoration(
+                    controller: searchController,
+                    decoration: const InputDecoration(
                       hintText: 'Search location',
                     ),
                   ),

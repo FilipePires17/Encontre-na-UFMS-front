@@ -24,6 +24,7 @@ class LocationListingBloc
       await loadEvent(
         isFirstPage: event.isFirstPage,
         filters: event.locationsToFilter,
+        query: event.query,
         emit: emit,
       );
     });
@@ -84,6 +85,7 @@ class LocationListingBloc
   Future<void> loadEvent({
     bool isFirstPage = true,
     required List<EnumLocation> filters,
+    String? query,
     required Emitter emit,
   }) async {
     if (isFirstPage) {
@@ -99,6 +101,7 @@ class LocationListingBloc
     await getLocationListingPaginated(
       filter: LocationListFilter(
         pageIndex: state.pageIndex,
+        query: query,
         types: filters,
       ),
     ).then((result) {
