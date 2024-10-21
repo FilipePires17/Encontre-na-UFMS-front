@@ -17,9 +17,10 @@ class LocationDto extends Location {
     return LocationDto(
       id: map['id'],
       name: map['name'],
-      // multimedia: map['multimedia']
-      //     ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
-      //     .toList(),
+      multimedia: map['multimedia']
+              ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
+              .toList() ??
+          [],
       isOpen: map['isOpen'],
       isFavorite: map['favorite'] == 1,
       rating: double.parse(map['grade']),

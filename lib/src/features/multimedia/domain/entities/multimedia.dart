@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 
 class Multimedia extends Equatable {
@@ -9,7 +11,7 @@ class Multimedia extends Equatable {
 
   final int id;
   final String? name;
-  final String media;
+  final Uint8List media;
 
   @override
   List<Object?> get props => [id, name, media];

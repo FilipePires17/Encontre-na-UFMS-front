@@ -54,15 +54,10 @@ class LocationListingBloc
               (location) => location.id == event.id,
             );
 
-            updatedLocations[locationIndex] = LocationListItem(
-              id: updatedLocations[locationIndex].id,
-              name: updatedLocations[locationIndex].name,
-              address: updatedLocations[locationIndex].address,
-              type: updatedLocations[locationIndex].type,
-              isOpen: updatedLocations[locationIndex].isOpen,
+            updatedLocations[locationIndex] =
+                updatedLocations[locationIndex].copyWith(
               isFavorite:
                   !(updatedLocations[locationIndex].isFavorite ?? false),
-              rating: updatedLocations[locationIndex].rating,
             );
 
             emit(state.copyWith(

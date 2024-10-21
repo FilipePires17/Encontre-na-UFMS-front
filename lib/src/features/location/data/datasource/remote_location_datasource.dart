@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/constants/api_urls.dart';
+import '../../../../core/constants/image.dart';
 import '../../../../core/data/remote/http_manager.dart';
 import '../../domain/entities/sections.dart';
 import '../../domain/enums/enum_sections.dart';
@@ -37,7 +38,22 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
       return const Left('Erro ao buscar local');
     }
 
-    return Right(LocationDto.fromMap(response.data['data']));
+    return Right(LocationDto.fromMap(response.data['data']
+      // TODO: retirar quando a API começar a mandar a lista de imagens
+      ..addAll({
+        'multimedia': [
+          {
+            'id': 1,
+            'name': 'name',
+            'media': imageMock,
+          },
+          {
+            'id': 2,
+            'name': 'name',
+            'media': imageMock,
+          }
+        ]
+      })));
   }
 
   @override

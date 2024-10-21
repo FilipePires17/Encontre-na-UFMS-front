@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/sizes/app_sizes.dart';
+import '../constants/theme/app_colors.dart';
 
 class CustomAppBar extends AppBar {
   CustomAppBar({
@@ -9,6 +10,7 @@ class CustomAppBar extends AppBar {
     required BuildContext context,
     super.actions,
   }) : super(
+          backgroundColor: AppColors.charcoalGrey,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

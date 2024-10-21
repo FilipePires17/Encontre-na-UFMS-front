@@ -26,6 +26,8 @@ class _LocationScreenState extends State<LocationScreen>
     with TickerProviderStateMixin {
   late final TabController tabController;
   late SectionBloc sectionBloc;
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
 
   @override
   void initState() {
@@ -36,11 +38,20 @@ class _LocationScreenState extends State<LocationScreen>
       id: widget.id,
       section: EnumSections.localization,
     ));
+
+    _pageController.addListener(() {
+      int nextPage = _pageController.page!.round();
+      if (_currentPage != nextPage) {
+        _currentPage = nextPage;
+        setState(() {});
+      }
+    });
   }
 
   @override
   void dispose() {
     tabController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -89,10 +100,49 @@ class _LocationScreenState extends State<LocationScreen>
                 ),
                 body: Column(
                   children: [
-                    Container(
-                      height: 200, //MediaQuery.sizeOf(context).width,
+                    SizedBox(
+                      height: 200,
                       width: double.infinity,
-                      color: AppColors.primary,
+                      child: Stack(
+                        children: [
+                          PageView.builder(
+                            controller: _pageController,
+                            itemCount: state.location!.multimedia.length,
+                            itemBuilder: (_, index) => Image.memory(
+                              state.location!.multimedia[index].media,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          if (state.location!.multimedia.length > 1)
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  state.location!.multimedia.length,
+                                  (index) {
+                                    return AnimatedContainer(
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 4.0,
+                                      ),
+                                      height: 12.0,
+                                      width: _currentPage == index ? 12.0 : 8.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: _currentPage == index
+                                            ? AppColors.primary
+                                            : Colors.grey,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                     Container(
                       color: AppColors.charcoalGrey,

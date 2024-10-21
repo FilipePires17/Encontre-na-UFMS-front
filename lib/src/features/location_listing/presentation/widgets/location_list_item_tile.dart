@@ -26,10 +26,13 @@ class LocationListItemTile extends StatelessWidget {
         height: Sizes.p100,
         child: Row(
           children: <Widget>[
-            Container(
-              color: AppColors.primary,
+            SizedBox(
               width: 100,
               height: 100,
+              child: Image.memory(
+                location.multimedia.first.media,
+                fit: BoxFit.fitHeight,
+              ),
             ),
             gapW12,
             Expanded(

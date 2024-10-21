@@ -3,7 +3,7 @@ enum EnumLocation {
   touristicPoints('TouristsPoints', 'Pontos Turísticos'),
   banks('Banks', 'Bancos'),
   restaurants('Restaurants', 'Restaurantes'),
-  helthServices('HelthServices', 'Serviços de Saúde'),
+  healthServices('HealthServices', 'Serviços de Saúde'),
   libraries('Libraries', 'Bibliotecas'),
   sportsCenters('SportsCenters', 'Centros Esportivos'),
   transports('Transports', 'Transportes'),

@@ -1,4 +1,5 @@
 import '../../../location/domain/entities/location.dart';
+import '../../../multimedia/domain/entities/multimedia.dart';
 import '../enums/enum_location.dart';
 
 class LocationListItem extends Location {
@@ -16,4 +17,29 @@ class LocationListItem extends Location {
 
   final EnumLocation type;
   final String address;
+
+  @override
+  LocationListItem copyWith({
+    int? id,
+    String? name,
+    String? address,
+    List<Multimedia>? multimedia,
+    bool? isOpen,
+    bool? isFavorite,
+    double? rating,
+    bool? hasAccessibility,
+    EnumLocation? type,
+  }) {
+    return LocationListItem(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      multimedia: multimedia ?? this.multimedia,
+      isOpen: isOpen ?? this.isOpen,
+      isFavorite: isFavorite ?? this.isFavorite,
+      rating: rating ?? this.rating,
+      hasAccessibility: hasAccessibility ?? this.hasAccessibility,
+      type: type ?? this.type,
+    );
+  }
 }

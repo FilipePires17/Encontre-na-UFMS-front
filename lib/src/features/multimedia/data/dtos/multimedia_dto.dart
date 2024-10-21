@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../domain/entities/multimedia.dart';
 
 class MultimediaDto extends Multimedia {
@@ -7,11 +9,11 @@ class MultimediaDto extends Multimedia {
     required super.media,
   });
 
-  factory MultimediaDto.fromMap(Map<String, dynamic> json) {
+  factory MultimediaDto.fromMap(Map<String, dynamic> map) {
     return MultimediaDto(
-      id: json['id'],
-      name: json['name'],
-      media: json['media'],
+      id: map['id'],
+      name: map['name'],
+      media: base64Decode(map['media']),
     );
   }
 }

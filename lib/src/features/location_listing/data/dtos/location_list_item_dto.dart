@@ -1,3 +1,4 @@
+import '../../../multimedia/data/dtos/multimedia_dto.dart';
 import '../../domain/entities/location_list_item.dart';
 import '../../domain/enums/enum_location.dart';
 
@@ -23,9 +24,10 @@ class LocationListItemDto extends LocationListItem {
       isFavorite: map['favorite'] == 1,
       rating: double.parse(map['grade']),
       type: EnumLocation.values[map['type']],
-      // multimedia: map['multimedia']
-      //     ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
-      //     .toList(),
+      multimedia: map['multimedia']
+              ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
+              .toList() ??
+          [],
     );
   }
 }
