@@ -4,35 +4,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, this.fromLocation = false});
+class NewPasswordScreen extends StatefulWidget {
+  const NewPasswordScreen({super.key, this.fromLocation});
 
   final bool? fromLocation;
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<NewPasswordScreen> createState() => CodeScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class CodeScreenState extends State<NewPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'LOGIN',
+        text: 'Criar nova senha',
         context: context,
       ),
       body: Padding(
@@ -44,34 +37,31 @@ class _LoginScreenState extends State<LoginScreen> {
               const Spacer(),
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-                controller: _emailController,
-              ),
-              gapH12,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Nova senha',
                 ),
                 controller: _passwordController,
+                validator: AppValidators.passwordValidator,
               ),
               gapH8,
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RouteNames.emailSubmit,
-                  );
-                },
-                child: const Text('Esqueci minha senha'),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Confirmar nova senha',
+                ),
+                // controller: _passwordController,
+                validator: (newPassword) =>
+                    AppValidators.confirmPasswordValidator(
+                  _passwordController.text,
+                  newPassword,
+                ),
               ),
               const Spacer(),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state.status == AuthStateStatus.error) {
+                  if (state.status == AuthStateStatus.loginError) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.errorMessage!),
+                        backgroundColor: Colors.red,
                       ),
                     );
                   } else if (state.status == AuthStateStatus.loggedIn) {
@@ -94,34 +84,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         : () {
                             if (_formKey.currentState!.validate()) {
                               context.read<AuthBloc>().add(
-                                    LoginEvent(
-                                      email: _emailController.text,
+                                    ChangePasswordEvent(
                                       password: _passwordController.text,
                                     ),
                                   );
                             }
                           },
                     child: state.status == AuthStateStatus.loading
-                        ? const CircularProgressIndicator()
-                        : const Text('Login'),
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text('Alterar senha'),
                   );
                 },
-              ),
-              gapH8,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text('Não tem uma conta?'),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        RouteNames.register,
-                      );
-                    },
-                    child: const Text('Crie uma conta'),
-                  ),
-                ],
               ),
               gapH16,
             ],

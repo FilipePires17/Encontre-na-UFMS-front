@@ -20,7 +20,6 @@ abstract class IUserRepository {
     required String email,
     required String code,
   });
-
   Future<Either<dynamic, User>> editProfile({
     required String name,
     required String email,
