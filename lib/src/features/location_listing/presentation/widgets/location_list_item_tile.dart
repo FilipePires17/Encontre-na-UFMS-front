@@ -29,10 +29,15 @@ class LocationListItemTile extends StatelessWidget {
             SizedBox(
               width: 100,
               height: 100,
-              child: Image.memory(
-                location.multimedia.first.media,
-                fit: BoxFit.fitHeight,
-              ),
+              child: location.multimedia.isNotEmpty
+                  ? Image.memory(
+                      location.multimedia.first.media,
+                      fit: BoxFit.fitHeight,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.image_not_supported);
+                      },
+                    )
+                  : const Icon(Icons.image),
             ),
             gapW12,
             Expanded(

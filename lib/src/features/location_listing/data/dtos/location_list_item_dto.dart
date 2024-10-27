@@ -24,10 +24,9 @@ class LocationListItemDto extends LocationListItem {
       isFavorite: map['favorite'] == 1,
       rating: double.parse(map['grade']),
       type: EnumLocation.values[map['type']],
-      multimedia: map['multimedia']
-              ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
-              .toList() ??
-          [],
+      multimedia: map['mainPhoto'] == null
+          ? []
+          : [MultimediaDto.fromMap(map['mainPhoto'])],
     );
   }
 }

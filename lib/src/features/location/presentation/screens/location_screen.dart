@@ -105,14 +105,21 @@ class _LocationScreenState extends State<LocationScreen>
                       width: double.infinity,
                       child: Stack(
                         children: [
-                          PageView.builder(
-                            controller: _pageController,
-                            itemCount: state.location!.multimedia.length,
-                            itemBuilder: (_, index) => Image.memory(
-                              state.location!.multimedia[index].media,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
+                          state.location!.multimedia.isEmpty
+                              ? const Center(child: Icon(Icons.image))
+                              : PageView.builder(
+                                  controller: _pageController,
+                                  itemCount: state.location!.multimedia.length,
+                                  itemBuilder: (_, index) => Image.memory(
+                                    state.location!.multimedia[index].media,
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (_, __, ___) {
+                                      return const Center(
+                                        child: Icon(Icons.image_not_supported),
+                                      );
+                                    },
+                                  ),
+                                ),
                           if (state.location!.multimedia.length > 1)
                             Align(
                               alignment: Alignment.bottomCenter,

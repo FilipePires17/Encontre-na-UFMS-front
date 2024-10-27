@@ -13,7 +13,7 @@ class MultimediaDto extends Multimedia {
     return MultimediaDto(
       id: map['id'],
       name: map['name'],
-      media: base64Decode(map['media']),
+      media: base64Decode((map['data'] as String).split(':').last),
     );
   }
 }

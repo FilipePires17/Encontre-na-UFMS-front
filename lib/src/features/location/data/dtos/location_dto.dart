@@ -17,7 +17,7 @@ class LocationDto extends Location {
     return LocationDto(
       id: map['id'],
       name: map['name'],
-      multimedia: map['multimedia']
+      multimedia: map['photos']
               ?.map<MultimediaDto>((e) => MultimediaDto.fromMap(e))
               .toList() ??
           [],
