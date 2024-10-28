@@ -13,15 +13,14 @@ abstract class IUserRepository {
     required String email,
     required String password,
   });
-  Future<Either<dynamic, void>> changePassword({required String newPassword});
   Future<Either<String, void>> signOutUser();
   Future<Either<dynamic, void>> sendVerificationEmail({required String email});
-  Future<Either<dynamic, void>> verifyRedefinitionCode({
+  Future<Either<String, void>> verifyRedefinitionCode({
     required String email,
     required String code,
   });
   Future<Either<dynamic, User>> editProfile({
-    required String name,
+    String? name,
     required String email,
     String? password,
   });

@@ -14,13 +14,12 @@ abstract class IUserRemoteDataSource {
   });
   Future<Either<Error, bool>> validateToken();
   Future<Either<Error, Response>> getCurrentUserInfo(String id);
-  Future<Either<Error, Response>> changePassword(String password);
   Future<Either<Error, Response>> sendVerificationEmail(String email);
-  Future<Either<Error, Response>> verifyRedefinitionCode(
+  Future<Either<String, Response>> verifyRedefinitionCode(
       String email, String code);
 
   Future<Either<dynamic, UserDto>> editProfile({
-    required String name,
+    String? name,
     required String email,
     String? password,
   });
@@ -101,12 +100,12 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
 
   @override
   Future<Either<dynamic, UserDto>> editProfile(
-      {required String name, required String email, String? password}) async {
+      {String? name, required String email, String? password}) async {
     final response = await httpClient.restRequest(
       url: ApiUrls.editProfileUrl,
       method: HttpMethods.post,
       body: {
-        'name': name,
+        if (name != null) 'name': name,
         'email': email,
         if (password != null) 'password': password,
       },
@@ -119,60 +118,38 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<Either<Error, Response>> changePassword(String password) async {
-    // final response = await httpClient.restRequest(
-    //   url: ApiUrls.changePasswordUrl,
-    //   method: HttpMethods.put,
-    //   parameters: {'password': password},
-    // );
-    // if (response.statusCode == 200) {
-    //   return Right(response);
-    // }
-    // return Left('message');
-
-    // TODO: implement changePassword
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<Error, Response>> sendVerificationEmail(String email) async {
-    // final response = await httpClient.restRequest(
-    //   url: ApiUrls.sendVerificationEmail,
-    //   method: HttpMethods.post,
-    //   parameters: {'email': email},
-    //   hasToken: false,
-    // );
+    final response = await httpClient.restRequest(
+      url: ApiUrls.sendVerificationEmail,
+      method: HttpMethods.post,
+      body: {'email': email},
+      hasToken: false,
+    );
 
-    // if (response.statusCode == 200) {
-    //   return Right(response);
-    // } else {
-    //   return Left(response);
-    // }
-
-    // TODO: implement sendVerificationEmail
-    throw UnimplementedError();
+    if (response.statusCode == 200) {
+      return Right(response);
+    } else {
+      return Left(Error());
+    }
   }
 
   @override
-  Future<Either<Error, Response>> verifyRedefinitionCode(
+  Future<Either<String, Response>> verifyRedefinitionCode(
       String email, String code) async {
-    // final response = await httpClient.restRequest(
-    //   url: ApiUrls.verifyRedefinitionCodeUrl,
-    //   method: HttpMethods.post,
-    //   body: {
-    //     'email': email,
-    //     'code': code,
-    //   },
-    //   hasToken: false,
-    // );
+    final response = await httpClient.restRequest(
+      url: ApiUrls.verifyRedefinitionCode,
+      method: HttpMethods.post,
+      body: {
+        'email': email,
+        'token': code,
+      },
+      hasToken: false,
+    );
 
-    // if (response.statusCode == 200) {
-    //   return Right(response);
-    // } else {
-    //   return Left(response);
-    // }
-
-    // TODO: implement verifyRedefinitionCode
-    throw UnimplementedError();
+    if (response.statusCode == 200) {
+      return Right(response);
+    } else {
+      return const Left('');
+    }
   }
 }

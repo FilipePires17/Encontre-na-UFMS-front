@@ -59,9 +59,10 @@ class SendEmailEvent extends AuthEvent {
 }
 
 class VerifyCodeEvent extends AuthEvent {
+  final String email;
   final String code;
 
-  const VerifyCodeEvent({required this.code});
+  const VerifyCodeEvent({required this.email, required this.code});
 
   @override
   List<Object> get props => [code];

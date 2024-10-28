@@ -15,7 +15,7 @@ class UserDto extends User {
   factory UserDto.fromMap(Map map) {
     return UserDto(
       id: map['id'].toString(),
-      name: map['name'],
+      name: map['name'] ?? '',
       email: map['email'],
       token: map['token'],
       refreshToken: map['refreshToken'],

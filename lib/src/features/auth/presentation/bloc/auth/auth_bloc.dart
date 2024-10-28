@@ -3,8 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../domain/entities/user.dart';
-import '../../../domain/usecases/change_password.dart';
-// import '../../domain/usecases/get_current_user.dart';
 import '../../../domain/usecases/register_user.dart';
 import '../../../domain/usecases/send_verification_email.dart';
 import '../../../domain/usecases/sign_in_user.dart';
@@ -16,8 +14,6 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final ChangePassword changePassword;
-  // final GetCurrentUser getCurrentUser;
   final SendVerificationEmail sendVerificationEmail;
   final SignInUser signInUser;
   final SignOutUser signOutUser;
@@ -26,8 +22,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RegisterUser registerUser;
 
   AuthBloc({
-    required this.changePassword,
-    // required this.getCurrentUser,
     required this.sendVerificationEmail,
     required this.signInUser,
     required this.signOutUser,
@@ -149,7 +143,57 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<UpdateUserEvent>(
       (event, emit) {
-        emit(state.copyWith(user: event.user));
+        emit(state.copyWith(
+          status: AuthStateStatus.loggedIn,
+          user: event.user,
+        ));
+      },
+    );
+
+    on<SendEmailEvent>(
+      (event, emit) async {
+        emit(state.copyWith(status: AuthStateStatus.loading));
+
+        await sendVerificationEmail(email: event.email).then(
+          (value) => value.fold(
+            (errorMessage) {
+              emit(state.copyWith(
+                status: AuthStateStatus.emailError,
+                errorMessage: errorMessage,
+              ));
+            },
+            (_) {
+              emit(state.copyWith(
+                status: AuthStateStatus.emailSent,
+              ));
+            },
+          ),
+        );
+      },
+    );
+
+    on<VerifyCodeEvent>(
+      (event, emit) async {
+        emit(state.copyWith(status: AuthStateStatus.loading));
+
+        await verifyRedefinitionCode(
+          email: event.email,
+          code: event.code,
+        ).then(
+          (value) => value.fold(
+            (errorMessage) {
+              emit(state.copyWith(
+                status: AuthStateStatus.error,
+                errorMessage: errorMessage,
+              ));
+            },
+            (_) {
+              emit(state.copyWith(
+                status: AuthStateStatus.validCode,
+              ));
+            },
+          ),
+        );
       },
     );
   }

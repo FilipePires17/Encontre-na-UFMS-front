@@ -6,11 +6,13 @@ import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
+import '../bloc/profile/profile_bloc.dart';
 
 class NewPasswordScreen extends StatefulWidget {
-  const NewPasswordScreen({super.key, this.fromLocation});
+  const NewPasswordScreen({super.key, this.fromLocation, required this.email});
 
   final bool? fromLocation;
+  final String email;
 
   @override
   State<NewPasswordScreen> createState() => CodeScreenState();
@@ -55,26 +57,33 @@ class CodeScreenState extends State<NewPasswordScreen> {
                 ),
               ),
               const Spacer(),
-              BlocConsumer<AuthBloc, AuthState>(
+              BlocConsumer<ProfileBloc, ProfileState>(
                 listener: (context, state) {
-                  if (state.status == AuthStateStatus.loginError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.errorMessage!),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  } else if (state.status == AuthStateStatus.loggedIn) {
-                    if (widget.fromLocation == true) {
-                      Navigator.of(context).popUntil(
-                        (route) => route.settings.name == RouteNames.location,
+                  switch (state.status) {
+                    case ProfileStateStatus.error:
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.errorMessage!),
+                        ),
                       );
-                    } else {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        RouteNames.home,
-                        (route) => false,
-                      );
-                    }
+                      break;
+                    case ProfileStateStatus.loaded:
+                      context
+                          .read<AuthBloc>()
+                          .add(UpdateUserEvent(user: state.user!));
+                      if (widget.fromLocation == true) {
+                        Navigator.of(context).popUntil(
+                          (route) => route.settings.name == RouteNames.location,
+                        );
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          RouteNames.home,
+                          (route) => false,
+                        );
+                      }
+                      break;
+                    default:
+                      break;
                   }
                 },
                 builder: (context, state) {
@@ -83,8 +92,9 @@ class CodeScreenState extends State<NewPasswordScreen> {
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
-                              context.read<AuthBloc>().add(
-                                    ChangePasswordEvent(
+                              context.read<ProfileBloc>().add(
+                                    EditProfileEvent(
+                                      email: widget.email,
                                       password: _passwordController.text,
                                     ),
                                   );

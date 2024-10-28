@@ -63,18 +63,6 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<Either<dynamic, void>> changePassword(
-      {required String newPassword}) async {
-    if (await networkInfo.isConnected) {
-      final response = await remoteDataSource.changePassword(newPassword);
-
-      return response;
-    } else {
-      return const Left('Sem conexão');
-    }
-  }
-
-  @override
   Future<Either<String, void>> signOutUser() async {
     final response = await localDataSource.deleteToken();
 
@@ -85,15 +73,14 @@ class UserRepository implements IUserRepository {
   Future<Either<dynamic, void>> sendVerificationEmail(
       {required String email}) async {
     if (await networkInfo.isConnected) {
-      final response = await remoteDataSource.sendVerificationEmail(email);
-      return response;
+      return await remoteDataSource.sendVerificationEmail(email);
     } else {
       return const Left('Sem conexão');
     }
   }
 
   @override
-  Future<Either<dynamic, void>> verifyRedefinitionCode(
+  Future<Either<String, void>> verifyRedefinitionCode(
       {required String email, required String code}) async {
     if (await networkInfo.isConnected) {
       final response =
@@ -101,7 +88,7 @@ class UserRepository implements IUserRepository {
 
       response.match(
         (_) => null,
-        (res) => localDataSource.cacheToken(token: res.data['message']),
+        (res) => localDataSource.cacheToken(token: res.data['user']['token']),
       );
 
       return response;
@@ -139,7 +126,7 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<Either<dynamic, User>> editProfile(
-      {required String name, required String email, String? password}) async {
+      {String? name, required String email, String? password}) async {
     if (await networkInfo.isConnected) {
       final user = await remoteDataSource.editProfile(
         name: name,

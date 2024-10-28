@@ -12,6 +12,9 @@ abstract class ApiUrls {
   static const String refreshToken = '$baseAuth/refresh';
   static const String validateUrl = '$baseAuth/verify';
   static const String register = '$baseAuth/register';
+  static const String sendVerificationEmail = '$baseAuth/forgot-password';
+  static const String verifyRedefinitionCode =
+      '$sendVerificationEmail/validate-token';
 
   // User
   static const String baseUser = '$baseUrlDev/users';

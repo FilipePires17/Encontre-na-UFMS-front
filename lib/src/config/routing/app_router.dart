@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/constants/keys/route_names.dart';
 import '../../core/presentation/splash_screen.dart';
 import '../../features/auth/presentation/bloc/profile/profile_bloc.dart';
+import '../../features/auth/presentation/screens/code_screen.dart';
+import '../../features/auth/presentation/screens/email_screen.dart';
+import '../../features/auth/presentation/screens/new_password_screen.dart';
 import '../../features/auth/presentation/screens/profile_edit_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
@@ -90,10 +93,47 @@ class AppRouter {
             child: const ProfileEditScreen(),
           ),
         );
+      case RouteNames.emailSubmit:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: _authBloc,
+            child: EmailScreen(
+              fromLocation: settings.arguments as bool?,
+            ),
+          ),
+        );
+      case RouteNames.insertCode:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: _authBloc,
+            child: CodeScreen(
+              fromLocation: (settings.arguments as List?)?[0] as bool?,
+              email: (settings.arguments as List?)?[1] as String,
+            ),
+          ),
+        );
+      case RouteNames.passwordRedefinition:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _authBloc,
+              ),
+              BlocProvider.value(
+                value: _profileBloc,
+              ),
+            ],
+            child: NewPasswordScreen(
+              fromLocation: (settings.arguments as List?)?[0] as bool?,
+              email: (settings.arguments as List?)?[1] as String,
+            ),
+          ),
+        );
 
       // Misc
       case RouteNames.about:
         return MaterialPageRoute(builder: (_) => const AboutScreen());
+
       default:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(

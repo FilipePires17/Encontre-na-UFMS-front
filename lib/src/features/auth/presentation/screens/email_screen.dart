@@ -45,15 +45,18 @@ class EmailScreenState extends State<EmailScreen> {
               const Spacer(),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state.status == AuthStateStatus.loginError) {
+                  if (state.status == AuthStateStatus.emailError) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.errorMessage!),
                         backgroundColor: Colors.red,
                       ),
                     );
-                  } else if (state.status == AuthStateStatus.loggedIn) {
-                    Navigator.of(context).pushNamed(RouteNames.insertCode);
+                  } else if (state.status == AuthStateStatus.emailSent) {
+                    Navigator.of(context).pushNamed(
+                      RouteNames.insertCode,
+                      arguments: [widget.fromLocation, _emailController.text],
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -73,7 +76,7 @@ class EmailScreenState extends State<EmailScreen> {
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : const Text('Enviar código por email'),
+                        : const Text('Enviar'),
                   );
                 },
               ),

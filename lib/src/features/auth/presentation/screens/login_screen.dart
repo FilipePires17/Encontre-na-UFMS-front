@@ -61,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.pushNamed(
                     context,
                     RouteNames.emailSubmit,
+                    arguments: widget.fromLocation,
                   );
                 },
                 child: const Text('Esqueci minha senha'),

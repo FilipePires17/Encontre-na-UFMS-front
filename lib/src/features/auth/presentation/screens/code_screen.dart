@@ -8,9 +8,10 @@ import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
 
 class CodeScreen extends StatefulWidget {
-  const CodeScreen({super.key, this.fromLocation});
+  const CodeScreen({super.key, this.fromLocation, required this.email});
 
   final bool? fromLocation;
+  final String email;
 
   @override
   State<CodeScreen> createState() => CodeScreenState();
@@ -45,16 +46,18 @@ class CodeScreenState extends State<CodeScreen> {
               const Spacer(),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state.status == AuthStateStatus.loginError) {
+                  if (state.status == AuthStateStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.errorMessage!),
                         backgroundColor: Colors.red,
                       ),
                     );
-                  } else if (state.status == AuthStateStatus.loggedIn) {
-                    Navigator.of(context)
-                        .pushNamed(RouteNames.passwordRedefinition);
+                  } else if (state.status == AuthStateStatus.validCode) {
+                    Navigator.of(context).pushNamed(
+                      RouteNames.passwordRedefinition,
+                      arguments: [widget.fromLocation, widget.email],
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -65,6 +68,7 @@ class CodeScreenState extends State<CodeScreen> {
                             if (_formKey.currentState!.validate()) {
                               context.read<AuthBloc>().add(
                                     VerifyCodeEvent(
+                                      email: widget.email,
                                       code: _codeController.text,
                                     ),
                                   );

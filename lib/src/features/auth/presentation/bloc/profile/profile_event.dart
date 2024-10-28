@@ -5,12 +5,12 @@ sealed class ProfileEvent extends Equatable {
 }
 
 final class EditProfileEvent extends ProfileEvent {
-  final String name;
+  final String? name;
   final String email;
   final String? password;
 
   const EditProfileEvent({
-    required this.name,
+    this.name,
     required this.email,
     this.password,
   });

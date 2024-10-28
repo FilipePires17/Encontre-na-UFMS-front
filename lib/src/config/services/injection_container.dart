@@ -4,7 +4,6 @@ import '../../features/auth/data/data_sources/user_local_data_source.dart';
 import '../../features/auth/data/data_sources/user_remote_data_source.dart';
 import '../../features/auth/data/repositories/user_repository.dart';
 import '../../features/auth/domain/repositories/i_user_repository.dart';
-import '../../features/auth/domain/usecases/change_password.dart';
 import '../../features/auth/domain/usecases/edit_profile.dart';
 import '../../features/auth/domain/usecases/register_user.dart';
 import '../../features/auth/domain/usecases/send_verification_email.dart';
@@ -78,7 +77,6 @@ void init() {
 
   // Auth
   sl.registerFactory(() => AuthBloc(
-        changePassword: sl(),
         sendVerificationEmail: sl(),
         signInUser: sl(),
         signOutUser: sl(),
@@ -86,7 +84,6 @@ void init() {
         validateToken: sl(),
         registerUser: sl(),
       ));
-  sl.registerLazySingleton(() => ChangePassword(repository: sl()));
   sl.registerLazySingleton(() => SendVerificationEmail(repository: sl()));
   sl.registerLazySingleton(() => SignInUser(repository: sl()));
   sl.registerLazySingleton(() => SignOutUser(repository: sl()));

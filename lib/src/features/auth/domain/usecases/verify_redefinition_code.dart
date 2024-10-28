@@ -7,7 +7,7 @@ class VerifyRedefinitionCode {
 
   const VerifyRedefinitionCode({required this.repository});
 
-  Future<Either<dynamic, void>> call(
+  Future<Either<String, void>> call(
       {required String email, required String code}) async {
     return await repository.verifyRedefinitionCode(email: email, code: code);
   }
