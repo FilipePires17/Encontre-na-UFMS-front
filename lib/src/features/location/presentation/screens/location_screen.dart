@@ -12,6 +12,7 @@ import '../bloc/section/section_bloc.dart';
 import '../widgets/hours_tab.dart';
 import '../widgets/information_tab.dart';
 import '../widgets/location_tab.dart';
+import '../widgets/review_section.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, required this.id});
@@ -151,26 +152,10 @@ class _LocationScreenState extends State<LocationScreen>
                         ],
                       ),
                     ),
-                    Container(
-                      color: AppColors.charcoalGrey,
-                      height: 80,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: Sizes.p16),
-                      child: Row(
-                        children: [
-                          Text(
-                            state.location!.name,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          gapW12,
-                          Text((state.location!.rating).toString()),
-                          const Icon(
-                            Icons.star,
-                            color: AppColors.yellow,
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
+                    ReviewSection(
+                      name: state.location!.name,
+                      rating: state.location!.rating ?? 0,
+                      onReviewChanged: (_) {},
                     ),
                     const Divider(
                       color: AppColors.black,

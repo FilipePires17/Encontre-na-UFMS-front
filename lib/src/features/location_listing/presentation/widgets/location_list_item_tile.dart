@@ -22,6 +22,7 @@ class LocationListItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
       child: SizedBox(
         height: Sizes.p100,
         child: Row(
