@@ -14,4 +14,8 @@ abstract class ILocationRepo {
 
   Future<Either<Error, bool>> setRating(
       {required int id, required double rating});
+
+  Future<Either<String, bool>> deleteRating({required int id});
+
+  Future<Either<String, double>> getUserRating({required int id});
 }

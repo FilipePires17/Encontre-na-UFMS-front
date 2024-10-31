@@ -21,71 +21,61 @@ class ReviewSection extends StatefulWidget {
 }
 
 class _ReviewSectionState extends State<ReviewSection> {
+  double userRating = 0;
+
+  void updateRating(Offset localPosition) {
+    userRating = (localPosition.dx / 30).clamp(0.0, 5.0);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    double userRating = 0;
-
-    void updateRating(Offset localPosition) {
-      double newRating = (localPosition.dx / 30).clamp(0.0, 5.0);
-      userRating = newRating;
-      widget.onReviewChanged?.call(newRating);
-      setState(() {});
-    }
-
-    return Container(
-      color: AppColors.charcoalGrey,
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.name,
-                style: const TextStyle(fontSize: 20),
-              ),
-              Row(
-                children: [
-                  Text((widget.rating).toString()),
-                  const Icon(
-                    Icons.star,
-                    color: AppColors.yellow,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const Spacer(),
-          GestureDetector(
-            onPanEnd: (details) {
-              updateRating(details.localPosition);
-              debugPrint(details.localPosition.dx.toString());
-            },
-            onTapDown: (details) {
-              updateRating(details.localPosition);
-              debugPrint(details.localPosition.dx.toString());
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(
-                5,
-                (index) {
-                  double fill = 0.0;
-                  if (userRating >= index + 1) {
-                    fill = 1.0;
-                  } else if (userRating > index) {
-                    fill = userRating - index;
-                  }
-                  return StarIcon(fill: fill, size: 30);
-                },
-              ),
+    return Row(
+      children: [
+        GestureDetector(
+          onPanUpdate: (details) {
+            updateRating(details.localPosition);
+          },
+          onPanEnd: (details) {
+            double newRating = (details.localPosition.dx / 30).clamp(0.0, 5.0);
+            widget.onReviewChanged?.call(newRating);
+          },
+          onTapDown: (details) {
+            updateRating(details.localPosition);
+            double newRating = (details.localPosition.dx / 30).clamp(0.0, 5.0);
+            widget.onReviewChanged?.call(newRating);
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              5,
+              (index) {
+                double fill = 0.0;
+                debugPrint(userRating.toString());
+                if (userRating >= index + 1) {
+                  fill = 1.0;
+                } else if (userRating > index) {
+                  fill = userRating - index;
+                }
+                return StarIcon(fill: fill, size: Sizes.p32);
+              },
             ),
           ),
-        ],
-      ),
+        ),
+        IconButton(
+          onPressed: () {
+            widget.onReviewChanged?.call(0);
+            userRating = 0;
+            setState(() {});
+          },
+          icon: const Icon(
+            Icons.close,
+            color: AppColors.fadedDarkGreen,
+            size: Sizes.p28,
+          ),
+        ),
+      ],
     );
   }
 }

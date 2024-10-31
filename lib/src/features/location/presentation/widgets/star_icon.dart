@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/theme/app_colors.dart';
+
 class StarIcon extends StatelessWidget {
   final double fill;
   final double size;
@@ -13,14 +15,14 @@ class StarIcon extends StatelessWidget {
         Icon(
           Icons.star_border,
           size: size,
-          color: Colors.grey,
+          color: AppColors.backgroundGrey,
         ),
         ClipRect(
           clipper: _StarClipper(fill: fill),
           child: Icon(
             Icons.star,
             size: size,
-            color: Colors.amber,
+            color: AppColors.secondary,
           ),
         ),
       ],

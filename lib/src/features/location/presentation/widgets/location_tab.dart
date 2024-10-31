@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../domain/entities/sections.dart';
+import 'review_section.dart';
 
 class LocationTab extends StatefulWidget {
   const LocationTab({super.key, required this.localizationSection});
@@ -31,13 +32,26 @@ class _LocationTabState extends State<LocationTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Spacer(),
+          gapH12,
           Text(
             widget.localizationSection.address,
             style: const TextStyle(
               fontSize: Sizes.p20,
               fontWeight: FontWeight.w500,
             ),
+          ),
+          gapH8,
+          const Text(
+            'Deixe sua avaliação',
+            style: TextStyle(
+              fontSize: Sizes.p16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          ReviewSection(
+            name: '',
+            rating: 0,
+            onReviewChanged: (newRating) {},
           ),
           const Spacer(),
           Align(
@@ -68,7 +82,6 @@ class _LocationTabState extends State<LocationTab> {
                 zoomControlsEnabled: false,
                 onTap: (argument) async {
                   // Abrir o Google Maps
-
                   final url = 'https://www.google.com/maps/search/?api=1&'
                       'query=${argument.latitude},${argument.longitude}&'
                       'query_place_id=ChIJmRhQAfXlhpQRKzU75yAgoaM';
