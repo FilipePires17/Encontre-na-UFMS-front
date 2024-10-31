@@ -4,7 +4,7 @@ import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import 'star_icon.dart';
 
-class ReviewSection extends StatelessWidget {
+class ReviewSection extends StatefulWidget {
   const ReviewSection({
     super.key,
     required this.name,
@@ -17,13 +17,19 @@ class ReviewSection extends StatelessWidget {
   final Function(double newRating)? onReviewChanged;
 
   @override
+  State<ReviewSection> createState() => _ReviewSectionState();
+}
+
+class _ReviewSectionState extends State<ReviewSection> {
+  @override
   Widget build(BuildContext context) {
-    double _rating = 0;
-    void _updateRating(Offset localPosition) {
-      // Calcula a avaliação baseada na posição do toque
-      double newRating = (localPosition.dx / 20).clamp(0.0, 5.0);
-      _rating = newRating;
-      onReviewChanged?.call(newRating);
+    double userRating = 0;
+
+    void updateRating(Offset localPosition) {
+      double newRating = (localPosition.dx / 30).clamp(0.0, 5.0);
+      userRating = newRating;
+      widget.onReviewChanged?.call(newRating);
+      setState(() {});
     }
 
     return Container(
@@ -37,12 +43,12 @@ class ReviewSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                name,
+                widget.name,
                 style: const TextStyle(fontSize: 20),
               ),
               Row(
                 children: [
-                  Text((rating).toString()),
+                  Text((widget.rating).toString()),
                   const Icon(
                     Icons.star,
                     color: AppColors.yellow,
@@ -53,26 +59,29 @@ class ReviewSection extends StatelessWidget {
           ),
           const Spacer(),
           GestureDetector(
-            onPanUpdate: (details) {
-              // Atualiza o rating enquanto o usuário arrasta
-              _updateRating(details.localPosition);
+            onPanEnd: (details) {
+              updateRating(details.localPosition);
+              debugPrint(details.localPosition.dx.toString());
             },
             onTapDown: (details) {
-              // Atualiza o rating ao tocar em uma posição específica
-              _updateRating(details.localPosition);
+              updateRating(details.localPosition);
+              debugPrint(details.localPosition.dx.toString());
             },
+            behavior: HitTestBehavior.opaque,
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: List.generate(5, (index) {
-                // Determina o preenchimento da estrela
-                double fill = 0.0;
-                if (_rating >= index + 1) {
-                  fill = 1.0;
-                } else if (_rating > index) {
-                  fill = _rating - index;
-                }
-                return StarIcon(fill: fill, size: 30);
-              }),
+              children: List.generate(
+                5,
+                (index) {
+                  double fill = 0.0;
+                  if (userRating >= index + 1) {
+                    fill = 1.0;
+                  } else if (userRating > index) {
+                    fill = userRating - index;
+                  }
+                  return StarIcon(fill: fill, size: 30);
+                },
+              ),
             ),
           ),
         ],
