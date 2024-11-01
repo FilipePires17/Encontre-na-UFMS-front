@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
+import '../widgets/custom_text_form_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key, this.fromLocation});
@@ -36,33 +38,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              const Spacer(),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Nome',
-                ),
+              gapH16,
+              // const Spacer(),
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     labelText: 'Nome',
+              //   ),
+              //   controller: _nameController,
+              //   validator: AppValidators.checkField,
+              // ),
+              CustomTextFormField(
                 controller: _nameController,
-                validator: AppValidators.checkField,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-                controller: _emailController,
-                validator: AppValidators.emailValidator,
+                labelText: 'Nome',
               ),
               gapH12,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Senha',
-                ),
-                controller: _passwordController,
-                validator: AppValidators.passwordValidator,
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     labelText: 'Email',
+              //   ),
+              //   controller: _emailController,
+              //   validator: AppValidators.emailValidator,
+              // ),
+              CustomTextFormField(
+                controller: _emailController,
+                labelText: 'Email',
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Confirmar Senha',
-                ),
+              gapH12,
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     labelText: 'Senha',
+              //   ),
+              //   controller: _passwordController,
+              //   validator: AppValidators.passwordValidator,
+              // ),
+              CustomTextFormField(
+                controller: _passwordController,
+                labelText: 'Senha',
+                obscureText: true,
+              ),
+              gapH12,
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     labelText: 'Confirmar Senha',
+              //   ),
+              //   validator: (passwordConfirmation) {
+              //     return AppValidators.confirmPasswordValidator(
+              //       _passwordController.text,
+              //       passwordConfirmation,
+              //     );
+              //   },
+              // ),
+              CustomTextFormField(
+                labelText: 'Confirmar Senha',
+                obscureText: true,
                 validator: (passwordConfirmation) {
                   return AppValidators.confirmPasswordValidator(
                     _passwordController.text,
@@ -109,11 +137,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   );
                             }
                           },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                    ),
                     child: state.status == AuthStateStatus.loading
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : const Text('Criar Conta'),
+                        : const Text(
+                            'Criar Conta',
+                            style: TextStyle(color: AppColors.white),
+                          ),
                   );
                 },
               ),

@@ -13,6 +13,7 @@ class LocationListItemDto extends LocationListItem {
     super.rating,
     super.hasAccessibility,
     required super.type,
+    required super.viewed,
   });
 
   factory LocationListItemDto.fromMap(Map<String, dynamic> map) {
@@ -27,6 +28,7 @@ class LocationListItemDto extends LocationListItem {
       multimedia: map['mainPhoto'] == null
           ? []
           : [MultimediaDto.fromMap(map['mainPhoto'])],
+      viewed: map['viewed'] == 1,
     );
   }
 }

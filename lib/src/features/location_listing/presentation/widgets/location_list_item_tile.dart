@@ -30,34 +30,55 @@ class LocationListItemTile extends StatelessWidget {
             SizedBox(
               width: 100,
               height: 100,
-              child: location.multimedia.isNotEmpty
-                  ? Image.memory(
-                      location.multimedia.first.media,
-                      fit: BoxFit.fitHeight,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons.image_not_supported);
-                      },
-                    )
-                  : const Icon(Icons.image),
+              child: Stack(
+                children: [
+                  Center(
+                    child: location.multimedia.isNotEmpty
+                        ? Image.memory(
+                            location.multimedia.first.media,
+                            fit: BoxFit.fitHeight,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.image_not_supported);
+                            },
+                          )
+                        : const Icon(Icons.image),
+                  ),
+                  if (location.viewed)
+                    const Positioned(
+                      bottom: 4,
+                      right: 4,
+                      child: Icon(
+                        Icons.visibility,
+                        color: AppColors.translucentCharcoalGrey,
+                      ),
+                    ),
+                ],
+              ),
             ),
             gapW12,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     location.name,
                     style: const TextStyle(
-                      fontSize: Sizes.p16,
+                      fontSize: Sizes.p20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(location.address),
                   if (location.isOpen == true)
-                    const Text('Aberto agora')
+                    const Text(
+                      'Aberto agora',
+                      style: TextStyle(color: AppColors.primary),
+                    )
                   else
-                    const Text('Fechado'),
+                    const Text(
+                      'Fechado',
+                      style: TextStyle(color: AppColors.secondary),
+                    ),
                 ],
               ),
             ),

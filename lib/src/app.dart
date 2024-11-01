@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'config/routing/app_router.dart';
+import 'core/utils/custom_navigator_observer.dart';
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -30,6 +31,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.dark,
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       onGenerateRoute: appRouter.getRoute,
+      navigatorObservers: [CustomNavigatorObserver()],
     );
   }
 }

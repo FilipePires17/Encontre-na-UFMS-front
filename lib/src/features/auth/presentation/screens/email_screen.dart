@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
+import '../widgets/custom_text_form_field.dart';
 
 class EmailScreen extends StatefulWidget {
   const EmailScreen({super.key, this.fromLocation});
@@ -35,11 +37,17 @@ class EmailScreenState extends State<EmailScreen> {
           child: Column(
             children: <Widget>[
               const Spacer(),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     labelText: 'Email',
+              //   ),
+              //   controller: _emailController,
+              //   validator: AppValidators.emailValidator,
+              // ),
+              CustomTextFormField(
                 controller: _emailController,
+                labelText: 'Email',
+                hintText: 'Digite seu email',
                 validator: AppValidators.emailValidator,
               ),
               const Spacer(),
@@ -72,11 +80,17 @@ class EmailScreenState extends State<EmailScreen> {
                                   );
                             }
                           },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                    ),
                     child: state.status == AuthStateStatus.loading
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : const Text('Enviar'),
+                        : const Text(
+                            'Enviar',
+                            style: TextStyle(color: AppColors.white),
+                          ),
                   );
                 },
               ),
