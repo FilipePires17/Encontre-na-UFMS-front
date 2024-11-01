@@ -7,7 +7,7 @@ abstract class ApiUrls {
   static const String locationSection = '$baseLocations/section';
 
   // Reviews
-  static const String baseReviews = '$baseUrlDev/reviews';
+  static const String baseReviews = '$baseLocations/reviews';
   static const String getReviews = '$baseReviews/get';
   static const String reviewCreateOrUpdate = '$baseReviews/createOrUpdate';
   static const String reviewDelete = '$baseReviews/delete';

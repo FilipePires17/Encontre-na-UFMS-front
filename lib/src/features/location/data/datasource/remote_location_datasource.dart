@@ -126,10 +126,12 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
       method: HttpMethods.get,
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode == 404) {
+      return const Right(0);
+    } else if (response.statusCode != 200) {
       return Left(response.data['message']);
     }
 
-    return Right(response.data['data']['grade']);
+    return Right(double.tryParse(response.data['result']['grade']) ?? 0);
   }
 }

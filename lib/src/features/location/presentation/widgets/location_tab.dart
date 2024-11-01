@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../domain/entities/sections.dart';
 import 'review_section.dart';
 
 class LocationTab extends StatefulWidget {
-  const LocationTab({super.key, required this.localizationSection});
+  const LocationTab({
+    super.key,
+    required this.localizationSection,
+    required this.locationId,
+  });
 
   final LocalizationSection localizationSection;
+  final int locationId;
 
   @override
   State<LocationTab> createState() => _LocationTabState();
 }
 
 class _LocationTabState extends State<LocationTab> {
+  late final AuthBloc authBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    authBloc = BlocProvider.of<AuthBloc>(context);
+  }
+
   GoogleMapController? mapController;
 
   final LatLng initialPosition =
@@ -40,19 +55,19 @@ class _LocationTabState extends State<LocationTab> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          gapH8,
-          const Text(
-            'Deixe sua avaliação',
-            style: TextStyle(
-              fontSize: Sizes.p16,
-              fontWeight: FontWeight.w500,
+          if (authBloc.state.status == AuthStateStatus.loggedIn) ...[
+            gapH8,
+            const Text(
+              'Deixe sua avaliação',
+              style: TextStyle(
+                fontSize: Sizes.p16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          ReviewSection(
-            name: '',
-            rating: 0,
-            onReviewChanged: (newRating) {},
-          ),
+            ReviewSection(
+              locationId: widget.locationId,
+            ),
+          ],
           const Spacer(),
           Align(
             alignment: Alignment.topCenter,
