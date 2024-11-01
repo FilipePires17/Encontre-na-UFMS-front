@@ -11,6 +11,7 @@ import '../../features/auth/presentation/screens/profile_edit_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
 import '../../features/location/presentation/bloc/section/section_bloc.dart';
+import '../../features/location/presentation/cubit/review_cubit.dart';
 import '../services/injection_container.dart';
 import '../../features/about/presentation/about_screen.dart';
 import '../../features/auth/presentation/bloc/auth/auth_bloc.dart';
@@ -27,6 +28,7 @@ class AppRouter {
   final _authBloc = sl<AuthBloc>();
   final _sectionBloc = sl<SectionBloc>();
   final _profileBloc = sl<ProfileBloc>();
+  final _reviewCubit = sl<ReviewCubit>();
 
   void dispose() {
     _locationListingBloc.close();
@@ -34,6 +36,8 @@ class AppRouter {
     _locationBloc.close();
     _authBloc.close();
     _sectionBloc.close();
+    _profileBloc.close();
+    _reviewCubit.close();
   }
 
   Route<dynamic> getRoute(RouteSettings settings) {
@@ -56,6 +60,8 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: _locationBloc),
               BlocProvider.value(value: _sectionBloc),
+              BlocProvider.value(value: _reviewCubit),
+              BlocProvider.value(value: _authBloc),
             ],
             child: LocationScreen(
               id: settings.arguments as int,

@@ -26,6 +26,7 @@ class _LocationScreenState extends State<LocationScreen>
     with TickerProviderStateMixin {
   late final TabController tabController;
   late SectionBloc sectionBloc;
+  late final LocationBloc locationBloc;
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -34,6 +35,9 @@ class _LocationScreenState extends State<LocationScreen>
     super.initState();
     tabController = TabController(length: 3, vsync: this);
     sectionBloc = BlocProvider.of<SectionBloc>(context);
+    locationBloc = BlocProvider.of<LocationBloc>(context);
+    locationBloc.add(GetLocationEvent(widget.id));
+
     sectionBloc.add(GetSectionEvent(
       id: widget.id,
       section: EnumSections.localization,
@@ -57,8 +61,6 @@ class _LocationScreenState extends State<LocationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final locationBloc = BlocProvider.of<LocationBloc>(context);
-    locationBloc.add(GetLocationEvent(widget.id));
     return BlocConsumer<LocationBloc, LocationState>(
       listener: (context, state) {
         if (state.status == LocationStateStatus.error) {
@@ -156,19 +158,27 @@ class _LocationScreenState extends State<LocationScreen>
                       height: 80,
                       padding:
                           const EdgeInsets.symmetric(horizontal: Sizes.p16),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             state.location!.name,
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            maxLines: 1,
                           ),
-                          gapW12,
-                          Text((state.location!.rating).toString()),
-                          const Icon(
-                            Icons.star,
-                            color: AppColors.yellow,
+                          Row(
+                            children: [
+                              Text((state.location!.rating ?? 0).toString()),
+                              const Icon(
+                                Icons.star,
+                                color: AppColors.yellow,
+                              ),
+                            ],
                           ),
-                          const Spacer(),
                         ],
                       ),
                     ),
@@ -223,6 +233,7 @@ class _LocationScreenState extends State<LocationScreen>
                                                   localizationSection: state
                                                           .section
                                                       as LocalizationSection,
+                                                  locationId: widget.id,
                                                 )
                                               : const SizedBox(),
                                       state.status == SectionStateStatus.loading

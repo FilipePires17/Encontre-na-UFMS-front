@@ -6,6 +6,12 @@ abstract class ApiUrls {
   static const String toggleFavorite = '$baseLocations/favorites';
   static const String locationSection = '$baseLocations/section';
 
+  // Reviews
+  static const String baseReviews = '$baseLocations/reviews';
+  static const String getReviews = '$baseReviews/get';
+  static const String reviewCreateOrUpdate = '$baseReviews/createOrUpdate';
+  static const String reviewDelete = '$baseReviews/delete';
+
   // Auth
   static const String baseAuth = '$baseUrlDev/auth';
   static const String signIn = '$baseAuth/login';

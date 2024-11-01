@@ -16,6 +16,8 @@ abstract class IRemoteLocationDatasource {
   Future<Either<String, bool>> toggleFavorite({required int id});
   Future<Either<Error, bool>> setRating(
       {required int id, required double rating});
+  Future<Either<String, bool>> deleteRating({required int id});
+  Future<Either<String, double>> getUserRating({required int id});
 }
 
 class RemoteLocationDatasource implements IRemoteLocationDatasource {
@@ -42,9 +44,20 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
 
   @override
   Future<Either<Error, bool>> setRating(
-      {required int id, required double rating}) {
-    // TODO: implement setRating
-    throw UnimplementedError();
+      {required int id, required double rating}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.reviewCreateOrUpdate}/$id',
+      method: HttpMethods.post,
+      body: {
+        'grade': rating,
+      },
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return Left(Error());
+    }
+
+    return const Right(true);
   }
 
   @override
@@ -90,5 +103,35 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
       default:
         return Right(LocalizationSectionDto.fromMap(response.data['data']));
     }
+  }
+
+  @override
+  Future<Either<String, bool>> deleteRating({required int id}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.reviewDelete}/$id',
+      method: HttpMethods.delete,
+    );
+
+    if (response.statusCode != 200) {
+      return Left(response.data['message']);
+    }
+
+    return const Right(true);
+  }
+
+  @override
+  Future<Either<String, double>> getUserRating({required int id}) async {
+    final response = await httpClient.restRequest(
+      url: '${ApiUrls.getReviews}/$id',
+      method: HttpMethods.get,
+    );
+
+    if (response.statusCode == 404) {
+      return const Right(0);
+    } else if (response.statusCode != 200) {
+      return Left(response.data['message']);
+    }
+
+    return Right(double.tryParse(response.data['result']['grade']) ?? 0);
   }
 }

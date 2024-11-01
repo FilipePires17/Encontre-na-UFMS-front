@@ -32,9 +32,16 @@ class LocationRepo implements ILocationRepo {
 
   @override
   Future<Either<Error, bool>> setRating(
-      {required int id, required double rating}) {
-    // TODO: implement setRating
-    throw UnimplementedError();
+      {required int id, required double rating}) async {
+    if (await networkInfo.isConnected) {
+      final result = await remoteDataSource.setRating(id: id, rating: rating);
+      return result.fold(
+        (error) => Left(error),
+        (success) => Right(success),
+      );
+    } else {
+      return Left(Error());
+    }
   }
 
   @override
@@ -59,6 +66,32 @@ class LocationRepo implements ILocationRepo {
       return result.fold(
         (error) => Left(error),
         (section) => Right(section),
+      );
+    } else {
+      return const Left('Sem conexão com a internet');
+    }
+  }
+
+  @override
+  Future<Either<String, bool>> deleteRating({required int id}) async {
+    if (await networkInfo.isConnected) {
+      final result = await remoteDataSource.deleteRating(id: id);
+      return result.fold(
+        (error) => Left(error),
+        (success) => Right(success),
+      );
+    } else {
+      return const Left('Sem conexão com a internet');
+    }
+  }
+
+  @override
+  Future<Either<String, double>> getUserRating({required int id}) async {
+    if (await networkInfo.isConnected) {
+      final result = await remoteDataSource.getUserRating(id: id);
+      return result.fold(
+        (error) => Left(error),
+        (rating) => Right(rating),
       );
     } else {
       return const Left('Sem conexão com a internet');

@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/location.dart';
 import '../../../domain/usecases/get_location.dart';
-import '../../../domain/usecases/set_rating.dart';
 import '../../../domain/usecases/toggle_favorite.dart';
 
 part 'location_event.dart';
@@ -11,12 +10,10 @@ part 'location_state.dart';
 
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final GetLocation getLocation;
-  final SetRating setRating;
   final ToggleFavorite toggleFavorite;
 
   LocationBloc({
     required this.getLocation,
-    required this.setRating,
     required this.toggleFavorite,
   }) : super(const LocationState()) {
     on<GetLocationEvent>((event, emit) async {

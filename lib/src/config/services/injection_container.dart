@@ -16,12 +16,15 @@ import '../../features/auth/presentation/bloc/profile/profile_bloc.dart';
 import '../../features/location/data/datasource/remote_location_datasource.dart';
 import '../../features/location/data/repos/location_repo.dart';
 import '../../features/location/domain/repos/i_location_repo.dart';
+import '../../features/location/domain/usecases/delete_rating.dart';
 import '../../features/location/domain/usecases/get_location.dart';
 import '../../features/location/domain/usecases/get_section.dart';
+import '../../features/location/domain/usecases/get_user_rating.dart';
 import '../../features/location/domain/usecases/set_rating.dart';
 import '../../features/location/domain/usecases/toggle_favorite.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
 import '../../features/location/presentation/bloc/section/section_bloc.dart';
+import '../../features/location/presentation/cubit/review_cubit.dart';
 import '../../features/location_listing/data/datasource/remote_location_listing_datasource.dart';
 import '../../features/location_listing/data/repos/location_listing_repo.dart';
 import '../../features/location_listing/domain/repos/i_location_listing_repo.dart';
@@ -59,11 +62,9 @@ void init() {
   // Location
   sl.registerFactory(() => LocationBloc(
         getLocation: sl(),
-        setRating: sl(),
         toggleFavorite: sl(),
       ));
   sl.registerLazySingleton(() => GetLocation(repo: sl()));
-  sl.registerLazySingleton(() => SetRating(repo: sl()));
   sl.registerLazySingleton(() => ToggleFavorite(repo: sl()));
   sl.registerLazySingleton<ILocationRepo>(() => LocationRepo(
         remoteDataSource: sl(),
@@ -74,6 +75,16 @@ void init() {
 
   sl.registerFactory(() => SectionBloc(getSection: sl()));
   sl.registerLazySingleton(() => GetSection(repo: sl()));
+
+  // Review
+  sl.registerFactory(() => ReviewCubit(
+        setRating: sl(),
+        deleteRating: sl(),
+        getUserRating: sl(),
+      ));
+  sl.registerLazySingleton(() => SetRating(repo: sl()));
+  sl.registerLazySingleton(() => DeleteRating(repo: sl()));
+  sl.registerLazySingleton(() => GetUserRating(repo: sl()));
 
   // Auth
   sl.registerFactory(() => AuthBloc(

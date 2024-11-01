@@ -88,7 +88,7 @@ class CodeScreenState extends State<NewPasswordScreen> {
                 },
                 builder: (context, state) {
                   return ElevatedButton(
-                    onPressed: state.status == AuthStateStatus.loading
+                    onPressed: state.status == ProfileStateStatus.loading
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
@@ -100,7 +100,7 @@ class CodeScreenState extends State<NewPasswordScreen> {
                                   );
                             }
                           },
-                    child: state.status == AuthStateStatus.loading
+                    child: state.status == ProfileStateStatus.loading
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
