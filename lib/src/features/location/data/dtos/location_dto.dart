@@ -9,7 +9,7 @@ class LocationDto extends Location {
     super.isOpen,
     super.isFavorite,
     super.rating,
-    super.hasAccessibility,
+    required super.hasAccessibility,
   }) : super(
           multimedia: multimedia,
         );

@@ -21,9 +21,10 @@ class ReviewSection extends StatefulWidget {
 class _ReviewSectionState extends State<ReviewSection> {
   late double userRating;
   late ReviewCubit reviewCubit;
+  static const starSize = Sizes.p24;
 
   void updateRating(Offset localPosition) {
-    userRating = (localPosition.dx / 30).clamp(0.0, 5.0);
+    userRating = (localPosition.dx / starSize).clamp(0.0, 5.0);
 
     setState(() {});
   }
@@ -47,12 +48,14 @@ class _ReviewSectionState extends State<ReviewSection> {
             updateRating(details.localPosition);
           },
           onPanEnd: (details) {
-            double newRating = (details.localPosition.dx / 30).clamp(0.0, 5.0);
+            double newRating =
+                (details.localPosition.dx / starSize).clamp(0.0, 5.0);
             reviewCubit.updateReview(widget.locationId, newRating);
           },
           onTapUp: (details) {
             updateRating(details.localPosition);
-            double newRating = (details.localPosition.dx / 30).clamp(0.0, 5.0);
+            double newRating =
+                (details.localPosition.dx / starSize).clamp(0.0, 5.0);
             reviewCubit.updateReview(widget.locationId, newRating);
           },
           behavior: HitTestBehavior.opaque,
@@ -67,7 +70,7 @@ class _ReviewSectionState extends State<ReviewSection> {
                 } else if (userRating > index) {
                   fill = userRating - index;
                 }
-                return StarIcon(fill: fill, size: Sizes.p32);
+                return StarIcon(fill: fill, size: starSize);
               },
             ),
           ),
@@ -81,7 +84,7 @@ class _ReviewSectionState extends State<ReviewSection> {
           icon: const Icon(
             Icons.close,
             color: AppColors.fadedDarkGreen,
-            size: Sizes.p28,
+            size: starSize - 2,
           ),
         ),
       ],

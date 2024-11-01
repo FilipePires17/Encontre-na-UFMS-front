@@ -102,7 +102,8 @@ class _LocationScreenState extends State<LocationScreen>
                 ),
                 body: Column(
                   children: [
-                    SizedBox(
+                    Container(
+                      color: AppColors.charcoalGrey,
                       height: 200,
                       width: double.infinity,
                       child: Stack(
@@ -154,7 +155,6 @@ class _LocationScreenState extends State<LocationScreen>
                       ),
                     ),
                     Container(
-                      color: AppColors.charcoalGrey,
                       height: 80,
                       padding:
                           const EdgeInsets.symmetric(horizontal: Sizes.p16),
@@ -172,10 +172,26 @@ class _LocationScreenState extends State<LocationScreen>
                           ),
                           Row(
                             children: [
+                              if (state.location!.hasAccessibility) ...[
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(Sizes.p4),
+                                    ),
+                                    color: AppColors.primary,
+                                  ),
+                                  child: const Icon(
+                                    Icons.accessible,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                                const Text(' - ')
+                              ],
                               Text((state.location!.rating ?? 0).toString()),
                               const Icon(
                                 Icons.star,
                                 color: AppColors.yellow,
+                                size: Sizes.p16,
                               ),
                             ],
                           ),
@@ -187,84 +203,79 @@ class _LocationScreenState extends State<LocationScreen>
                       height: 1,
                     ),
                     Expanded(
-                      child: Container(
-                        color: AppColors.charcoalGrey,
-                        child: Column(
-                          children: [
-                            TabBar(
-                              onTap: (value) {
-                                int section = value;
-                                if (section == 1) {
-                                  section = 2;
-                                } else if (section == 2) {
-                                  section = 1;
-                                }
-                                sectionBloc.add(GetSectionEvent(
-                                  id: widget.id,
-                                  section: EnumSections.values[section],
-                                ));
-                              },
-                              controller: tabController,
-                              tabs: const [
-                                Tab(text: 'Localização'),
-                                Tab(text: 'Informações'),
-                                Tab(text: 'Horário'),
-                              ],
-                            ),
-                            const Divider(
-                              color: AppColors.black,
-                              height: 1,
-                            ),
-                            BlocBuilder<SectionBloc, SectionState>(
-                              builder: (context, state) {
-                                return Expanded(
-                                  child: TabBarView(
-                                    controller: tabController,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    children: [
-                                      state.status == SectionStateStatus.loading
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : state.section is LocalizationSection
-                                              ? LocationTab(
-                                                  localizationSection: state
-                                                          .section
-                                                      as LocalizationSection,
-                                                  locationId: widget.id,
-                                                )
-                                              : const SizedBox(),
-                                      state.status == SectionStateStatus.loading
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : state.section is MoreInfoSection
-                                              ? InformationTab(
-                                                  moreInfoSection: state.section
-                                                      as MoreInfoSection,
-                                                )
-                                              : const SizedBox(),
-                                      state.status == SectionStateStatus.loading
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : state.section is HoursSection
-                                              ? HoursTab(
-                                                  hoursSection: state.section
-                                                      as HoursSection,
-                                                )
-                                              : const SizedBox(),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                      child: Column(
+                        children: [
+                          TabBar(
+                            indicatorColor: AppColors.primary,
+                            labelColor: AppColors.primary,
+                            onTap: (value) {
+                              int section = value;
+                              if (section == 1) {
+                                section = 2;
+                              } else if (section == 2) {
+                                section = 1;
+                              }
+                              sectionBloc.add(GetSectionEvent(
+                                id: widget.id,
+                                section: EnumSections.values[section],
+                              ));
+                            },
+                            controller: tabController,
+                            tabs: const [
+                              Tab(text: 'Localização'),
+                              Tab(text: 'Informações'),
+                              Tab(text: 'Horário'),
+                            ],
+                          ),
+                          const Divider(
+                            color: AppColors.black,
+                            height: 1,
+                          ),
+                          BlocBuilder<SectionBloc, SectionState>(
+                            builder: (context, state) {
+                              return Expanded(
+                                child: TabBarView(
+                                  controller: tabController,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  children: [
+                                    state.status == SectionStateStatus.loading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : state.section is LocalizationSection
+                                            ? LocationTab(
+                                                localizationSection:
+                                                    state.section
+                                                        as LocalizationSection,
+                                                locationId: widget.id,
+                                              )
+                                            : const SizedBox(),
+                                    state.status == SectionStateStatus.loading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : state.section is MoreInfoSection
+                                            ? InformationTab(
+                                                moreInfoSection: state.section
+                                                    as MoreInfoSection,
+                                              )
+                                            : const SizedBox(),
+                                    state.status == SectionStateStatus.loading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : state.section is HoursSection
+                                            ? HoursTab(
+                                                hoursSection: state.section
+                                                    as HoursSection,
+                                              )
+                                            : const SizedBox(),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     )
                   ],

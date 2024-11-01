@@ -10,7 +10,7 @@ class Location extends Equatable {
     this.isOpen,
     this.isFavorite,
     this.rating,
-    this.hasAccessibility,
+    required this.hasAccessibility,
   });
 
   final int id;
@@ -19,7 +19,7 @@ class Location extends Equatable {
   final bool? isOpen;
   final bool? isFavorite;
   final double? rating;
-  final bool? hasAccessibility;
+  final bool hasAccessibility;
 
   Location copyWith({
     int? id,

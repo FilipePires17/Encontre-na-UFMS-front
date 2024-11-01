@@ -21,6 +21,21 @@ class InformationTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             gapH8,
+            const Text(
+              'Telefone',
+              style: TextStyle(
+                fontSize: Sizes.p16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            gapH8,
+            Text(
+              moreInfoSection.phone.phoneFormat(),
+              style: const TextStyle(
+                fontSize: Sizes.p14,
+              ),
+            ),
+            gapH8,
             if (moreInfoSection.about != null) ...[
               const Text(
                 'Sobre',
@@ -54,21 +69,6 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
             ],
-            gapH8,
-            const Text(
-              'Telefone',
-              style: TextStyle(
-                fontSize: Sizes.p16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            gapH8,
-            Text(
-              moreInfoSection.phone.phoneFormat(),
-              style: const TextStyle(
-                fontSize: Sizes.p14,
-              ),
-            ),
           ],
         ),
       ),

@@ -11,7 +11,7 @@ class LocationListItem extends Location {
     super.isOpen,
     super.isFavorite,
     super.rating,
-    super.hasAccessibility,
+    super.hasAccessibility = false,
     required this.type,
     required this.viewed,
   });

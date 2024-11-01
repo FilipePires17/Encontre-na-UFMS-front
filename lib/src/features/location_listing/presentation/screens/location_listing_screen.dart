@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../domain/enums/enum_location.dart';
 import '../bloc/location_listing_bloc.dart';
 import '../cubit/location_categories_cubit.dart';
@@ -71,6 +73,12 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: AppColors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     final notificationBarHeight = MediaQuery.of(context).padding.top;
     final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     return Scaffold(
@@ -101,7 +109,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                   child: CustomTextField(
                     controller: searchController,
                     hintText: 'Procurar local',
-                    height: Sizes.p44,
+                    height: Sizes.p40,
                     prefixIcon: const Icon(Icons.search),
                   ),
                 ),
@@ -174,7 +182,8 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.all(
-                                                  Sizes.p8),
+                                                Sizes.p8,
+                                              ),
                                               child: LocationListItemTile(
                                                 location: state.locations
                                                     .locationItems[index],

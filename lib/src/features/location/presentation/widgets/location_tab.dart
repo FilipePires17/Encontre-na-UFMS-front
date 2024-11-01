@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../domain/entities/sections.dart';
 import 'review_section.dart';
@@ -44,72 +45,91 @@ class _LocationTabState extends State<LocationTab> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          gapH12,
-          Text(
-            widget.localizationSection.address,
-            style: const TextStyle(
-              fontSize: Sizes.p20,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          if (authBloc.state.status == AuthStateStatus.loggedIn) ...[
-            gapH8,
-            const Text(
-              'Deixe sua avaliação',
-              style: TextStyle(
-                fontSize: Sizes.p16,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            gapH12,
+            Text(
+              widget.localizationSection.address,
+              style: const TextStyle(
+                fontSize: Sizes.p20,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            ReviewSection(
-              locationId: widget.locationId,
-            ),
-          ],
-          const Spacer(),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: 200,
-              width: MediaQuery.sizeOf(context).width * .8,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+            if (authBloc.state.status == AuthStateStatus.loggedIn) ...[
+              gapH8,
+              const Text(
+                'Deixe sua avaliação',
+                style: TextStyle(
+                  fontSize: Sizes.p12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.grey,
                 ),
               ),
-              clipBehavior: Clip.hardEdge,
-              child: GoogleMap(
-                cameraTargetBounds: CameraTargetBounds(
-                  LatLngBounds(
-                    southwest:
-                        const LatLng(-20.511849614479797, -54.6221641078335),
-                    northeast:
-                        const LatLng(-20.493427224405206, -54.60504801228526),
+              ReviewSection(
+                locationId: widget.locationId,
+              ),
+            ],
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 200,
+                width: MediaQuery.sizeOf(context).width * .8,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
                   ),
                 ),
-                initialCameraPosition: CameraPosition(
-                  target: initialPosition,
-                  zoom: 17,
+                clipBehavior: Clip.hardEdge,
+                child: GoogleMap(
+                  markers: {
+                    Marker(
+                      markerId: MarkerId(initialPosition.toString()),
+                      position: initialPosition,
+                    ),
+                  },
+                  cameraTargetBounds: CameraTargetBounds(
+                    LatLngBounds(
+                      southwest:
+                          const LatLng(-20.511849614479797, -54.6221641078335),
+                      northeast:
+                          const LatLng(-20.493427224405206, -54.60504801228526),
+                    ),
+                  ),
+                  initialCameraPosition: CameraPosition(
+                    target: initialPosition,
+                    zoom: 17,
+                  ),
+                  minMaxZoomPreference: const MinMaxZoomPreference(15, 20),
+                  onMapCreated: _onMapCreated,
+                  zoomControlsEnabled: false,
+                  onTap: (argument) async {
+                    // Abrir o Google Maps
+                    final url = 'https://www.google.com/maps/search/?api=1&'
+                        'query=${argument.latitude},${argument.longitude}&'
+                        'query_place_id=ChIJmRhQAfXlhpQRKzU75yAgoaM';
+                    final Uri uri = Uri.parse(url);
+                    if (!await launchUrl(uri)) {
+                      throw 'Could not launch $url';
+                    }
+                  },
                 ),
-                onMapCreated: _onMapCreated,
-                zoomControlsEnabled: false,
-                onTap: (argument) async {
-                  // Abrir o Google Maps
-                  final url = 'https://www.google.com/maps/search/?api=1&'
-                      'query=${argument.latitude},${argument.longitude}&'
-                      'query_place_id=ChIJmRhQAfXlhpQRKzU75yAgoaM';
-                  final Uri uri = Uri.parse(url);
-                  if (!await launchUrl(uri)) {
-                    throw 'Could not launch $url';
-                  }
-                },
               ),
             ),
-          ),
-          gapH12,
-        ],
+            gapH4,
+            const Center(
+              child: Text(
+                'Clique no mapa para abrir no Google Maps',
+                style: TextStyle(
+                  fontSize: Sizes.p14,
+                  color: AppColors.secondary,
+                ),
+              ),
+            ),
+            gapH12,
+          ],
+        ),
       ),
     );
   }
