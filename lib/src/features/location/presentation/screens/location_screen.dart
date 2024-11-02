@@ -77,7 +77,7 @@ class _LocationScreenState extends State<LocationScreen>
         }
       },
       builder: (context, state) {
-        return state.location == null
+        return state.status == LocationStateStatus.loading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
