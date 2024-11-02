@@ -2,13 +2,13 @@ import '../../domain/entities/sections.dart';
 
 class HoursSectionDto extends HoursSection {
   const HoursSectionDto({
-    required super.sundayHours,
-    required super.mondayHours,
-    required super.tuesdayHours,
-    required super.wednesdayHours,
-    required super.thursdayHours,
-    required super.fridayHours,
-    required super.saturdayHours,
+    super.sundayHours,
+    super.mondayHours,
+    super.tuesdayHours,
+    super.wednesdayHours,
+    super.thursdayHours,
+    super.fridayHours,
+    super.saturdayHours,
   });
 
   factory HoursSectionDto.fromMap(Map<String, dynamic> map) {
@@ -20,6 +20,30 @@ class HoursSectionDto extends HoursSection {
       thursdayHours: map['thursdayHours'],
       fridayHours: map['fridayHours'],
       saturdayHours: map['saturdayHours'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'sundayHours': sundayHours,
+      'mondayHours': mondayHours,
+      'tuesdayHours': tuesdayHours,
+      'wednesdayHours': wednesdayHours,
+      'thursdayHours': thursdayHours,
+      'fridayHours': fridayHours,
+      'saturdayHours': saturdayHours,
+    };
+  }
+
+  factory HoursSectionDto.fromEntity(HoursSection entity) {
+    return HoursSectionDto(
+      sundayHours: entity.sundayHours,
+      mondayHours: entity.mondayHours,
+      tuesdayHours: entity.tuesdayHours,
+      wednesdayHours: entity.wednesdayHours,
+      thursdayHours: entity.thursdayHours,
+      fridayHours: entity.fridayHours,
+      saturdayHours: entity.saturdayHours,
     );
   }
 }

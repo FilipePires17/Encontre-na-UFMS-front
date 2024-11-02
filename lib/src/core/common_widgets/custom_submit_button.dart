@@ -30,41 +30,44 @@ class CustomSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width ?? double.infinity,
-      child: ElevatedButton(
-        style: isFilled
-            ? ElevatedButton.styleFrom(
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(radius),
-                ),
-                backgroundColor: customColor ?? AppColors.primary,
-              )
-            : ElevatedButton.styleFrom(
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(radius),
-                  side: const BorderSide(
-                    color: AppColors.primary,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p32),
+      child: SizedBox(
+        height: height,
+        width: width ?? double.infinity,
+        child: ElevatedButton(
+          style: isFilled
+              ? ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(radius),
                   ),
+                  backgroundColor: customColor ?? AppColors.primary,
+                )
+              : ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(radius),
+                    side: const BorderSide(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  backgroundColor: AppColors.transparent,
                 ),
-                backgroundColor: AppColors.transparent,
+          onPressed: isLoading ? null : onPressed,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) icon!,
+              Text(
+                title.capitalize(),
+                style: const TextStyle(
+                  fontSize: Sizes.p16,
+                  color: AppColors.white,
+                ),
               ),
-        onPressed: isLoading ? null : onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) icon!,
-            Text(
-              title.capitalize(),
-              style: const TextStyle(
-                fontSize: Sizes.p16,
-                color: AppColors.white,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

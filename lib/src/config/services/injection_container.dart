@@ -13,6 +13,11 @@ import '../../features/auth/domain/usecases/validate_token.dart';
 import '../../features/auth/domain/usecases/verify_redefinition_code.dart';
 import '../../features/auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/profile/profile_bloc.dart';
+import '../../features/creation/data/datasource/locale_creation_remote_datasource.dart';
+import '../../features/creation/data/repos/locale_creation_repo.dart';
+import '../../features/creation/domain/repos/i_locale_creation_repo.dart';
+import '../../features/creation/domain/usecases/create_locale.dart';
+import '../../features/creation/presentation/cubit/creation_cubit.dart';
 import '../../features/location/data/datasource/remote_location_datasource.dart';
 import '../../features/location/data/repos/location_repo.dart';
 import '../../features/location/domain/repos/i_location_repo.dart';
@@ -41,7 +46,7 @@ import '../../core/platforms/network_info.dart';
 final sl = GetIt.instance;
 
 void init() {
-  // Features
+  /// Features
 
   // Location Listing
   sl.registerFactory(() => LocationListingBloc(
@@ -85,6 +90,16 @@ void init() {
   sl.registerLazySingleton(() => SetRating(repo: sl()));
   sl.registerLazySingleton(() => DeleteRating(repo: sl()));
   sl.registerLazySingleton(() => GetUserRating(repo: sl()));
+
+  // Creation
+  sl.registerFactory(() => CreationCubit(createLocale: sl()));
+  sl.registerLazySingleton(() => CreateLocale(repo: sl()));
+  sl.registerLazySingleton<ILocaleCreationRepo>(() => LocaleCreationRepo(
+        remoteDataSource: sl(),
+        networkInfo: sl(),
+      ));
+  sl.registerLazySingleton<ILocaleCreationRemoteDatasource>(
+      () => LocaleCreationRemoteDatasource(httpClient: sl()));
 
   // Auth
   sl.registerFactory(() => AuthBloc(

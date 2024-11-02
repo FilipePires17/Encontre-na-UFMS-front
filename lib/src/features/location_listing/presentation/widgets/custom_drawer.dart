@@ -55,57 +55,59 @@ class CustomDrawer extends StatelessWidget {
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               return state.status == AuthStateStatus.loggedIn
-                  ? Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: Sizes.p32),
-                      child: CustomSubmitButton(
-                        title: 'Perfil',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(RouteNames.profile);
-                        },
-                      ),
+                  ? Column(
+                      children: [
+                        CustomSubmitButton(
+                          title: 'Perfil',
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(RouteNames.profile);
+                          },
+                        ),
+                        gapH16,
+                        CustomSubmitButton(
+                          title: 'Sugerir Novo Local',
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(RouteNames.creation);
+                          },
+                        ),
+                      ],
                     )
                   : const SizedBox();
             },
           ),
           gapH16,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.p32),
-            child: CustomSubmitButton(
-              title: 'Sobre',
-              onPressed: () {
-                Navigator.of(context).pushNamed(RouteNames.about);
-              },
-            ),
+          CustomSubmitButton(
+            title: 'Sobre',
+            onPressed: () {
+              Navigator.of(context).pushNamed(RouteNames.about);
+            },
           ),
           gapH32,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.p32),
-            child: BlocConsumer<AuthBloc, AuthState>(
-              listener: (context, state) {
-                if (state.status == AuthStateStatus.onLoggedOff) {
-                  Navigator.of(context).pop();
-                  onLogout();
-                }
-              },
-              builder: (context, state) {
-                final isLoggedIn = state.status == AuthStateStatus.loggedIn;
-                final isLoading = state.status == AuthStateStatus.loading;
-                return CustomSubmitButton(
-                  title: isLoggedIn ? 'Sair' : 'Entrar',
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          if (isLoggedIn) {
-                            authBloc.add(LogoutEvent());
-                          } else {
-                            Navigator.of(context).pushNamed(RouteNames.login);
-                          }
-                        },
-                  customColor: AppColors.secondary,
-                );
-              },
-            ),
+          BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state.status == AuthStateStatus.onLoggedOff) {
+                Navigator.of(context).pop();
+                onLogout();
+              }
+            },
+            builder: (context, state) {
+              final isLoggedIn = state.status == AuthStateStatus.loggedIn;
+              final isLoading = state.status == AuthStateStatus.loading;
+              return CustomSubmitButton(
+                title: isLoggedIn ? 'Sair' : 'Entrar',
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        if (isLoggedIn) {
+                          authBloc.add(LogoutEvent());
+                        } else {
+                          Navigator.of(context).pushNamed(RouteNames.login);
+                        }
+                      },
+                customColor: AppColors.secondary,
+              );
+            },
           ),
           gapH12,
         ],

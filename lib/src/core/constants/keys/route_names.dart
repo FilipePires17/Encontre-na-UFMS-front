@@ -9,4 +9,5 @@ class RouteNames {
   static const location = 'location';
   static const about = 'about';
   static const profile = 'profile';
+  static const creation = 'creation';
 }

@@ -29,4 +29,19 @@ class MultimediaDto extends Multimedia {
       media: media,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': super.name,
+      'media': base64.encode(super.media),
+    };
+  }
+
+  factory MultimediaDto.fromEntity(Multimedia entity) {
+    return MultimediaDto(
+      id: entity.id,
+      name: entity.name,
+      media: entity.media,
+    );
+  }
 }

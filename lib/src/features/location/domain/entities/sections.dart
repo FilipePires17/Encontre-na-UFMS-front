@@ -48,13 +48,13 @@ class HoursSection extends Section {
   final String saturdayHours;
 
   const HoursSection({
-    required this.sundayHours,
-    required this.mondayHours,
-    required this.tuesdayHours,
-    required this.wednesdayHours,
-    required this.thursdayHours,
-    required this.fridayHours,
-    required this.saturdayHours,
+    this.sundayHours = 'Não informado',
+    this.mondayHours = 'Não informado',
+    this.tuesdayHours = 'Não informado',
+    this.wednesdayHours = 'Não informado',
+    this.thursdayHours = 'Não informado',
+    this.fridayHours = 'Não informado',
+    this.saturdayHours = 'Não informado',
   }) : super();
 
   HoursSection copyWith({

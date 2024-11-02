@@ -9,6 +9,8 @@ import '../../features/auth/presentation/screens/email_screen.dart';
 import '../../features/auth/presentation/screens/new_password_screen.dart';
 import '../../features/auth/presentation/screens/profile_edit_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
+import '../../features/creation/presentation/cubit/creation_cubit.dart';
+import '../../features/creation/presentation/screens/location_creation_screen.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
 import '../../features/location/presentation/bloc/section/section_bloc.dart';
 import '../../features/location/presentation/cubit/review_cubit.dart';
@@ -29,6 +31,7 @@ class AppRouter {
   final _sectionBloc = sl<SectionBloc>();
   final _profileBloc = sl<ProfileBloc>();
   final _reviewCubit = sl<ReviewCubit>();
+  final _creationCubit = sl<CreationCubit>();
 
   void dispose() {
     _locationListingBloc.close();
@@ -38,6 +41,7 @@ class AppRouter {
     _sectionBloc.close();
     _profileBloc.close();
     _reviewCubit.close();
+    _creationCubit.close();
   }
 
   Route<dynamic> getRoute(RouteSettings settings) {
@@ -68,6 +72,14 @@ class AppRouter {
             ),
           ),
           settings: const RouteSettings(name: RouteNames.location),
+        );
+      // Creation
+      case RouteNames.creation:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: _creationCubit,
+            child: const LocationCreationScreen(),
+          ),
         );
 
       // Auth
