@@ -1,15 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../domain/enums/enum_location.dart';
 import '../bloc/location_listing_bloc.dart';
 import '../cubit/location_categories_cubit.dart';
 import '../widgets/category_tile.dart';
 import '../widgets/custom_drawer.dart';
+import '../widgets/custom_text_field.dart';
 import '../widgets/location_list_item_tile.dart';
 
 class LocationListingScreen extends StatefulWidget {
@@ -70,6 +73,12 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: AppColors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     final notificationBarHeight = MediaQuery.of(context).padding.top;
     final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     return Scaffold(
@@ -97,11 +106,11 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                   );
                 }),
                 Expanded(
-                  child: TextField(
+                  child: CustomTextField(
                     controller: searchController,
-                    decoration: const InputDecoration(
-                      hintText: 'Search location',
-                    ),
+                    hintText: 'Procurar local',
+                    height: Sizes.p40,
+                    prefixIcon: const Icon(Icons.search),
                   ),
                 ),
               ],
@@ -169,33 +178,57 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                                 (context, index) {
                                   return index <
                                           state.locations.locationItems.length
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.all(Sizes.p8),
-                                          child: LocationListItemTile(
-                                            location: state
-                                                .locations.locationItems[index],
-                                            onPressed: () {
-                                              Navigator.of(context).pushNamed(
-                                                RouteNames.location,
-                                                arguments: state.locations
-                                                    .locationItems[index].id,
-                                              );
-                                            },
-                                            onFavoritePressed: () {
-                                              locationListingBloc.add(
-                                                ToggleFavoriteEvent(
-                                                  id: state.locations
-                                                      .locationItems[index].id,
-                                                ),
-                                              );
-                                            },
-                                            isFavorite: state
-                                                    .locations
-                                                    .locationItems[index]
-                                                    .isFavorite ??
-                                                false,
-                                          ),
+                                      ? Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(
+                                                Sizes.p8,
+                                              ),
+                                              child: LocationListItemTile(
+                                                location: state.locations
+                                                    .locationItems[index],
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                    RouteNames.location,
+                                                    arguments: state
+                                                        .locations
+                                                        .locationItems[index]
+                                                        .id,
+                                                  );
+                                                },
+                                                onFavoritePressed: () {
+                                                  locationListingBloc.add(
+                                                    ToggleFavoriteEvent(
+                                                      id: state
+                                                          .locations
+                                                          .locationItems[index]
+                                                          .id,
+                                                    ),
+                                                  );
+                                                },
+                                                isFavorite: state
+                                                        .locations
+                                                        .locationItems[index]
+                                                        .isFavorite ??
+                                                    false,
+                                              ),
+                                            ),
+                                            if (index !=
+                                                state.locations.locationItems
+                                                        .length -
+                                                    1)
+                                              Divider(
+                                                indent:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        0.08,
+                                                endIndent:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        0.08,
+                                              ),
+                                          ],
                                         )
                                       : const SizedBox(
                                           height: Sizes.p48,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'config/routing/app_router.dart';
 
@@ -26,7 +27,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Encontre na UFMS',
       theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark().copyWith(
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+        ),
+      ),
       themeMode: ThemeMode.dark,
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       onGenerateRoute: appRouter.getRoute,

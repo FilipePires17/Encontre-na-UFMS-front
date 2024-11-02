@@ -63,4 +63,5 @@ class AppColors {
   static const snowGrey = Color(0xFFD7D8D9);
   static const imperialBlue = Color(0xFF006995);
   static const charcoalGrey = Color(0xFF4D4F51);
+  static const translucentCharcoalGrey = Color(0x804D4F51);
 }

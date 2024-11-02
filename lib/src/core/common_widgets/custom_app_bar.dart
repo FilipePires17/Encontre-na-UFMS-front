@@ -10,16 +10,19 @@ class CustomAppBar extends AppBar {
     required BuildContext context,
     super.actions,
   }) : super(
-          backgroundColor: AppColors.charcoalGrey,
+          backgroundColor: AppColors.primary,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back, color: AppColors.white),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           title: Text(
             text,
-            style: const TextStyle(fontSize: Sizes.p32),
+            style: const TextStyle(
+              fontSize: Sizes.p32,
+              color: AppColors.white,
+            ),
           ),
           centerTitle: true,
         );

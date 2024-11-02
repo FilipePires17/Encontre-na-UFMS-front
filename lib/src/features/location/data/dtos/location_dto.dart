@@ -9,6 +9,7 @@ class LocationDto extends Location {
     super.isOpen,
     super.isFavorite,
     super.rating,
+    required super.hasAccessibility,
   }) : super(
           multimedia: multimedia,
         );
@@ -24,6 +25,7 @@ class LocationDto extends Location {
       isOpen: map['isOpen'],
       isFavorite: map['favorite'] == 1,
       rating: double.parse(map['grade']),
+      hasAccessibility: map['accessibility'] == 1,
     );
   }
 }

@@ -11,12 +11,14 @@ class LocationListItem extends Location {
     super.isOpen,
     super.isFavorite,
     super.rating,
-    super.hasAccessibility,
+    super.hasAccessibility = false,
     required this.type,
+    required this.viewed,
   });
 
   final EnumLocation type;
   final String address;
+  final bool viewed;
 
   @override
   LocationListItem copyWith({
@@ -29,6 +31,7 @@ class LocationListItem extends Location {
     double? rating,
     bool? hasAccessibility,
     EnumLocation? type,
+    bool? viewed,
   }) {
     return LocationListItem(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class LocationListItem extends Location {
       rating: rating ?? this.rating,
       hasAccessibility: hasAccessibility ?? this.hasAccessibility,
       type: type ?? this.type,
+      viewed: viewed ?? this.viewed,
     );
   }
 }
