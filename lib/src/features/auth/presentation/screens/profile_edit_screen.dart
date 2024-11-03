@@ -34,7 +34,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Perfil',
+        title: 'Perfil',
         context: context,
       ),
       body: Padding(

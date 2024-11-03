@@ -18,6 +18,7 @@ import '../../features/creation/data/repos/locale_creation_repo.dart';
 import '../../features/creation/domain/repos/i_locale_creation_repo.dart';
 import '../../features/creation/domain/usecases/create_locale.dart';
 import '../../features/creation/presentation/cubit/creation_cubit.dart';
+import '../../features/creation/presentation/cubit/photos_cubit.dart';
 import '../../features/location/data/datasource/remote_location_datasource.dart';
 import '../../features/location/data/repos/location_repo.dart';
 import '../../features/location/domain/repos/i_location_repo.dart';
@@ -100,6 +101,8 @@ void init() {
       ));
   sl.registerLazySingleton<ILocaleCreationRemoteDatasource>(
       () => LocaleCreationRemoteDatasource(httpClient: sl()));
+
+  sl.registerFactory(() => PhotosCubit());
 
   // Auth
   sl.registerFactory(() => AuthBloc(

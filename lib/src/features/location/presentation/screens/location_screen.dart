@@ -83,7 +83,7 @@ class _LocationScreenState extends State<LocationScreen>
               )
             : Scaffold(
                 appBar: CustomAppBar(
-                  text: state.location!.name,
+                  title: state.location!.name,
                   context: context,
                   actions: [
                     IconButton(

@@ -27,7 +27,7 @@ class EmailScreenState extends State<EmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Recuperar senha',
+        title: 'Recuperar senha',
         context: context,
       ),
       body: Padding(

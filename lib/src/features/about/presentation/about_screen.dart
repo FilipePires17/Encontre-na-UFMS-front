@@ -10,7 +10,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'SOBRE',
+        title: 'SOBRE',
         context: context,
       ),
       body: const Padding(

@@ -27,7 +27,7 @@ class CodeScreenState extends State<NewPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Criar nova senha',
+        title: 'Criar nova senha',
         context: context,
       ),
       body: Padding(

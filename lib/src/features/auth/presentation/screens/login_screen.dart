@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'LOGIN',
+        title: 'LOGIN',
         context: context,
       ),
       body: Padding(

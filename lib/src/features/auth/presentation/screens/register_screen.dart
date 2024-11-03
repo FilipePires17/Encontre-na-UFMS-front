@@ -29,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Criar Nova Conta',
+        title: 'Criar Nova Conta',
         context: context,
       ),
       body: Padding(
