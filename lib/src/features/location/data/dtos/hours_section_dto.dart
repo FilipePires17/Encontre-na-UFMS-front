@@ -25,13 +25,13 @@ class HoursSectionDto extends HoursSection {
 
   Map<String, dynamic> toMap() {
     return {
-      'sundayHours': sundayHours,
-      'mondayHours': mondayHours,
-      'tuesdayHours': tuesdayHours,
-      'wednesdayHours': wednesdayHours,
-      'thursdayHours': thursdayHours,
-      'fridayHours': fridayHours,
-      'saturdayHours': saturdayHours,
+      'sunday': sundayHours,
+      'monday': mondayHours,
+      'tuesday': tuesdayHours,
+      'wednesday': wednesdayHours,
+      'thursday': thursdayHours,
+      'friday': fridayHours,
+      'saturday': saturdayHours,
     };
   }
 
