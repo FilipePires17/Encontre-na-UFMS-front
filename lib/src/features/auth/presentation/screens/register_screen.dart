@@ -7,7 +7,7 @@ import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
-import '../widgets/custom_text_form_field.dart';
+import '../../../../core/common_widgets/custom_text_form_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key, this.fromLocation});

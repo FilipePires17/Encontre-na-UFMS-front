@@ -30,14 +30,14 @@ class LocaleCreationDto extends LocaleCreation {
       'address': address,
       'photos':
           multimedia.map((x) => MultimediaDto.fromEntity(x).toMap()).toList(),
-      'schedule': HoursSectionDto.fromEntity(hoursSection).toMap(),
-      'phone': phone,
-      'about': about,
-      'specialInfo': specialInfo != null
-          ? SpecialInfoDto.fromEntity(specialInfo!).toMap()
-          : null,
+      // 'schedule': HoursSectionDto.fromEntity(hoursSection).toMap(),
+      // 'phone': phone,
+      // 'about': about,
+      // 'specialInfo': specialInfo != null
+      //     ? SpecialInfoDto.fromEntity(specialInfo!).toMap()
+      //     : null,
       'type': EnumLocation.values.indexOf(type),
-      'accessibility': hasAccessibility == true ? 1 : 0,
+      // 'accessibility': hasAccessibility == true ? 1 : 0,
     };
   }
 

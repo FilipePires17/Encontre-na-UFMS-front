@@ -23,7 +23,7 @@ class LocaleCreationRemoteDatasource
       body: {'locale': localeCreation.toMap()},
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return const Right(null);
     }
     return Left(response.data['message'] ?? 'Erro ao criar local');
