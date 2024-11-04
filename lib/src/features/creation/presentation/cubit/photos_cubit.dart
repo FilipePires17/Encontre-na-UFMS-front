@@ -10,8 +10,12 @@ class PhotosCubit extends Cubit<List<Multimedia>> {
     emit(aux);
   }
 
-  void removePhoto(Multimedia photo) {
-    final aux = (List<Multimedia>.from(state))..remove(photo);
+  void removePhoto(int index) {
+    final aux = (List<Multimedia>.from(state))..removeAt(index);
     emit(aux);
+  }
+
+  void resetPhotos() {
+    emit([]);
   }
 }

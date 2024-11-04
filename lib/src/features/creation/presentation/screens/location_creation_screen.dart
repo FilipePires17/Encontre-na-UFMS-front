@@ -38,7 +38,9 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
   void initState() {
     super.initState();
     creationCubit = BlocProvider.of<CreationCubit>(context);
+    creationCubit.reset();
     photosCubit = BlocProvider.of<PhotosCubit>(context);
+    photosCubit.resetPhotos();
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -160,6 +162,7 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
                             ),
                           );
                         },
+                        validator: AppValidators.checkField,
                       ),
                       gapH12,
                       CustomTextFormField(
@@ -180,7 +183,21 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
                       ),
                       gapH48,
                       FormField(
-                        builder: (_) => const ImagePickerField(),
+                        builder: (state) {
+                          return Column(
+                            children: [
+                              if (state.hasError)
+                                Text(
+                                  state.errorText.toString(),
+                                  style: const TextStyle(
+                                    color: AppColors.secondary,
+                                    fontSize: Sizes.p12,
+                                  ),
+                                ),
+                              const ImagePickerField(),
+                            ],
+                          );
+                        },
                         validator: (_) {
                           if (photosCubit.state.isEmpty) {
                             return 'Adicione pelo menos uma foto';
@@ -218,6 +235,11 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
                         : () {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
+                              creationCubit.setLocale(
+                                creationCubit.state.locale.copyWith(
+                                  multimedia: photosCubit.state,
+                                ),
+                              );
                               creationCubit.create();
                             }
                           },

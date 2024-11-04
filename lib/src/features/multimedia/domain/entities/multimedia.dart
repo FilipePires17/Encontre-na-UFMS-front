@@ -4,12 +4,12 @@ import 'package:equatable/equatable.dart';
 
 class Multimedia extends Equatable {
   const Multimedia({
-    required this.id,
+    this.id,
     this.name,
     required this.media,
   });
 
-  final int id;
+  final int? id;
   final String? name;
   final Uint8List media;
 

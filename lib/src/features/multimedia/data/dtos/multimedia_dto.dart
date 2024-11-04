@@ -6,7 +6,7 @@ import '../../domain/entities/multimedia.dart';
 
 class MultimediaDto extends Multimedia {
   const MultimediaDto({
-    required super.id,
+    super.id,
     super.name,
     required super.media,
   });
@@ -24,7 +24,7 @@ class MultimediaDto extends Multimedia {
     }
 
     return MultimediaDto(
-      id: map['id'] ?? 0,
+      id: map['id'],
       name: map['name'] ?? '',
       media: media,
     );

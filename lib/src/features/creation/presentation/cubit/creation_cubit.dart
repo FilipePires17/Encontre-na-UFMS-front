@@ -30,4 +30,8 @@ class CreationCubit extends Cubit<CreationState> {
   void setLocale(LocaleCreation locale) {
     emit(state.copyWith(locale: locale));
   }
+
+  void reset() {
+    emit(const CreationState());
+  }
 }

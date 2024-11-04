@@ -11,6 +11,7 @@ class CustomSelectionFormField<T> extends StatefulWidget {
   final TextEditingController? controller;
   final bool isEnabled;
   final Function(String?)? onSaved;
+  final String? Function(String?)? validator;
 
   const CustomSelectionFormField({
     super.key,
@@ -20,6 +21,7 @@ class CustomSelectionFormField<T> extends StatefulWidget {
     this.isEnabled = true,
     this.onSaved,
     this.controller,
+    this.validator,
   });
 
   @override
@@ -68,6 +70,7 @@ class _CustomSelectionFormFieldState<T>
           onTap: _onTap,
           controller: controller,
           onSaved: widget.onSaved,
+          validator: widget.validator,
         ),
         if (isOnFocus && widget.selectionOptions.isNotEmpty)
           Material(

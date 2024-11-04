@@ -102,7 +102,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                     itemBuilder: (context, index) => MultimediaCard(
                       multimedia: state[index].media,
                       onTap: () {
-                        photosCubit.removePhoto(state[index]);
+                        photosCubit.removePhoto(index);
                       },
                     ),
                     separatorBuilder: (context, index) => gapW8,
