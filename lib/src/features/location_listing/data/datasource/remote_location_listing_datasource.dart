@@ -22,7 +22,8 @@ class RemoteLocationListingDatasource
   Future<Either<Error, LocationListDto>> getLocationListingPaginated(
       {required LocationListFilterDto filter}) async {
     final response = await httpClient.restRequest(
-      url: '${ApiUrls.baseLocations}/${filter.types.join(',')}',
+      url:
+          '${ApiUrls.baseLocations}/${filter.types.map((x) => x.name).join(',')}',
       method: HttpMethods.get,
       parameters: filter.toMap(),
     );

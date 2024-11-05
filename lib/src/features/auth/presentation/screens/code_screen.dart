@@ -26,7 +26,7 @@ class CodeScreenState extends State<CodeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Inserir o código',
+        title: 'Inserir o código',
         context: context,
       ),
       body: Padding(

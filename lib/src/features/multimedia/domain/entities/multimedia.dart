@@ -4,15 +4,17 @@ import 'package:equatable/equatable.dart';
 
 class Multimedia extends Equatable {
   const Multimedia({
-    required this.id,
+    this.id,
     this.name,
-    required this.media,
+    this.mediaUrl,
+    this.media,
   });
 
-  final int id;
+  final int? id;
   final String? name;
-  final Uint8List media;
+  final String? mediaUrl;
+  final Uint8List? media;
 
   @override
-  List<Object?> get props => [id, name, media];
+  List<Object?> get props => [id, name, mediaUrl, media];
 }

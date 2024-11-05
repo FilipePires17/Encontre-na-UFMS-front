@@ -25,6 +25,7 @@ dependencies:
   # API
   dio: ^5.7.0
   google_maps_flutter: ^2.9.0
+  geocoding: ^3.0.0
 
   # DB
   hive: ^2.2.3
@@ -36,6 +37,9 @@ dependencies:
   path_provider: ^2.1.4
   jwt_decoder: ^2.0.1
   url_launcher: ^6.3.0
+  image_picker: ^1.1.2
+  dotted_border: ^2.1.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

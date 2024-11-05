@@ -1,10 +1,11 @@
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/constants/api_urls.dart';
 import '../../../../core/data/remote/http_manager.dart';
-import '../../domain/entities/locale_creation.dart';
+import '../dtos/locale_creation_dto.dart';
 
 abstract class ILocaleCreationRemoteDatasource {
-  Future<Either<dynamic, void>> createLocale(LocaleCreation localeCreation);
+  Future<Either<dynamic, void>> createLocale(LocaleCreationDto localeCreation);
 }
 
 class LocaleCreationRemoteDatasource
@@ -15,8 +16,16 @@ class LocaleCreationRemoteDatasource
 
   @override
   Future<Either<dynamic, void>> createLocale(
-      LocaleCreation localeCreation) async {
-    // TODO: implement createLocale
-    throw UnimplementedError();
+      LocaleCreationDto localeCreation) async {
+    final response = await httpClient.restRequest(
+      url: ApiUrls.createLocale,
+      method: HttpMethods.post,
+      body: {'locale': localeCreation.toMap()},
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return const Right(null);
+    }
+    return Left(response.data['message'] ?? 'Erro ao criar local');
   }
 }

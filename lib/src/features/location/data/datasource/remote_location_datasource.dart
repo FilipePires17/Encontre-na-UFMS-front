@@ -97,7 +97,7 @@ class RemoteLocationDatasource implements IRemoteLocationDatasource {
 
     switch (section) {
       case EnumSections.hours:
-        return Right(HoursSectionDto.fromMap(response.data['data']));
+        return Right(HoursSectionDto.fromMap(response.data['data'] ?? {}));
       case EnumSections.moreInfo:
         return Right(MoreInfoSectionDto.fromMap(response.data['data']));
       default:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/common_widgets/custom_app_bar.dart';
+import '../../../../core/common_widgets/custom_text_form_field.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
@@ -34,7 +35,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'Perfil',
+        title: 'Perfil',
         context: context,
       ),
       body: Padding(
@@ -47,28 +48,23 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   _nameController.text = state.user!.name;
-                  return TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Nome',
-                    ),
+                  return CustomTextFormField(
+                    labelText: 'Nome',
                     controller: _nameController,
                     validator: AppValidators.checkField,
                   );
                 },
               ),
               gapH12,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-                initialValue: authBloc.state.user!.email,
-                enabled: false,
+              CustomTextFormField(
+                labelText: 'Email',
+                controller:
+                    TextEditingController(text: authBloc.state.user!.email),
+                isEnabled: false,
               ),
               gapH12,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Nova Senha (opcional)',
-                ),
+              CustomTextFormField(
+                labelText: 'Nova Senha (opcional)',
                 controller: _passwordController,
                 onChanged: (_) => setState(() {}),
                 validator: (value) {
@@ -78,12 +74,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   return AppValidators.passwordValidator(value);
                 },
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Confirmar Senha',
-                ),
+              gapH12,
+              CustomTextFormField(
+                labelText: 'Confirmar Senha',
                 controller: _confirmPasswordController,
-                enabled: _passwordController.text.isNotEmpty,
+                isEnabled: _passwordController.text.isNotEmpty,
                 validator: (passwordConfirmation) {
                   return AppValidators.confirmPasswordValidator(
                     _passwordController.text,

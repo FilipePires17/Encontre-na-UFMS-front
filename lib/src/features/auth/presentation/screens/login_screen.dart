@@ -6,7 +6,7 @@ import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../bloc/auth/auth_bloc.dart';
-import '../widgets/custom_text_form_field.dart';
+import '../../../../core/common_widgets/custom_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, this.fromLocation = false});
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        text: 'LOGIN',
+        title: 'LOGIN',
         context: context,
       ),
       body: Padding(

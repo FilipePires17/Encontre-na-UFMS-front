@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/sizes/app_sizes.dart';
-import '../../../../core/constants/theme/app_colors.dart';
+import '../constants/sizes/app_sizes.dart';
+import '../constants/theme/app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -12,6 +12,12 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     this.validator,
+    this.onSaved,
+    this.isRequired = false,
+    this.onTap,
+    this.isReadOnly = false,
+    this.isEnabled = true,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -20,6 +26,12 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final String? Function(String?)? validator;
+  final Function(String?)? onSaved;
+  final bool isRequired;
+  final Function()? onTap;
+  final bool isReadOnly;
+  final bool isEnabled;
+  final Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +45,7 @@ class CustomTextFormField extends StatelessWidget {
         hintStyle: const TextStyle(
           color: AppColors.charcoalGrey,
         ),
-        labelText: labelText,
+        labelText: isRequired ? '$labelText *' : labelText,
         labelStyle: const TextStyle(
           color: AppColors.white,
         ),
@@ -50,6 +62,11 @@ class CustomTextFormField extends StatelessWidget {
       ),
       controller: controller,
       validator: validator,
+      onSaved: onSaved,
+      onTap: onTap,
+      readOnly: isReadOnly,
+      enabled: isEnabled,
+      onChanged: onChanged,
     );
   }
 }

@@ -6,7 +6,7 @@ import '../constants/theme/app_colors.dart';
 class CustomAppBar extends AppBar {
   CustomAppBar({
     super.key,
-    required String text,
+    required String title,
     required BuildContext context,
     super.actions,
   }) : super(
@@ -18,7 +18,7 @@ class CustomAppBar extends AppBar {
             },
           ),
           title: Text(
-            text,
+            title,
             style: const TextStyle(
               fontSize: Sizes.p32,
               color: AppColors.white,

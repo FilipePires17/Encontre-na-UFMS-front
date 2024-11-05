@@ -6,6 +6,9 @@ abstract class ApiUrls {
   static const String toggleFavorite = '$baseLocations/favorites';
   static const String locationSection = '$baseLocations/section';
 
+  // Creation
+  static const String createLocale = '$baseLocations/new';
+
   // Reviews
   static const String baseReviews = '$baseLocations/reviews';
   static const String getReviews = '$baseReviews/get';

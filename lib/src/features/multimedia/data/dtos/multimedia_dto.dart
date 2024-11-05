@@ -1,39 +1,29 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
+import '../../../../config/environment/environment.dart';
 import '../../domain/entities/multimedia.dart';
 
 class MultimediaDto extends Multimedia {
   const MultimediaDto({
-    required super.id,
+    super.id,
     super.name,
-    required super.media,
+    super.mediaUrl,
+    super.media,
   });
 
   factory MultimediaDto.fromMap(Map<String, dynamic> map) {
-    Uint8List media;
-
-    try {
-      media = base64.decode(
-        (map['data'] as String).split(':').last.replaceAll(r'\n|\r', ''),
-      );
-    } catch (e) {
-      debugPrint('Error decoding multimedia: $e');
-      media = Uint8List(0);
-    }
-
     return MultimediaDto(
-      id: map['id'] ?? 0,
-      name: map['name'] ?? '',
-      media: media,
+      id: map['id'],
+      name: map['name'],
+      mediaUrl: baseUrlDev + map['url'].toString(),
+      media: map['data'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': super.name,
-      'media': base64.encode(super.media),
+      'name': name,
+      'data': base64.encode(media!),
     };
   }
 
@@ -41,6 +31,7 @@ class MultimediaDto extends Multimedia {
     return MultimediaDto(
       id: entity.id,
       name: entity.name,
+      mediaUrl: entity.mediaUrl,
       media: entity.media,
     );
   }

@@ -39,22 +39,22 @@ class LocalizationSection extends Section {
 }
 
 class HoursSection extends Section {
-  final String sundayHours;
-  final String mondayHours;
-  final String tuesdayHours;
-  final String wednesdayHours;
-  final String thursdayHours;
-  final String fridayHours;
-  final String saturdayHours;
+  final String? sundayHours;
+  final String? mondayHours;
+  final String? tuesdayHours;
+  final String? wednesdayHours;
+  final String? thursdayHours;
+  final String? fridayHours;
+  final String? saturdayHours;
 
   const HoursSection({
-    this.sundayHours = 'Não informado',
-    this.mondayHours = 'Não informado',
-    this.tuesdayHours = 'Não informado',
-    this.wednesdayHours = 'Não informado',
-    this.thursdayHours = 'Não informado',
-    this.fridayHours = 'Não informado',
-    this.saturdayHours = 'Não informado',
+    this.sundayHours,
+    this.mondayHours,
+    this.tuesdayHours,
+    this.wednesdayHours,
+    this.thursdayHours,
+    this.fridayHours,
+    this.saturdayHours,
   }) : super();
 
   HoursSection copyWith({
@@ -92,12 +92,12 @@ class HoursSection extends Section {
 class MoreInfoSection extends Section {
   final String? about;
   final String? observations;
-  final String phone;
+  final String? phone;
 
   const MoreInfoSection({
     this.about,
     this.observations,
-    required this.phone,
+    this.phone,
   }) : super();
 
   MoreInfoSection copyWith({
@@ -114,4 +114,8 @@ class MoreInfoSection extends Section {
 
   @override
   List<Object?> get props => [about, phone, observations];
+}
+
+extension MoreInfoSectionExtension on MoreInfoSection {
+  bool get hasInfo => about != null || observations != null || phone != null;
 }
