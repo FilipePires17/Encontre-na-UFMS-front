@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
@@ -37,6 +38,9 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
               builder: (context) => const ImagePickerModal(),
             );
             if (pickedFile != null) {
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitUp,
+              ]);
               photosCubit.addPhoto(pickedFile);
             }
           },
@@ -100,7 +104,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => MultimediaCard(
-                      multimedia: state[index].media,
+                      multimedia: state[index].media!,
                       onTap: () {
                         photosCubit.removePhoto(index);
                       },

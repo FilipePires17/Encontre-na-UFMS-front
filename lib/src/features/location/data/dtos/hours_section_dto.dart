@@ -13,13 +13,13 @@ class HoursSectionDto extends HoursSection {
 
   factory HoursSectionDto.fromMap(Map<String, dynamic> map) {
     return HoursSectionDto(
-      sundayHours: map['sundayHours'],
-      mondayHours: map['mondayHours'],
-      tuesdayHours: map['tuesdayHours'],
-      wednesdayHours: map['wednesdayHours'],
-      thursdayHours: map['thursdayHours'],
-      fridayHours: map['fridayHours'],
-      saturdayHours: map['saturdayHours'],
+      sundayHours: map['sundayHours'] ?? 'Não informado',
+      mondayHours: map['mondayHours'] ?? 'Não informado',
+      tuesdayHours: map['tuesdayHours'] ?? 'Não informado',
+      wednesdayHours: map['wednesdayHours'] ?? 'Não informado',
+      thursdayHours: map['thursdayHours'] ?? 'Não informado',
+      fridayHours: map['fridayHours'] ?? 'Não informado',
+      saturdayHours: map['saturdayHours'] ?? 'Não informado',
     );
   }
 

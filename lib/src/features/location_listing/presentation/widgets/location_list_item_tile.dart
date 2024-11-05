@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/sizes/app_sizes.dart';
@@ -34,10 +35,10 @@ class LocationListItemTile extends StatelessWidget {
                 children: [
                   Center(
                     child: location.multimedia.isNotEmpty
-                        ? Image.memory(
-                            location.multimedia.first.media,
+                        ? CachedNetworkImage(
+                            imageUrl: location.multimedia.first.mediaUrl ?? '',
                             fit: BoxFit.fitHeight,
-                            errorBuilder: (context, error, stackTrace) {
+                            errorWidget: (_, __, ___) {
                               return const Icon(Icons.image_not_supported);
                             },
                           )
@@ -86,7 +87,8 @@ class LocationListItemTile extends StatelessWidget {
               onPressed: onFavoritePressed,
               icon: Icon(
                 isFavorite ? Icons.star : Icons.star_border,
-                color: AppColors.secondary,
+                color:
+                    isFavorite ? AppColors.secondary : AppColors.charcoalGrey,
                 size: Sizes.p36,
               ),
             ),

@@ -17,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onTap,
     this.isReadOnly = false,
     this.isEnabled = true,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -30,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
   final Function()? onTap;
   final bool isReadOnly;
   final bool isEnabled;
+  final Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class CustomTextFormField extends StatelessWidget {
       onTap: onTap,
       readOnly: isReadOnly,
       enabled: isEnabled,
+      onChanged: onChanged,
     );
   }
 }

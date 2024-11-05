@@ -14,64 +14,74 @@ class InformationTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            gapH8,
-            const Text(
-              'Telefone',
+    return moreInfoSection.hasInfo
+        ? SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  gapH8,
+                  const Text(
+                    'Telefone',
+                    style: TextStyle(
+                      fontSize: Sizes.p16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  gapH8,
+                  Text(
+                    moreInfoSection.phone?.phoneFormat() ?? '',
+                    style: const TextStyle(
+                      fontSize: Sizes.p14,
+                    ),
+                  ),
+                  gapH8,
+                  if (moreInfoSection.about != null) ...[
+                    const Text(
+                      'Sobre',
+                      style: TextStyle(
+                        fontSize: Sizes.p16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    gapH8,
+                    Text(
+                      moreInfoSection.about!,
+                      style: const TextStyle(
+                        fontSize: Sizes.p14,
+                      ),
+                    ),
+                  ],
+                  if (moreInfoSection.observations != null) ...[
+                    gapH8,
+                    const Text(
+                      'Observações',
+                      style: TextStyle(
+                        fontSize: Sizes.p16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    gapH8,
+                    Text(
+                      moreInfoSection.observations!,
+                      style: const TextStyle(
+                        fontSize: Sizes.p14,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          )
+        : const Center(
+            child: Text(
+              'Nenhuma informação disponível',
               style: TextStyle(
                 fontSize: Sizes.p16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            gapH8,
-            Text(
-              moreInfoSection.phone.phoneFormat(),
-              style: const TextStyle(
-                fontSize: Sizes.p14,
-              ),
-            ),
-            gapH8,
-            if (moreInfoSection.about != null) ...[
-              const Text(
-                'Sobre',
-                style: TextStyle(
-                  fontSize: Sizes.p16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              gapH8,
-              Text(
-                moreInfoSection.about!,
-                style: const TextStyle(
-                  fontSize: Sizes.p14,
-                ),
-              ),
-            ],
-            if (moreInfoSection.observations != null) ...[
-              gapH8,
-              const Text(
-                'Observações',
-                style: TextStyle(
-                  fontSize: Sizes.p16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              gapH8,
-              Text(
-                moreInfoSection.observations!,
-                style: const TextStyle(
-                  fontSize: Sizes.p14,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -77,7 +78,7 @@ class _LocationScreenState extends State<LocationScreen>
         }
       },
       builder: (context, state) {
-        return state.status == LocationStateStatus.loading
+        return state.status != LocationStateStatus.loaded
             ? const Center(
                 child: CircularProgressIndicator(),
               )
@@ -113,10 +114,12 @@ class _LocationScreenState extends State<LocationScreen>
                               : PageView.builder(
                                   controller: _pageController,
                                   itemCount: state.location!.multimedia.length,
-                                  itemBuilder: (_, index) => Image.memory(
-                                    state.location!.multimedia[index].media,
+                                  itemBuilder: (_, index) => CachedNetworkImage(
+                                    imageUrl: state.location!.multimedia[index]
+                                            .mediaUrl ??
+                                        '',
                                     fit: BoxFit.contain,
-                                    errorBuilder: (_, __, ___) {
+                                    errorWidget: (_, __, ___) {
                                       return const Center(
                                         child: Icon(Icons.image_not_supported),
                                       );

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/common_widgets/dialog_modal.dart';
@@ -103,26 +104,38 @@ class ImagePickerModal extends StatelessWidget {
 
   void _openImage(BuildContext context, ImageSource source) async {
     final ctx = Navigator.of(context);
-    final pickedFile = await ImagePicker().pickImage(
-      source: source,
-      imageQuality: 50,
-    );
-
-    if (context.mounted && pickedFile != null) {
-      final file = File(pickedFile.path);
-      final uintlist = await file.readAsBytes();
-      final byteArray = base64Encode(uintlist);
-
-      ctx.pop(
-        MultimediaDto.fromMap({
-          'data': byteArray,
-          'name': pickedFile.name.isEmpty
-              ? DateTime.now().toIso8601String()
-              : pickedFile.name,
-        }),
+    try {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      final pickedFile = await ImagePicker().pickImage(
+        source: source,
+        imageQuality: 50,
       );
-      return;
+
+      if (context.mounted && pickedFile != null) {
+        final file = File(pickedFile.path);
+        final uintlist = await file.readAsBytes();
+        final byteArray = base64Encode(uintlist);
+
+        ctx.pop(
+          MultimediaDto.fromMap({
+            'data': base64.decode(byteArray),
+            'name': pickedFile.name.isEmpty
+                ? DateTime.now().toIso8601String()
+                : pickedFile.name,
+          }),
+        );
+        return;
+      }
+    } catch (e) {
+      debugPrint('Error opening image: $e');
     }
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     ctx.pop();
   }
 }

@@ -4,7 +4,7 @@ class MoreInfoSectionDto extends MoreInfoSection {
   const MoreInfoSectionDto({
     super.about,
     super.observations,
-    required super.phone,
+    super.phone,
   });
 
   factory MoreInfoSectionDto.fromMap(Map<String, dynamic> map) {
