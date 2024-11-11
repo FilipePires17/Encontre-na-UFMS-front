@@ -68,7 +68,8 @@ class CustomDrawer extends StatelessWidget {
                           title: 'Sugerir Novo Local',
                           onPressed: () {
                             Navigator.of(context)
-                                .pushNamed(RouteNames.creation);
+                                .pushNamed(RouteNames.creation)
+                                .then((_) => Navigator.of(context).pop());
                           },
                         ),
                       ],

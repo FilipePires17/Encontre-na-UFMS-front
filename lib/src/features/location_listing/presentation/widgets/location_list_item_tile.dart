@@ -24,76 +24,93 @@ class LocationListItemTile extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        height: Sizes.p100,
-        child: Row(
-          children: <Widget>[
-            SizedBox(
-              width: 100,
-              height: 100,
-              child: Stack(
-                children: [
-                  Center(
-                    child: location.multimedia.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: location.multimedia.first.mediaUrl ?? '',
-                            fit: BoxFit.fitHeight,
-                            errorWidget: (_, __, ___) {
-                              return const Icon(Icons.image_not_supported);
-                            },
-                          )
-                        : const Icon(Icons.image),
-                  ),
-                  if (location.viewed)
-                    const Positioned(
-                      bottom: 4,
-                      right: 4,
-                      child: Icon(
-                        Icons.visibility,
-                        color: AppColors.translucentCharcoalGrey,
-                      ),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 100,
+            height: 100,
+            child: Stack(
+              children: [
+                Center(
+                  child: location.multimedia.isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: location.multimedia.first.mediaUrl ?? '',
+                          fit: BoxFit.fitHeight,
+                          errorWidget: (_, __, ___) {
+                            return const Icon(Icons.image_not_supported);
+                          },
+                        )
+                      : const Icon(Icons.image),
+                ),
+                if (location.viewed)
+                  const Positioned(
+                    bottom: 4,
+                    right: 4,
+                    child: Icon(
+                      Icons.visibility,
+                      color: AppColors.translucentCharcoalGrey,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-            gapW12,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    location.name,
+          ),
+          gapW12,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  location.name,
+                  style: const TextStyle(
+                    fontSize: Sizes.p20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Sizes.p8,
+                    vertical: Sizes.p4,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(Sizes.p16),
+                    ),
+                    border: Border.all(
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                  child: Text(
+                    location.type.title,
                     style: const TextStyle(
-                      fontSize: Sizes.p20,
-                      fontWeight: FontWeight.bold,
+                      color: AppColors.white,
+                      fontSize: Sizes.p10,
                     ),
                   ),
-                  Text(location.address),
-                  if (location.isOpen == true)
-                    const Text(
-                      'Aberto agora',
-                      style: TextStyle(color: AppColors.primary),
-                    )
-                  else
-                    const Text(
-                      'Fechado',
-                      style: TextStyle(color: AppColors.secondary),
-                    ),
-                ],
-              ),
+                ),
+                Text(
+                  location.address,
+                  style: const TextStyle(
+                    color: AppColors.lightGray,
+                  ),
+                ),
+                if (location.isOpen != true)
+                  const Text(
+                    'Provavelmente Fechado',
+                    style: TextStyle(color: AppColors.secondary),
+                  ),
+              ],
             ),
-            IconButton(
-              onPressed: onFavoritePressed,
-              icon: Icon(
-                isFavorite ? Icons.star : Icons.star_border,
-                color:
-                    isFavorite ? AppColors.secondary : AppColors.charcoalGrey,
-                size: Sizes.p36,
-              ),
+          ),
+          IconButton(
+            onPressed: onFavoritePressed,
+            icon: Icon(
+              isFavorite ? Icons.star : Icons.star_border,
+              color: isFavorite ? AppColors.secondary : AppColors.charcoalGrey,
+              size: Sizes.p36,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

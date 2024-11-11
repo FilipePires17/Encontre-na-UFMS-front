@@ -29,9 +29,9 @@ class CustomTextField extends StatelessWidget {
           ),
           hintText: hintText,
           hintStyle: const TextStyle(
-            color: AppColors.charcoalGrey,
+            color: AppColors.white,
           ),
-          fillColor: AppColors.white,
+          fillColor: AppColors.charcoalGrey,
           filled: true,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: Sizes.p16,
@@ -40,7 +40,7 @@ class CustomTextField extends StatelessWidget {
           prefixIcon: prefixIcon,
         ),
         style: const TextStyle(
-          color: AppColors.charcoalGrey,
+          color: AppColors.white,
         ),
       ),
     );

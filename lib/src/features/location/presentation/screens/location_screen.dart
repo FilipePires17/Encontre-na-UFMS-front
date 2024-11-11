@@ -92,7 +92,9 @@ class _LocationScreenState extends State<LocationScreen>
                         state.location!.isFavorite ?? false
                             ? Icons.star
                             : Icons.star_border,
-                        color: AppColors.secondary,
+                        color: state.location!.isFavorite ?? false
+                            ? AppColors.secondary
+                            : AppColors.white,
                         size: Sizes.p36,
                       ),
                       onPressed: () {

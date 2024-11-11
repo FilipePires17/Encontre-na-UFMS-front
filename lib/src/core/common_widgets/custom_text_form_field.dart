@@ -57,9 +57,6 @@ class CustomTextFormField extends StatelessWidget {
         ),
         suffixIcon: suffixIcon,
       ),
-      style: const TextStyle(
-        color: AppColors.white,
-      ),
       controller: controller,
       validator: validator,
       onSaved: onSaved,

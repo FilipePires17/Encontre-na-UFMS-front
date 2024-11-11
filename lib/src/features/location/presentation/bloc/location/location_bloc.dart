@@ -38,8 +38,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     });
 
     on<ToggleFavoriteEvent>((event, emit) async {
-      emit(state.copyWith(status: LocationStateStatus.loading));
-
       await toggleFavorite(id: event.id).then(
         (result) => result.fold(
           (error) {

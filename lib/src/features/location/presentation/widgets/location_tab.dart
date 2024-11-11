@@ -70,7 +70,8 @@ class _LocationTabState extends State<LocationTab> {
               ReviewSection(
                 locationId: widget.locationId,
               ),
-            ],
+            ] else
+              gapH16,
             Align(
               alignment: Alignment.topCenter,
               child: Container(
