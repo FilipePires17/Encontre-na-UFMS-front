@@ -50,12 +50,21 @@ class _LocationTabState extends State<LocationTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             gapH12,
-            Text(
-              widget.localizationSection.address,
-              style: const TextStyle(
-                fontSize: Sizes.p20,
-                fontWeight: FontWeight.w500,
-              ),
+            Wrap(
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  color: AppColors.primary,
+                  size: Sizes.p20,
+                ),
+                Text(
+                  widget.localizationSection.address,
+                  style: const TextStyle(
+                    fontSize: Sizes.p20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
             if (authBloc.state.status == AuthStateStatus.loggedIn) ...[
               gapH8,

@@ -84,9 +84,17 @@ class _LocationScreenState extends State<LocationScreen>
               )
             : Scaffold(
                 appBar: CustomAppBar(
-                  title: state.location!.name,
                   context: context,
                   actions: [
+                    if (false)
+                      IconButton(
+                        icon: const Icon(
+                          Icons.edit_location_alt_outlined,
+                          color: AppColors.white,
+                          size: Sizes.p32,
+                        ),
+                        onPressed: () {},
+                      ),
                     IconButton(
                       icon: Icon(
                         state.location!.isFavorite ?? false
@@ -95,7 +103,7 @@ class _LocationScreenState extends State<LocationScreen>
                         color: state.location!.isFavorite ?? false
                             ? AppColors.secondary
                             : AppColors.white,
-                        size: Sizes.p36,
+                        size: Sizes.p32,
                       ),
                       onPressed: () {
                         locationBloc.add(ToggleFavoriteEvent(widget.id));
@@ -192,12 +200,12 @@ class _LocationScreenState extends State<LocationScreen>
                                 ),
                                 const Text(' - ')
                               ],
-                              Text((state.location!.rating ?? 0).toString()),
                               const Icon(
                                 Icons.star,
-                                color: AppColors.yellow,
+                                color: AppColors.secondary,
                                 size: Sizes.p16,
                               ),
+                              Text((state.location!.rating ?? 0).toString()),
                             ],
                           ),
                         ],
