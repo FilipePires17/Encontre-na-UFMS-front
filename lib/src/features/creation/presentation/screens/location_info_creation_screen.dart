@@ -8,10 +8,12 @@ import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../../../location/domain/entities/sections.dart';
+import '../../../location/domain/entities/special_info.dart';
 import '../../../location_listing/domain/enums/enum_location.dart';
 import '../cubit/creation_cubit.dart';
 import '../cubit/photos_cubit.dart';
 import '../widgets/custom_selection_form_field.dart';
+import '../widgets/hour_form.dart';
 import '../widgets/image_picker_field.dart';
 
 class LocationInfoCreationScreen extends StatefulWidget {
@@ -100,7 +102,7 @@ class _LocationInfoCreationScreenState
                       CustomSelectionFormField(
                         title: 'Tipo *',
                         selectionOptions: EnumLocation.values,
-                        onSaved: (value) {
+                        onSelected: (value) {
                           creationCubit.setLocale(
                             creationCubit.state.locale.copyWith(
                               type: EnumLocation.values.firstWhere(
@@ -108,8 +110,74 @@ class _LocationInfoCreationScreenState
                               ),
                             ),
                           );
+                          return;
                         },
                         validator: AppValidators.checkField,
+                      ),
+                      gapH12,
+                      BlocBuilder<CreationCubit, CreationState>(
+                        builder: (context, state) {
+                          switch (state.locale.type) {
+                            case EnumLocation.academicBlocks:
+                              return CustomTextFormField(
+                                labelText: 'Cursos Oferecidos',
+                                onSaved: (value) {
+                                  creationCubit.setLocale(
+                                    creationCubit.state.locale.copyWith(
+                                      specialInfo: (creationCubit
+                                                  .state.locale.specialInfo ??
+                                              const SpecialInfo())
+                                          .copyWith(course: value),
+                                    ),
+                                  );
+                                },
+                              );
+                            case EnumLocation.libraries:
+                              return CustomTextFormField(
+                                labelText: 'Site da Biblioteca',
+                                onSaved: (value) {
+                                  creationCubit.setLocale(
+                                    creationCubit.state.locale.copyWith(
+                                      specialInfo: (creationCubit
+                                                  .state.locale.specialInfo ??
+                                              const SpecialInfo())
+                                          .copyWith(libraryLink: value),
+                                    ),
+                                  );
+                                },
+                              );
+                            case EnumLocation.sportsCenters:
+                              return CustomTextFormField(
+                                labelText: 'Modalidades Oferecidas',
+                                onSaved: (value) {
+                                  creationCubit.setLocale(
+                                    creationCubit.state.locale.copyWith(
+                                      specialInfo: (creationCubit
+                                                  .state.locale.specialInfo ??
+                                              const SpecialInfo())
+                                          .copyWith(availableSports: value),
+                                    ),
+                                  );
+                                },
+                              );
+                            case EnumLocation.transports:
+                              return CustomTextFormField(
+                                labelText: 'Linhas de Ônibus',
+                                onSaved: (value) {
+                                  creationCubit.setLocale(
+                                    creationCubit.state.locale.copyWith(
+                                      specialInfo: (creationCubit
+                                                  .state.locale.specialInfo ??
+                                              const SpecialInfo())
+                                          .copyWith(availableBuses: value),
+                                    ),
+                                  );
+                                },
+                              );
+                            default:
+                              return const SizedBox.shrink();
+                          }
+                        },
                       ),
                       gapH12,
                       CustomTextFormField(
@@ -361,48 +429,6 @@ class _LocationInfoCreationScreenState
           ],
         ),
       ),
-    );
-  }
-}
-
-class HourForm extends StatelessWidget {
-  const HourForm({
-    super.key,
-    required this.title,
-    this.onSaved,
-    required this.controller,
-  });
-
-  final String title;
-  final Function(String?)? onSaved;
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(title),
-        gapW12,
-        SizedBox(
-          width: 92,
-          child: CustomTextFormField(
-            labelText: 'HH:MM',
-            validator: AppValidators.hourValidator,
-            controller: controller,
-          ),
-        ),
-        gapW12,
-        const Text('-'),
-        gapW12,
-        SizedBox(
-          width: 92,
-          child: CustomTextFormField(
-            labelText: 'HH:MM',
-            validator: AppValidators.hourValidator,
-            onSaved: onSaved,
-          ),
-        ),
-      ],
     );
   }
 }

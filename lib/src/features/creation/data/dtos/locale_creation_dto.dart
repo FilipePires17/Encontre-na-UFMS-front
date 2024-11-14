@@ -34,9 +34,9 @@ class LocaleCreationDto extends LocaleCreation {
         'schedule': HoursSectionDto.fromEntity(hoursSection!).toMap(),
       'phoneNumber': phone,
       'about': about,
-      // 'specialInfo': specialInfo != null
-      //     ? SpecialInfoDto.fromEntity(specialInfo!).toMap()
-      //     : null,
+      'specialInfo': specialInfo != null
+          ? SpecialInfoDto.fromEntity(specialInfo!).toMap()
+          : null,
       'type': EnumLocation.values.indexOf(type),
       'accessibility': hasAccessibility == true ? 1 : 0,
       'observation': observation,

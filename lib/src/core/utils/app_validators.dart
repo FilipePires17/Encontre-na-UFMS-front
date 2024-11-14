@@ -46,7 +46,7 @@ class AppValidators {
   }
 
   static String? hourValidator(String? time) {
-    if (time == null) return null;
+    if (time == null || time.isEmpty) return null;
     if (!RegExp(r'^\d{2}:\d{2}$').hasMatch(time)) {
       return 'Hora inválida';
     }

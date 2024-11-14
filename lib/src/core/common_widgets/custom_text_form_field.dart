@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constants/sizes/app_sizes.dart';
 import '../constants/theme/app_colors.dart';
@@ -18,6 +19,8 @@ class CustomTextFormField extends StatelessWidget {
     this.isReadOnly = false,
     this.isEnabled = true,
     this.onChanged,
+    this.inputFormatters,
+    this.keyboardType,
   });
 
   final TextEditingController? controller;
@@ -32,6 +35,8 @@ class CustomTextFormField extends StatelessWidget {
   final bool isReadOnly;
   final bool isEnabled;
   final Function(String?)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +69,8 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: isReadOnly,
       enabled: isEnabled,
       onChanged: onChanged,
+      inputFormatters: inputFormatters,
+      keyboardType: keyboardType,
     );
   }
 }

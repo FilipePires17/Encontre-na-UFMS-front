@@ -11,7 +11,8 @@ class CreationState extends Equatable {
       latitude: 0,
       longitude: 0,
       localizationLink: '',
-      type: EnumLocation.academicBlocks,
+      // TODO: horrível
+      type: EnumLocation.banks,
     ),
     this.errorMessage,
   });
