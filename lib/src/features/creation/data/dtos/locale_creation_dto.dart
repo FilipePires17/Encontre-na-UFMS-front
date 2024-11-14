@@ -30,14 +30,16 @@ class LocaleCreationDto extends LocaleCreation {
       'address': address,
       'photos':
           multimedia.map((x) => MultimediaDto.fromEntity(x).toMap()).toList(),
-      // 'schedule': HoursSectionDto.fromEntity(hoursSection).toMap(),
-      // 'phone': phone,
-      // 'about': about,
+      if (hoursSection != null)
+        'schedule': HoursSectionDto.fromEntity(hoursSection!).toMap(),
+      'phoneNumber': phone,
+      'about': about,
       // 'specialInfo': specialInfo != null
       //     ? SpecialInfoDto.fromEntity(specialInfo!).toMap()
       //     : null,
       'type': EnumLocation.values.indexOf(type),
-      // 'accessibility': hasAccessibility == true ? 1 : 0,
+      'accessibility': hasAccessibility == true ? 1 : 0,
+      'observation': observation,
     };
   }
 
@@ -50,7 +52,9 @@ class LocaleCreationDto extends LocaleCreation {
       address: entity.address,
       multimedia:
           entity.multimedia.map((x) => MultimediaDto.fromEntity(x)).toList(),
-      hoursSection: HoursSectionDto.fromEntity(entity.hoursSection),
+      hoursSection: entity.hoursSection != null
+          ? HoursSectionDto.fromEntity(entity.hoursSection!)
+          : null,
       phone: entity.phone,
       about: entity.about,
       specialInfo: entity.specialInfo != null

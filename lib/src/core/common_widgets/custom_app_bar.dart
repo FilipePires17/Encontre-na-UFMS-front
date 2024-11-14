@@ -9,6 +9,7 @@ class CustomAppBar extends AppBar {
     String? title,
     required BuildContext context,
     super.actions,
+    double? fontSize,
   }) : super(
           backgroundColor: AppColors.primary,
           leading: IconButton(
@@ -20,8 +21,8 @@ class CustomAppBar extends AppBar {
           title: title != null
               ? Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: Sizes.p32,
+                  style: TextStyle(
+                    fontSize: fontSize ?? Sizes.p32,
                     color: AppColors.white,
                   ),
                 )

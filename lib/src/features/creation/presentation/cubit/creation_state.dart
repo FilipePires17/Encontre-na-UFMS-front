@@ -12,7 +12,6 @@ class CreationState extends Equatable {
       longitude: 0,
       localizationLink: '',
       type: EnumLocation.academicBlocks,
-      hoursSection: HoursSection(),
     ),
     this.errorMessage,
   });

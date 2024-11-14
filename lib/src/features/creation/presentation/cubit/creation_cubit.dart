@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../location/domain/entities/sections.dart';
 import '../../../location_listing/domain/enums/enum_location.dart';
 import '../../domain/entities/locale_creation.dart';
 import '../../domain/usecases/create_locale.dart';

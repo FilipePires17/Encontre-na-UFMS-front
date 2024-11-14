@@ -10,7 +10,7 @@ class MoreInfoSectionDto extends MoreInfoSection {
   factory MoreInfoSectionDto.fromMap(Map<String, dynamic> map) {
     return MoreInfoSectionDto(
       about: map['about'],
-      observations: map['observations'],
+      observations: map['observation'],
       phone: map['phoneNumber'],
     );
   }

@@ -5,15 +5,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/common_widgets/custom_submit_button.dart';
+import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
-import '../../../../core/utils/app_validators.dart';
 import '../../../../core/common_widgets/custom_text_form_field.dart';
-import '../../../location_listing/domain/enums/enum_location.dart';
 import '../cubit/creation_cubit.dart';
-import '../cubit/photos_cubit.dart';
-import '../widgets/custom_selection_form_field.dart';
-import '../widgets/image_picker_field.dart';
 
 class LocationCreationScreen extends StatefulWidget {
   const LocationCreationScreen({super.key});
@@ -24,7 +20,6 @@ class LocationCreationScreen extends StatefulWidget {
 
 class _LocationCreationScreenState extends State<LocationCreationScreen> {
   late final CreationCubit creationCubit;
-  late final PhotosCubit photosCubit;
   GoogleMapController? mapController;
   Marker? selectedMarker;
   final LatLng initialPosition = const LatLng(
@@ -39,8 +34,6 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
     super.initState();
     creationCubit = BlocProvider.of<CreationCubit>(context);
     creationCubit.reset();
-    photosCubit = BlocProvider.of<PhotosCubit>(context);
-    photosCubit.resetPhotos();
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -60,7 +53,7 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
           key: formKey,
           child: Column(
             children: [
-              gapH12,
+              const Spacer(),
               Container(
                 height: 200,
                 width: MediaQuery.sizeOf(context).width * .8,
@@ -133,117 +126,33 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
                 ),
               ),
               gapH24,
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      gapH12,
-                      CustomTextFormField(
-                        labelText: 'Nome',
-                        isRequired: true,
-                        validator: AppValidators.checkField,
-                        onSaved: (value) {
-                          creationCubit.setLocale(
-                            creationCubit.state.locale.copyWith(name: value),
-                          );
-                        },
-                      ),
-                      gapH12,
-                      CustomSelectionFormField(
-                        title: 'Tipo *',
-                        selectionOptions: EnumLocation.values,
-                        onSaved: (value) {
-                          creationCubit.setLocale(
-                            creationCubit.state.locale.copyWith(
-                              type: EnumLocation.values.firstWhere(
-                                (element) => element.toString() == value,
-                              ),
-                            ),
-                          );
-                        },
-                        validator: AppValidators.checkField,
-                      ),
-                      gapH12,
-                      CustomTextFormField(
-                        labelText: 'Endereço *',
-                        onSaved: (value) {
-                          creationCubit.setLocale(
-                            creationCubit.state.locale.copyWith(address: value),
-                          );
-                        },
-                        controller: addressController,
-                        isEnabled: false,
-                        validator: (address) {
-                          if (address == null || address.isEmpty) {
-                            return 'Marque o local no mapa para preencher o endereço';
-                          }
-                          return null;
-                        },
-                      ),
-                      gapH48,
-                      FormField(
-                        builder: (state) {
-                          return Column(
-                            children: [
-                              if (state.hasError)
-                                Text(
-                                  state.errorText.toString(),
-                                  style: const TextStyle(
-                                    color: AppColors.secondary,
-                                    fontSize: Sizes.p12,
-                                  ),
-                                ),
-                              const ImagePickerField(),
-                            ],
-                          );
-                        },
-                        validator: (_) {
-                          if (photosCubit.state.isEmpty) {
-                            return 'Adicione pelo menos uma foto';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+              CustomTextFormField(
+                labelText: 'Endereço *',
+                onSaved: (value) {
+                  creationCubit.setLocale(
+                    creationCubit.state.locale.copyWith(address: value),
+                  );
+                },
+                controller: addressController,
+                isEnabled: false,
+                validator: (address) {
+                  if (address == null || address.isEmpty) {
+                    return 'Marque o local no mapa para preencher o endereço';
+                  }
+                  return null;
+                },
               ),
-              gapH12,
-              BlocConsumer<CreationCubit, CreationState>(
-                listener: (context, state) {
-                  if (state.status == CreationStateStatus.success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Sugestão enviada com sucesso!'),
-                      ),
-                    );
-                    Navigator.pop(context);
-                  } else if (state.status == CreationStateStatus.error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.errorMessage!),
-                      ),
+              const Spacer(),
+              CustomSubmitButton(
+                title: 'Próximo',
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    Navigator.pushNamed(
+                      context,
+                      RouteNames.creationDetails,
                     );
                   }
-                },
-                builder: (context, state) {
-                  return CustomSubmitButton(
-                    title: 'Enviar',
-                    onPressed: state.status == CreationStateStatus.loading
-                        ? null
-                        : () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
-                              creationCubit.setLocale(
-                                creationCubit.state.locale.copyWith(
-                                  multimedia: photosCubit.state,
-                                ),
-                              );
-                              creationCubit.create();
-                            }
-                          },
-                  );
                 },
               ),
               gapH12,

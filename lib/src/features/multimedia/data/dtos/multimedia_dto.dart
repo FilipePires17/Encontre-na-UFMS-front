@@ -22,8 +22,9 @@ class MultimediaDto extends Multimedia {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
-      'data': base64.encode(media!),
+      if (id == null) 'data': base64.encode(media!),
     };
   }
 

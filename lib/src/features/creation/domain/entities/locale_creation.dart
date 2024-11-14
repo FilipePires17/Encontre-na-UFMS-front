@@ -13,7 +13,7 @@ class LocaleCreation extends Equatable {
     required this.localizationLink,
     required this.address,
     this.multimedia = const [],
-    required this.hoursSection,
+    this.hoursSection,
     this.phone,
     this.about,
     this.specialInfo,
@@ -28,7 +28,7 @@ class LocaleCreation extends Equatable {
   final String localizationLink;
   final String address;
   final List<Multimedia> multimedia;
-  final HoursSection hoursSection;
+  final HoursSection? hoursSection;
   final String? phone;
   final String? about;
   final SpecialInfo? specialInfo;

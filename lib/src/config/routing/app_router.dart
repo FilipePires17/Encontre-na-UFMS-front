@@ -12,6 +12,7 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/creation/presentation/cubit/creation_cubit.dart';
 import '../../features/creation/presentation/cubit/photos_cubit.dart';
 import '../../features/creation/presentation/screens/location_creation_screen.dart';
+import '../../features/creation/presentation/screens/location_info_creation_screen.dart';
 import '../../features/location/presentation/bloc/location/location_bloc.dart';
 import '../../features/location/presentation/bloc/section/section_bloc.dart';
 import '../../features/location/presentation/cubit/review_cubit.dart';
@@ -84,11 +85,22 @@ class AppRouter {
               BlocProvider.value(
                 value: _creationCubit,
               ),
+            ],
+            child: const LocationCreationScreen(),
+          ),
+        );
+      case RouteNames.creationDetails:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _creationCubit,
+              ),
               BlocProvider.value(
                 value: _photosCubit,
               ),
             ],
-            child: const LocationCreationScreen(),
+            child: const LocationInfoCreationScreen(),
           ),
         );
 

@@ -37,4 +37,23 @@ class AppValidators {
     }
     return null;
   }
+
+  static String? phoneValidator(String? phone) {
+    if (phone != null && !RegExp(r'^\d{10,11}$').hasMatch(phone)) {
+      return 'Telefone inválido, verifique se há o DDD';
+    }
+    return null;
+  }
+
+  static String? hourValidator(String? time) {
+    if (time == null) return null;
+    if (!RegExp(r'^\d{2}:\d{2}$').hasMatch(time)) {
+      return 'Hora inválida';
+    }
+    final timeSplit = time.split(':');
+    if (int.parse(timeSplit[0]) > 23 || int.parse(timeSplit[1]) > 59) {
+      return 'Hora inválida';
+    }
+    return null;
+  }
 }
