@@ -1,3 +1,4 @@
+import '../../../../core/utils/string_extension.dart';
 import '../../../location/data/dtos/hours_section_dto.dart';
 import '../../../location/data/dtos/special_info_dto.dart';
 import '../../../location_listing/domain/enums/enum_location.dart';
@@ -32,7 +33,7 @@ class LocaleCreationDto extends LocaleCreation {
           multimedia.map((x) => MultimediaDto.fromEntity(x).toMap()).toList(),
       if (hoursSection != null)
         'schedule': HoursSectionDto.fromEntity(hoursSection!).toMap(),
-      'phoneNumber': phone,
+      'phoneNumber': phone?.removeNonDigits(),
       'about': about,
       'specialInfo': specialInfo != null
           ? SpecialInfoDto.fromEntity(specialInfo!).toMap()

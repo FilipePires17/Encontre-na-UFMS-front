@@ -6,6 +6,7 @@ import '../../../../core/common_widgets/custom_submit_button.dart';
 import '../../../../core/common_widgets/custom_text_form_field.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
+import '../../../../core/utils/app_masks.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../../../location/domain/entities/sections.dart';
 import '../../../location/domain/entities/special_info.dart';
@@ -183,6 +184,8 @@ class _LocationInfoCreationScreenState
                       CustomTextFormField(
                         labelText: 'Telefone',
                         validator: AppValidators.phoneValidator,
+                        inputFormatters: [AppMasks.phoneMask],
+                        keyboardType: TextInputType.phone,
                         onSaved: (value) {
                           creationCubit.setLocale(
                             creationCubit.state.locale.copyWith(phone: value),

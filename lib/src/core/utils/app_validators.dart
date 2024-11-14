@@ -39,8 +39,10 @@ class AppValidators {
   }
 
   static String? phoneValidator(String? phone) {
-    if (phone != null && !RegExp(r'^\d{10,11}$').hasMatch(phone)) {
-      return 'Telefone inválido, verifique se há o DDD';
+    if (phone != null && phone.isNotEmpty) {
+      if (!RegExp(r'^\(\d{2}\) \d{4,5}-\d{4}$').hasMatch(phone)) {
+        return 'Telefone inválido';
+      }
     }
     return null;
   }
