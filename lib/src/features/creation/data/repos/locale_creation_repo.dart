@@ -25,4 +25,15 @@ class LocaleCreationRepo implements ILocaleCreationRepo {
       return const Left('Sem conexão com a internet');
     }
   }
+
+  @override
+  Future<Either<dynamic, void>> updateLocale(
+      LocaleCreation localeCreation) async {
+    if (await networkInfo.isConnected) {
+      return remoteDataSource
+          .updateLocale(LocaleCreationDto.fromEntity(localeCreation));
+    } else {
+      return const Left('Sem conexão com a internet');
+    }
+  }
 }

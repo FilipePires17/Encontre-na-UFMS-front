@@ -7,6 +7,7 @@ import '../../domain/entities/locale_creation.dart';
 
 class LocaleCreationDto extends LocaleCreation {
   const LocaleCreationDto({
+    super.id,
     required super.name,
     required super.latitude,
     required super.longitude,
@@ -46,6 +47,7 @@ class LocaleCreationDto extends LocaleCreation {
 
   factory LocaleCreationDto.fromEntity(LocaleCreation entity) {
     return LocaleCreationDto(
+      id: entity.id,
       name: entity.name,
       latitude: entity.latitude,
       longitude: entity.longitude,

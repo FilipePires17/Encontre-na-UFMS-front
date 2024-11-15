@@ -8,6 +8,7 @@ abstract class ApiUrls {
 
   // Creation
   static const String createLocale = '$baseLocations/new';
+  static const String updateLocale = '$baseLocations/edit';
 
   // Reviews
   static const String baseReviews = '$baseLocations/reviews';

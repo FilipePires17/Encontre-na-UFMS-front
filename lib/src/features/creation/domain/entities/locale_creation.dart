@@ -7,6 +7,7 @@ import '../../../multimedia/domain/entities/multimedia.dart';
 
 class LocaleCreation extends Equatable {
   const LocaleCreation({
+    this.id,
     required this.name,
     required this.latitude,
     required this.longitude,
@@ -22,6 +23,7 @@ class LocaleCreation extends Equatable {
     this.observation,
   });
 
+  final int? id;
   final String name;
   final double latitude;
   final double longitude;
@@ -37,6 +39,7 @@ class LocaleCreation extends Equatable {
   final String? observation;
 
   LocaleCreation copyWith({
+    int? id,
     String? name,
     double? latitude,
     double? longitude,
@@ -52,6 +55,7 @@ class LocaleCreation extends Equatable {
     String? observation,
   }) {
     return LocaleCreation(
+      id: id ?? this.id,
       name: name ?? this.name,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
@@ -70,6 +74,7 @@ class LocaleCreation extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         latitude,
         longitude,
