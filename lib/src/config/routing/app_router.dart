@@ -9,6 +9,7 @@ import '../../features/auth/presentation/screens/email_screen.dart';
 import '../../features/auth/presentation/screens/new_password_screen.dart';
 import '../../features/auth/presentation/screens/profile_edit_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
+import '../../features/creation/domain/entities/locale_creation.dart';
 import '../../features/creation/presentation/cubit/creation_cubit.dart';
 import '../../features/creation/presentation/cubit/photos_cubit.dart';
 import '../../features/creation/presentation/screens/location_creation_screen.dart';
@@ -86,7 +87,9 @@ class AppRouter {
                 value: _creationCubit,
               ),
             ],
-            child: const LocationCreationScreen(),
+            child: LocationCreationScreen(
+              id: settings.arguments as int?,
+            ),
           ),
         );
       case RouteNames.creationDetails:
@@ -100,7 +103,9 @@ class AppRouter {
                 value: _photosCubit,
               ),
             ],
-            child: const LocationInfoCreationScreen(),
+            child: LocationInfoCreationScreen(
+              location: settings.arguments as LocaleCreation?,
+            ),
           ),
         );
 

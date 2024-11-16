@@ -45,6 +45,29 @@ class LocaleCreationDto extends LocaleCreation {
     };
   }
 
+  factory LocaleCreationDto.fromMap(Map<String, dynamic> map) {
+    return LocaleCreationDto(
+      name: map['name'],
+      latitude: map['latitude'],
+      longitude: map['longitude'],
+      localizationLink: map['localizationLink'],
+      address: map['address'],
+      multimedia: List<MultimediaDto>.from(
+          map['photos']?.map((x) => MultimediaDto.fromMap(x)) ?? []),
+      hoursSection: map['schedule'] != null
+          ? HoursSectionDto.fromMap(map['schedule'])
+          : null,
+      phone: map['phoneNumber'],
+      about: map['about'],
+      specialInfo: map['specialInfo'] != null
+          ? SpecialInfoDto.fromMap(map['specialInfo'])
+          : null,
+      type: EnumLocation.values[map['type']],
+      hasAccessibility: map['accessibility'] == 1,
+      observation: map['observation'],
+    );
+  }
+
   factory LocaleCreationDto.fromEntity(LocaleCreation entity) {
     return LocaleCreationDto(
       id: entity.id,

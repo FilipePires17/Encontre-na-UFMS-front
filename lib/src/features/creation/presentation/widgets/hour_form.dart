@@ -11,14 +11,22 @@ class HourForm extends StatelessWidget {
     required this.title,
     this.onSaved,
     required this.controller,
+    this.initialValue,
   });
 
   final String title;
   final Function(String?)? onSaved;
   final TextEditingController controller;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
+    String? end;
+    if (initialValue != null && initialValue!.contains('-')) {
+      final start = initialValue!.split(' - ')[0];
+      end = initialValue!.split(' - ')[1];
+      controller.text = start;
+    }
     return Row(
       children: [
         Text(title),
@@ -39,6 +47,7 @@ class HourForm extends StatelessWidget {
         SizedBox(
           width: 92,
           child: CustomTextFormField(
+            initialValue: end,
             labelText: 'HH:MM',
             validator: AppValidators.hourValidator,
             onSaved: onSaved,

@@ -36,4 +36,17 @@ class LocaleCreationRepo implements ILocaleCreationRepo {
       return const Left('Sem conexão com a internet');
     }
   }
+
+  @override
+  Future<Either<dynamic, LocaleCreation>> getLocale(int id) async {
+    if (await networkInfo.isConnected) {
+      final result = await remoteDataSource.getLocale(id);
+      return result.fold(
+        (error) => Left(error),
+        (locale) => Right(locale),
+      );
+    } else {
+      return const Left('Sem conexão com a internet');
+    }
+  }
 }

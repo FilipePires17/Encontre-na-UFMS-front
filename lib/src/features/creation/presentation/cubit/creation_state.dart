@@ -1,6 +1,13 @@
 part of 'creation_cubit.dart';
 
-enum CreationStateStatus { initial, loading, success, error, updated }
+enum CreationStateStatus {
+  initial,
+  loading,
+  success,
+  error,
+  updated,
+  loaded,
+}
 
 class CreationState extends Equatable {
   const CreationState({

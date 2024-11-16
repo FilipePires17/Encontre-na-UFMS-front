@@ -19,6 +19,16 @@ class SpecialInfoDto extends SpecialInfo {
     };
   }
 
+  factory SpecialInfoDto.fromMap(Map<String, dynamic> map) {
+    return SpecialInfoDto(
+      course: map['course'],
+      libraryLink: map['libraryLink'],
+      availableSports: map['availableSports'],
+      availableBuses: map['availableBuses'],
+      rules: map['rules'],
+    );
+  }
+
   factory SpecialInfoDto.fromEntity(SpecialInfo entity) {
     return SpecialInfoDto(
       course: entity.course,
