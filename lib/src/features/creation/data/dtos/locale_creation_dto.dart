@@ -47,9 +47,14 @@ class LocaleCreationDto extends LocaleCreation {
 
   factory LocaleCreationDto.fromMap(Map<String, dynamic> map) {
     return LocaleCreationDto(
+      id: map['id'],
       name: map['name'],
-      latitude: map['latitude'],
-      longitude: map['longitude'],
+      latitude: map['latitude'] is double
+          ? map['latitude']
+          : double.parse(map['latitude']),
+      longitude: map['longitude'] is double
+          ? map['longitude']
+          : double.parse(map['longitude']),
       localizationLink: map['localizationLink'],
       address: map['address'],
       multimedia: List<MultimediaDto>.from(

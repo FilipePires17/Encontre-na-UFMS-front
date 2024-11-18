@@ -104,7 +104,8 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => MultimediaCard(
-                      multimedia: state[index].media!,
+                      multimedia: state[index].media,
+                      url: state[index].mediaUrl,
                       onTap: () {
                         photosCubit.removePhoto(index);
                       },

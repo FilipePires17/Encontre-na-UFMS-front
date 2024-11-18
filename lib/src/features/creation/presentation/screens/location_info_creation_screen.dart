@@ -437,7 +437,8 @@ class _LocationInfoCreationScreenState
             gapH24,
             BlocConsumer<CreationCubit, CreationState>(
               listener: (context, state) {
-                if (state.status == CreationStateStatus.success) {
+                if (state.status == CreationStateStatus.success ||
+                    state.status == CreationStateStatus.updated) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Sugestão enviada com sucesso!'),
@@ -465,7 +466,7 @@ class _LocationInfoCreationScreenState
                                 multimedia: photosCubit.state,
                               ),
                             );
-                            creationCubit.create();
+                            creationCubit.update();
                           }
                         },
                 );
