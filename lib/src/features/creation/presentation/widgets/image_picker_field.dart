@@ -33,6 +33,14 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
       children: [
         GestureDetector(
           onTap: () async {
+            if (photosCubit.state.length >= 5) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Você atingiu o limite de 5 fotos'),
+                ),
+              );
+              return;
+            }
             final pickedFile = await showDialog<Multimedia>(
               context: context,
               builder: (context) => const ImagePickerModal(),
@@ -42,6 +50,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
             }
             SystemChrome.setPreferredOrientations([
               DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
             ]);
           },
           child: SizedBox(

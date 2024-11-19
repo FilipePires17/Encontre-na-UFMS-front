@@ -107,6 +107,7 @@ class ImagePickerModal extends StatelessWidget {
     try {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
       ]);
@@ -133,9 +134,6 @@ class ImagePickerModal extends StatelessWidget {
     } catch (e) {
       debugPrint('Error opening image: $e');
     }
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
     ctx.pop();
   }
 }
