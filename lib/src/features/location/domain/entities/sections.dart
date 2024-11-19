@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../location_listing/domain/enums/enum_location.dart';
+import 'special_info.dart';
+
 class Section extends Equatable {
   const Section();
 
@@ -93,29 +96,47 @@ class MoreInfoSection extends Section {
   final String? about;
   final String? observations;
   final String? phone;
+  final EnumLocation? locationType;
+  final SpecialInfo? specialInfo;
 
   const MoreInfoSection({
     this.about,
     this.observations,
     this.phone,
+    this.locationType,
+    this.specialInfo,
   }) : super();
 
   MoreInfoSection copyWith({
     String? about,
     String? phone,
     String? observations,
+    EnumLocation? locationType,
+    SpecialInfo? specialInfo,
   }) {
     return MoreInfoSection(
       about: about ?? this.about,
       phone: phone ?? this.phone,
       observations: observations ?? this.observations,
+      locationType: locationType ?? this.locationType,
+      specialInfo: specialInfo ?? this.specialInfo,
     );
   }
 
   @override
-  List<Object?> get props => [about, phone, observations];
+  List<Object?> get props => [
+        about,
+        phone,
+        observations,
+        locationType,
+        specialInfo,
+      ];
 }
 
 extension MoreInfoSectionExtension on MoreInfoSection {
-  bool get hasInfo => about != null || observations != null || phone != null;
+  bool get hasInfo =>
+      about != null ||
+      observations != null ||
+      phone != null ||
+      specialInfo != null;
 }

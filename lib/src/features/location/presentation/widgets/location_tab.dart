@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/constants/google_maps_constants.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
@@ -25,17 +26,17 @@ class LocationTab extends StatefulWidget {
 
 class _LocationTabState extends State<LocationTab> {
   late final AuthBloc authBloc;
+  late final LatLng initialPosition;
 
   @override
   void initState() {
     super.initState();
     authBloc = BlocProvider.of<AuthBloc>(context);
+    initialPosition = LatLng(widget.localizationSection.latitude,
+        widget.localizationSection.longitude);
   }
 
   GoogleMapController? mapController;
-
-  final LatLng initialPosition =
-      const LatLng(-20.50246862307781, -54.61346732030084); // facom
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -101,27 +102,25 @@ class _LocationTabState extends State<LocationTab> {
                   },
                   cameraTargetBounds: CameraTargetBounds(
                     LatLngBounds(
-                      southwest:
-                          const LatLng(-20.511849614479797, -54.6221641078335),
-                      northeast:
-                          const LatLng(-20.493427224405206, -54.60504801228526),
+                      southwest: GoogleMapsConstants.southwest,
+                      northeast: GoogleMapsConstants.northeast,
                     ),
                   ),
                   initialCameraPosition: CameraPosition(
                     target: initialPosition,
-                    zoom: 17,
+                    zoom: GoogleMapsConstants.initialZoom,
                   ),
-                  minMaxZoomPreference: const MinMaxZoomPreference(15, 20),
+                  minMaxZoomPreference: const MinMaxZoomPreference(
+                    GoogleMapsConstants.minZoom,
+                    GoogleMapsConstants.maxZoom,
+                  ),
                   onMapCreated: _onMapCreated,
                   zoomControlsEnabled: false,
                   onTap: (argument) async {
-                    // Abrir o Google Maps
-                    final url = 'https://www.google.com/maps/search/?api=1&'
-                        'query=${argument.latitude},${argument.longitude}&'
-                        'query_place_id=ChIJmRhQAfXlhpQRKzU75yAgoaM';
-                    final Uri uri = Uri.parse(url);
+                    final Uri uri =
+                        Uri.parse(widget.localizationSection.googleLink);
                     if (!await launchUrl(uri)) {
-                      throw 'Could not launch $url';
+                      throw 'Could not launch ${widget.localizationSection.googleLink}';
                     }
                   },
                 ),

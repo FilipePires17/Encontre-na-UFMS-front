@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.keyboardType,
     this.initialValue,
+    this.maxLines,
   });
 
   final TextEditingController? controller;
@@ -39,11 +40,13 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final String? initialValue;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: obscureText,
+      scrollPhysics: const BouncingScrollPhysics(),
       decoration: InputDecoration(
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -53,9 +56,7 @@ class CustomTextFormField extends StatelessWidget {
           color: AppColors.charcoalGrey,
         ),
         labelText: isRequired ? '$labelText *' : labelText,
-        labelStyle: const TextStyle(
-          color: AppColors.white,
-        ),
+        alignLabelWithHint: true,
         fillColor: AppColors.charcoalGrey,
         filled: true,
         contentPadding: const EdgeInsets.symmetric(
@@ -63,6 +64,10 @@ class CustomTextFormField extends StatelessWidget {
           vertical: Sizes.p4,
         ),
         suffixIcon: suffixIcon,
+      ),
+      style: const TextStyle(
+        color: AppColors.white,
+        fontWeight: FontWeight.bold,
       ),
       controller: controller,
       validator: validator,
@@ -74,6 +79,7 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       initialValue: initialValue,
+      maxLines: maxLines ?? 1,
     );
   }
 }

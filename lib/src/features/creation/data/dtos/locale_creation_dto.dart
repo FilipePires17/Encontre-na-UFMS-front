@@ -26,8 +26,8 @@ class LocaleCreationDto extends LocaleCreation {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'latitude': latitude,
-      'longitude': longitude,
+      'latitude': latitude.toString(),
+      'longitude': longitude.toString(),
       'localizationLink': localizationLink,
       'address': address,
       'photos':

@@ -227,6 +227,7 @@ class _LocationInfoCreationScreenState
                           );
                         },
                         initialValue: widget.location?.about,
+                        maxLines: 5,
                       ),
                       gapH12,
                       CustomTextFormField(
@@ -238,6 +239,7 @@ class _LocationInfoCreationScreenState
                           );
                         },
                         initialValue: widget.location?.observation,
+                        maxLines: 5,
                       ),
                       gapH12,
                       Row(
@@ -466,7 +468,9 @@ class _LocationInfoCreationScreenState
                                 multimedia: photosCubit.state,
                               ),
                             );
-                            creationCubit.update();
+                            widget.location?.id != null
+                                ? creationCubit.update()
+                                : creationCubit.create();
                           }
                         },
                 );

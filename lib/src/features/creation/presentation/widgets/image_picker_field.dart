@@ -38,11 +38,11 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
               builder: (context) => const ImagePickerModal(),
             );
             if (pickedFile != null) {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-              ]);
               photosCubit.addPhoto(pickedFile);
             }
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+            ]);
           },
           child: SizedBox(
             height: 150,

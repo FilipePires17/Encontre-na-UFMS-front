@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/common_widgets/custom_submit_button.dart';
+import '../../../../core/constants/google_maps_constants.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
@@ -61,10 +62,7 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
             state.locale.longitude,
           );
         } else {
-          initialPosition = const LatLng(
-            -20.50246862307781,
-            -54.61346732030084,
-          );
+          initialPosition = GoogleMapsConstants.facom;
         }
         return widget.id != null && state.status == CreationStateStatus.loading
             ? const Center(child: CircularProgressIndicator())
@@ -93,20 +91,16 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
                             onMapCreated: _onMapCreated,
                             initialCameraPosition: CameraPosition(
                               target: initialPosition,
-                              zoom: 15,
+                              zoom: GoogleMapsConstants.initialZoom,
                             ),
-                            minMaxZoomPreference:
-                                const MinMaxZoomPreference(15, 19),
+                            minMaxZoomPreference: const MinMaxZoomPreference(
+                              GoogleMapsConstants.minZoom,
+                              GoogleMapsConstants.maxZoom,
+                            ),
                             cameraTargetBounds: CameraTargetBounds(
                               LatLngBounds(
-                                southwest: const LatLng(
-                                  -20.511849614479797,
-                                  -54.6221641078335,
-                                ),
-                                northeast: const LatLng(
-                                  -20.493427224405206,
-                                  -54.60504801228526,
-                                ),
+                                southwest: GoogleMapsConstants.southwest,
+                                northeast: GoogleMapsConstants.northeast,
                               ),
                             ),
                             zoomControlsEnabled: false,
