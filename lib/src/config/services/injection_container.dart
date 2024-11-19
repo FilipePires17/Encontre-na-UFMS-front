@@ -17,6 +17,8 @@ import '../../features/creation/data/datasource/locale_creation_remote_datasourc
 import '../../features/creation/data/repos/locale_creation_repo.dart';
 import '../../features/creation/domain/repos/i_locale_creation_repo.dart';
 import '../../features/creation/domain/usecases/create_locale.dart';
+import '../../features/creation/domain/usecases/get_locale.dart';
+import '../../features/creation/domain/usecases/update_locale.dart';
 import '../../features/creation/presentation/cubit/creation_cubit.dart';
 import '../../features/creation/presentation/cubit/photos_cubit.dart';
 import '../../features/location/data/datasource/remote_location_datasource.dart';
@@ -93,8 +95,14 @@ void init() {
   sl.registerLazySingleton(() => GetUserRating(repo: sl()));
 
   // Creation
-  sl.registerFactory(() => CreationCubit(createLocale: sl()));
+  sl.registerFactory(() => CreationCubit(
+        createLocale: sl(),
+        updateLocale: sl(),
+        getLocale: sl(),
+      ));
   sl.registerLazySingleton(() => CreateLocale(repo: sl()));
+  sl.registerLazySingleton(() => UpdateLocale(repo: sl()));
+  sl.registerLazySingleton(() => GetLocale(repo: sl()));
   sl.registerLazySingleton<ILocaleCreationRepo>(() => LocaleCreationRepo(
         remoteDataSource: sl(),
         networkInfo: sl(),

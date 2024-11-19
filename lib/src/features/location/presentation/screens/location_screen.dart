@@ -6,6 +6,7 @@ import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../domain/entities/sections.dart';
 import '../../domain/enums/enum_sections.dart';
 import '../bloc/location/location_bloc.dart';
@@ -86,15 +87,25 @@ class _LocationScreenState extends State<LocationScreen>
                 appBar: CustomAppBar(
                   context: context,
                   actions: [
-                    if (false)
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit_location_alt_outlined,
-                          color: AppColors.white,
-                          size: Sizes.p32,
-                        ),
-                        onPressed: () {},
-                      ),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return state.status == AuthStateStatus.loggedIn
+                            ? IconButton(
+                                icon: const Icon(
+                                  Icons.edit_location_alt_outlined,
+                                  color: AppColors.white,
+                                  size: Sizes.p32,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                    RouteNames.creation,
+                                    arguments: widget.id,
+                                  );
+                                },
+                              )
+                            : const SizedBox();
+                      },
+                    ),
                     IconButton(
                       icon: Icon(
                         state.location!.isFavorite ?? false

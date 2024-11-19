@@ -5,14 +5,6 @@ import '../../../../core/constants/sizes/app_sizes.dart';
 import '../../../../core/constants/theme/app_colors.dart';
 
 class CustomSelectionFormField<T> extends StatefulWidget {
-  final String? title;
-  final String? initialValue;
-  final List<T> selectionOptions;
-  final TextEditingController? controller;
-  final bool isEnabled;
-  final Function(String?)? onSaved;
-  final String? Function(String?)? validator;
-
   const CustomSelectionFormField({
     super.key,
     this.title,
@@ -22,7 +14,17 @@ class CustomSelectionFormField<T> extends StatefulWidget {
     this.onSaved,
     this.controller,
     this.validator,
+    this.onSelected,
   });
+
+  final String? title;
+  final String? initialValue;
+  final List<T> selectionOptions;
+  final TextEditingController? controller;
+  final bool isEnabled;
+  final Function(String?)? onSaved;
+  final String? Function(String?)? validator;
+  final Function(String?)? onSelected;
 
   @override
   State<CustomSelectionFormField> createState() =>
@@ -50,6 +52,7 @@ class _CustomSelectionFormFieldState<T>
   void _onSelect(T selectedFunction) {
     setState(() {
       controller.text = selectedFunction.toString();
+      widget.onSelected?.call(selectedFunction.toString());
       isOnFocus = false;
     });
   }

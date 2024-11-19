@@ -137,6 +137,10 @@ class UserRepository implements IUserRepository {
       return user.match(
         (errorMessage) => Left(errorMessage),
         (res) {
+          localDataSource.cacheToken(
+            token: res.token,
+            refreshToken: res.refreshToken,
+          );
           return Right(res);
         },
       );

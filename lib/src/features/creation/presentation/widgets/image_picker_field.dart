@@ -38,11 +38,11 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
               builder: (context) => const ImagePickerModal(),
             );
             if (pickedFile != null) {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-              ]);
               photosCubit.addPhoto(pickedFile);
             }
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+            ]);
           },
           child: SizedBox(
             height: 150,
@@ -104,7 +104,8 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => MultimediaCard(
-                      multimedia: state[index].media!,
+                      multimedia: state[index].media,
+                      url: state[index].mediaUrl,
                       onTap: () {
                         photosCubit.removePhoto(index);
                       },

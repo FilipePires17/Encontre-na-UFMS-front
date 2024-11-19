@@ -1,6 +1,13 @@
 part of 'creation_cubit.dart';
 
-enum CreationStateStatus { initial, loading, success, error }
+enum CreationStateStatus {
+  initial,
+  loading,
+  success,
+  error,
+  updated,
+  loaded,
+}
 
 class CreationState extends Equatable {
   const CreationState({
@@ -11,8 +18,8 @@ class CreationState extends Equatable {
       latitude: 0,
       longitude: 0,
       localizationLink: '',
-      type: EnumLocation.academicBlocks,
-      hoursSection: HoursSection(),
+      // TODO: horrível
+      type: EnumLocation.banks,
     ),
     this.errorMessage,
   });

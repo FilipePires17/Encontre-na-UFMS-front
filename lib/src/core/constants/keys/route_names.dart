@@ -10,4 +10,5 @@ class RouteNames {
   static const about = 'about';
   static const profile = 'profile';
   static const creation = 'creation';
+  static const creationDetails = 'creation-details';
 }
