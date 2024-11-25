@@ -40,7 +40,7 @@ class AppValidators {
 
   static String? phoneValidator(String? phone) {
     if (phone != null && phone.isNotEmpty) {
-      if (!RegExp(r'^\(\d{2}\) \d{4,5}-\d{4}$').hasMatch(phone)) {
+      if (!RegExp(r'^\(\d{2}\) \d{8,9}$').hasMatch(phone)) {
         return 'Telefone inválido';
       }
     }

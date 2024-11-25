@@ -39,7 +39,7 @@ class AppMasks {
   );
 
   static final phoneMask = MaskTextInputFormatter(
-    mask: '(##) #####-####',
+    mask: '(##) #########',
     filter: {'#': RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
   );

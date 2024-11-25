@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
@@ -49,7 +50,6 @@ class CodeScreenState extends State<NewPasswordScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Confirmar nova senha',
                 ),
-                // controller: _passwordController,
                 validator: (newPassword) =>
                     AppValidators.confirmPasswordValidator(
                   _passwordController.text,
@@ -100,11 +100,17 @@ class CodeScreenState extends State<NewPasswordScreen> {
                                   );
                             }
                           },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                    ),
                     child: state.status == ProfileStateStatus.loading
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : const Text('Alterar senha'),
+                        : const Text(
+                            'Alterar senha',
+                            style: TextStyle(color: AppColors.white),
+                          ),
                   );
                 },
               ),

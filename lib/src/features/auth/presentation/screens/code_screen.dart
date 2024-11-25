@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common_widgets/custom_app_bar.dart';
 import '../../../../core/constants/keys/route_names.dart';
 import '../../../../core/constants/sizes/app_sizes.dart';
+import '../../../../core/constants/theme/app_colors.dart';
 import '../../../../core/utils/app_validators.dart';
 import '../bloc/auth/auth_bloc.dart';
 
@@ -74,11 +75,17 @@ class CodeScreenState extends State<CodeScreen> {
                                   );
                             }
                           },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                    ),
                     child: state.status == AuthStateStatus.loading
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : const Text('Verificar código'),
+                        : const Text(
+                            'Verificar código',
+                            style: TextStyle(color: Colors.white),
+                          ),
                   );
                 },
               ),

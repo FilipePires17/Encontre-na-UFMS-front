@@ -173,75 +173,92 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                       builder: (context, state) {
                         switch (state.status) {
                           case LocationListingStatus.loaded:
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return index <
-                                          state.locations.locationItems.length
-                                      ? Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(
-                                                Sizes.p8,
-                                              ),
-                                              child: LocationListItemTile(
-                                                location: state.locations
-                                                    .locationItems[index],
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                    RouteNames.location,
-                                                    arguments: state
-                                                        .locations
-                                                        .locationItems[index]
-                                                        .id,
-                                                  );
-                                                },
-                                                onFavoritePressed: () {
-                                                  locationListingBloc.add(
-                                                    ToggleFavoriteEvent(
-                                                      id: state
-                                                          .locations
-                                                          .locationItems[index]
-                                                          .id,
-                                                    ),
-                                                  );
-                                                },
-                                                isFavorite: state
-                                                        .locations
-                                                        .locationItems[index]
-                                                        .isFavorite ??
-                                                    false,
-                                              ),
-                                            ),
-                                            if (index !=
+                            return state.locations.locationItems.isEmpty
+                                ? const SliverFillRemaining(
+                                    child: Center(
+                                      child: Text('Nenhum local cadastrado.'),
+                                    ),
+                                  )
+                                : SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        return index <
                                                 state.locations.locationItems
-                                                        .length -
-                                                    1)
-                                              Divider(
-                                                indent:
-                                                    MediaQuery.sizeOf(context)
-                                                            .width *
-                                                        0.08,
-                                                endIndent:
-                                                    MediaQuery.sizeOf(context)
-                                                            .width *
-                                                        0.08,
-                                              ),
-                                          ],
-                                        )
-                                      : const SizedBox(
-                                          height: Sizes.p48,
-                                          child: Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        );
-                                },
-                                childCount: state.hasReachedMax
-                                    ? state.locations.locationItems.length
-                                    : state.locations.locationItems.length + 1,
-                              ),
-                            );
+                                                    .length
+                                            ? Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                      Sizes.p8,
+                                                    ),
+                                                    child: LocationListItemTile(
+                                                      location: state.locations
+                                                          .locationItems[index],
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pushNamed(
+                                                          RouteNames.location,
+                                                          arguments: state
+                                                              .locations
+                                                              .locationItems[
+                                                                  index]
+                                                              .id,
+                                                        );
+                                                      },
+                                                      onFavoritePressed: () {
+                                                        locationListingBloc.add(
+                                                          ToggleFavoriteEvent(
+                                                            id: state
+                                                                .locations
+                                                                .locationItems[
+                                                                    index]
+                                                                .id,
+                                                          ),
+                                                        );
+                                                      },
+                                                      isFavorite: state
+                                                              .locations
+                                                              .locationItems[
+                                                                  index]
+                                                              .isFavorite ??
+                                                          false,
+                                                    ),
+                                                  ),
+                                                  if (index !=
+                                                      state
+                                                              .locations
+                                                              .locationItems
+                                                              .length -
+                                                          1)
+                                                    Divider(
+                                                      indent: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .width *
+                                                          0.08,
+                                                      endIndent:
+                                                          MediaQuery.sizeOf(
+                                                                      context)
+                                                                  .width *
+                                                              0.08,
+                                                    ),
+                                                ],
+                                              )
+                                            : const SizedBox(
+                                                height: Sizes.p48,
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                      },
+                                      childCount: state.hasReachedMax
+                                          ? state.locations.locationItems.length
+                                          : state.locations.locationItems
+                                                  .length +
+                                              1,
+                                    ),
+                                  );
                           default:
                             return const SliverFillRemaining(
                               child: Center(

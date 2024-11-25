@@ -37,19 +37,21 @@ class EmailScreenState extends State<EmailScreen> {
           child: Column(
             children: <Widget>[
               const Spacer(),
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Email',
-              //   ),
-              //   controller: _emailController,
-              //   validator: AppValidators.emailValidator,
-              // ),
+              const Text(
+                'Digite seu email para recuperar sua senha',
+                style: TextStyle(
+                  fontSize: Sizes.p20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              gapH20,
               CustomTextFormField(
                 controller: _emailController,
                 labelText: 'Email',
                 hintText: 'Digite seu email',
                 validator: AppValidators.emailValidator,
               ),
+              gapH20,
               const Spacer(),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
