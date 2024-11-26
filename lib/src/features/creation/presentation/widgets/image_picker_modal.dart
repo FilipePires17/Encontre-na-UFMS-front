@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -119,11 +118,10 @@ class ImagePickerModal extends StatelessWidget {
       if (context.mounted && pickedFile != null) {
         final file = File(pickedFile.path);
         final uintlist = await file.readAsBytes();
-        final byteArray = base64Encode(uintlist);
 
         ctx.pop(
           MultimediaDto.fromMap({
-            'data': base64.decode(byteArray),
+            'data': uintlist,
             'name': pickedFile.name.isEmpty
                 ? DateTime.now().toIso8601String()
                 : pickedFile.name,

@@ -15,7 +15,7 @@ class MultimediaDto extends Multimedia {
     return MultimediaDto(
       id: map['id'],
       name: map['name'],
-      mediaUrl: baseUrlDev + map['url'].toString(),
+      mediaUrl: map['url'] != null ? baseUrlDev + map['url'].toString() : null,
       media: map['data'],
     );
   }
