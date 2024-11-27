@@ -10,9 +10,9 @@ extension StringExtension on String {
   String phoneFormat() {
     final phone = removeNonDigits();
     if (phone.length == 11) {
-      return '(${phone.substring(0, 2)}) ${phone.substring(2, 7)}-${phone.substring(7)}';
+      return '(${phone.substring(0, 2)}) ${phone.substring(2)}';
     } else if (phone.length == 10) {
-      return '(${phone.substring(0, 2)}) ${phone.substring(2, 6)}-${phone.substring(6)}';
+      return '(${phone.substring(0, 2)}) ${phone.substring(2)}';
     } else {
       return this;
     }
