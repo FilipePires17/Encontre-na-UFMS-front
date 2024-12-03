@@ -39,11 +39,17 @@ class LocationListingBloc
               status: LocationListingStatus.error,
               errorMessage: 'Error toggling favorite',
             ));
+            emit(state.copyWith(
+              status: LocationListingStatus.loaded,
+            ));
           },
           (isFavorited) {
             if (!isFavorited) {
               emit(state.copyWith(
                 status: LocationListingStatus.unauthorized,
+              ));
+              emit(state.copyWith(
+                status: LocationListingStatus.loaded,
               ));
               return;
             }

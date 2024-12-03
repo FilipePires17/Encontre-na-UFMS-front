@@ -32,6 +32,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   }
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(

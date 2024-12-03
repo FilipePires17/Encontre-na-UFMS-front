@@ -25,6 +25,12 @@ class CodeScreenState extends State<NewPasswordScreen> {
   final _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(

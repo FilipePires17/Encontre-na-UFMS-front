@@ -24,6 +24,12 @@ class CodeScreenState extends State<CodeScreen> {
   final _codeController = TextEditingController();
 
   @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(

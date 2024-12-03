@@ -34,6 +34,7 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: ThemeMode.dark,
       scaffoldMessengerKey: rootScaffoldMessengerKey,
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: appRouter.getRoute,
     );
   }

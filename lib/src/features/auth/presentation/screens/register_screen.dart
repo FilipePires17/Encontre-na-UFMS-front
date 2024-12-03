@@ -26,6 +26,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
@@ -39,55 +47,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             children: <Widget>[
               gapH16,
-              // const Spacer(),
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Nome',
-              //   ),
-              //   controller: _nameController,
-              //   validator: AppValidators.checkField,
-              // ),
               CustomTextFormField(
                 controller: _nameController,
                 labelText: 'Nome',
+                validator: AppValidators.checkField,
               ),
               gapH12,
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Email',
-              //   ),
-              //   controller: _emailController,
-              //   validator: AppValidators.emailValidator,
-              // ),
               CustomTextFormField(
                 controller: _emailController,
                 labelText: 'Email',
+                validator: AppValidators.emailValidator,
               ),
               gapH12,
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Senha',
-              //   ),
-              //   controller: _passwordController,
-              //   validator: AppValidators.passwordValidator,
-              // ),
               CustomTextFormField(
                 controller: _passwordController,
                 labelText: 'Senha',
                 obscureText: true,
+                validator: AppValidators.passwordValidator,
               ),
               gapH12,
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Confirmar Senha',
-              //   ),
-              //   validator: (passwordConfirmation) {
-              //     return AppValidators.confirmPasswordValidator(
-              //       _passwordController.text,
-              //       passwordConfirmation,
-              //     );
-              //   },
-              // ),
               CustomTextFormField(
                 labelText: 'Confirmar Senha',
                 obscureText: true,

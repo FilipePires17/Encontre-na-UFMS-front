@@ -45,6 +45,12 @@ class _LocationCreationScreenState extends State<LocationCreationScreen> {
   }
 
   @override
+  void dispose() {
+    mapController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<CreationCubit, CreationState>(
       builder: (context, state) {

@@ -13,13 +13,30 @@ class HoursSectionDto extends HoursSection {
 
   factory HoursSectionDto.fromMap(Map<String, dynamic> map) {
     return HoursSectionDto(
-      sundayHours: map['sundayHours'] ?? 'Não informado',
-      mondayHours: map['mondayHours'] ?? 'Não informado',
-      tuesdayHours: map['tuesdayHours'] ?? 'Não informado',
-      wednesdayHours: map['wednesdayHours'] ?? 'Não informado',
-      thursdayHours: map['thursdayHours'] ?? 'Não informado',
-      fridayHours: map['fridayHours'] ?? 'Não informado',
-      saturdayHours: map['saturdayHours'] ?? 'Não informado',
+      sundayHours: map['sundayHours'] == null || map['sundayHours'].isEmpty
+          ? 'Não informado'
+          : map['sundayHours'],
+      mondayHours: map['mondayHours'] == null || map['mondayHours'].isEmpty
+          ? 'Não informado'
+          : map['mondayHours'],
+      tuesdayHours: map['tuesdayHours'] == null || map['tuesdayHours'].isEmpty
+          ? 'Não informado'
+          : map['tuesdayHours'],
+      wednesdayHours:
+          map['wednesdayHours'] == null || map['wednesdayHours'].isEmpty
+              ? 'Não informado'
+              : map['wednesdayHours'],
+      thursdayHours:
+          map['thursdayHours'] == null || map['thursdayHours'].isEmpty
+              ? 'Não informado'
+              : map['thursdayHours'],
+      fridayHours: map['fridayHours'] == null || map['fridayHours'].isEmpty
+          ? 'Não informado'
+          : map['fridayHours'],
+      saturdayHours:
+          map['saturdayHours'] == null || map['saturdayHours'].isEmpty
+              ? 'Não informado'
+              : map['saturdayHours'],
     );
   }
 

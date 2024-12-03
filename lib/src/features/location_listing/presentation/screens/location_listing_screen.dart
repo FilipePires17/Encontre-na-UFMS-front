@@ -156,6 +156,7 @@ class _LocationListingScreenState extends State<LocationListingScreen> {
                 },
                 child: CustomScrollView(
                   controller: scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
                     BlocConsumer<LocationListingBloc, LocationListingState>(
                       listener: (context, state) {

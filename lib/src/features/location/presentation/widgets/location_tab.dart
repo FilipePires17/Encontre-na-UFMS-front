@@ -43,6 +43,12 @@ class _LocationTabState extends State<LocationTab> {
   }
 
   @override
+  void dispose() {
+    mapController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
